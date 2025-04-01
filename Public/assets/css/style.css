@@ -1,0 +1,56 @@
+:root {
+    --oxford-blue: #032245;
+    --dodger-blue: #2F8EFF;
+    --jordy-blue: #91BBFF;
+    --ghost-white: #F6F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    width: 98%;
+    background-color: #262D34;
+    margin: 0 auto;
+    padding: 1% 1.1%;
+
+    & > div {
+        display: flex;
+        flex-direction: row;
+        row-gap: 80px;
+
+        & .logo-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            & > object {
+                width: 75px;
+                height: 75px;
+            }
+        }
+
+        & > div:nth-of-type(2) {
+            display: flex;
+            flex-direction: row;
+
+            & > div.header-icons {
+                display: flex;
+                flex-direction: row;
+                row-gap: 10px;
+            }
+        }
+    }
+}
+
+.logo-title {
+    font-size: 2.5rem;
+    color: var(--dodger-blue);
+    font-family: 'Lobster', cursive;
+    text-decoration: none;
+    margin-left: 10px;
+}
