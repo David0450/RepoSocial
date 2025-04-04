@@ -1,5 +1,6 @@
 <?php
 
+
 class EmptyModel {
     protected $db;
     protected $table;

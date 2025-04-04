@@ -15,6 +15,6 @@ spl_autoload_register(function ($class) {
         }
     }
 
-    // Si la clase no se encuentra, puedes lanzar una excepción o manejar el error
+    // Si la clase no se encuentra, lanzar una excepción
     throw new Exception("No se pudo cargar la clase: $class");
 });

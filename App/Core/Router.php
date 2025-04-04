@@ -1,14 +1,17 @@
 <?php
 
+
+
 class Router 
 {
-
     private $_uri = [];
     private $_action = [];
+    private $_methods = [];
 
-    public function add($uri, $action = null) 
+    public function add($uri, $action = null, $method = 'GET') 
     {
         $this->_uri[] = '/' . trim($uri, '/');
+        $this->_methods[] = strtoupper($method);
 
         if ($action != null) 
         {
@@ -18,49 +21,54 @@ class Router
 
     public function run() 
     {   
-        if (isset($_POST['uri'])) 
-        {
-            $uriGet = '/' . $_POST['uri'];
-        } 
-        else 
-        {
-            $uriGet = isset($_GET['uri']) ? '/' . $_GET['uri'] : '/';
-        }
-        
+        $uriGet = isset($_POST['uri']) ? '/' . $_POST['uri'] : (isset($_GET['uri']) ? '/' . $_GET['uri'] : '/');
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
+
         foreach ($this->_uri as $key => $value) 
         {
-            if (preg_match("#^$value$#", $uriGet)) 
+            if (preg_match("#^$value$#", $uriGet) && $this->_methods[$key] === $requestMethod) 
             {
                 $action = $this->_action[$key];
-                if(isset($_GET['parametro'])) {
-                    $parametro = $_GET['parametro'];
-                } else {
-                    $parametro = null;
-                }
+                $parametro = isset($_GET['parametro']) ? $_GET['parametro'] : null;
 
-                $this->runAction($action,$parametro);
+                $this->runAction($action, $parametro);
             }
         }
     }
 
     private function runAction($action, $parametro) 
     {
-        if($action instanceof \Closure)
+        if ($action instanceof \Closure)
         {
             $action();
         }  
         else 
         {
-            if ($parametro == null) {
-                $params = explode('@', $action);
-                $obj = new $params[0];
+            $params = explode('@', $action);
+            $obj = new $params[0];
+            if ($parametro === null) {
                 $obj->{$params[1]}();
             } else {
-                $params = explode('@', $action);
-                $obj = new $params[0];
                 $obj->{$params[1]}($parametro);
             }
         }
     }
-
 }
+
+/*public function run() {
+    foreach ($this->_uri as $key => $value) 
+    {
+        if (preg_match("#^$value$#", $uriGet)) 
+        {
+            $action = $this->_action[$key];
+            if(isset($_GET['parametro'])) {
+                $parametro = $_GET['parametro'];
+            } else {
+                $parametro = null;
+            }
+
+            $this->runAction($action,$parametro);
+        }
+    }
+}
+*/
