@@ -7,6 +7,12 @@ class MainController {
         exit();
     }
 
+    public function signup() {
+        // Logic for signup
+        require __DIR__ . '/../Views/other/signupView.php';
+        exit();
+    }
+
     public function logout() {
         // Logic for logout
         echo "Logout page";

@@ -17,7 +17,7 @@ $(function() {
                     </div>
                         <div class="category_name">
                             <h2>`+category.title+`</h2>
-                            <small>525 posts en esta categoría</small>
+                            <small>`+category.projects+` posts en esta categoría</small>
                             </div>
                             </div>`;
                 categoriesList.append(item);
@@ -30,7 +30,6 @@ $(function() {
             $(".sidebar_error").css("font-size", "1.2rem");
             $(".sidebar_error").css("color", "var(--ghost-white)");
             $(".sidebar_error").css("text-align", "center");
-            $(".sidebar_error").css("font-family", "sans-serif");
             $(".sidebar_error").css("font-weight", "bold");
             $(".sidebar_error").width("100%");
         }
@@ -60,7 +59,6 @@ $(function() {
             $(".sidebar_error").css("font-size", "1.2rem");
             $(".sidebar_error").css("color", "var(--ghost-white)");
             $(".sidebar_error").css("text-align", "center");
-            $(".sidebar_error").css("font-family", "sans-serif");
             $(".sidebar_error").css("font-weight", "bold");
             $(".sidebar_error").width("100%");
         }

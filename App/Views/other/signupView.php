@@ -16,6 +16,22 @@ include __DIR__ . '/../layouts/head.php';
         <form action="" method="POST" id="loginForm">
             <div class="input-container">
                 <div>
+                    <label for="name">Nombre</label>
+                    <input type="name" name="name" id="name" required>
+                </div>
+                <div>
+                    <label for="last_name">Apellido</label>
+                    <input type="last_name" name="last_name" id="last_name" required>
+                </div>
+            </div>
+            <div class="input-container">
+                <div>
+                    <label for="username">Usuario</label>
+                    <input type="username" name="username" id="username" required>
+                </div>
+            </div>
+            <div class="input-container">
+                <div>
                     <label for="email">Correo electrónico</label>
                     <input type="email" name="email" id="email" required>
                 </div>
@@ -26,10 +42,9 @@ include __DIR__ . '/../layouts/head.php';
                     <input type="password" name="password" id="password" required>
                 </div>
             </div>
-            <button type="submit" name="uri" value="user/login">Iniciar sesión</button>
+            <button type="submit" name="uri" value="user/signup">Crear cuenta</button>
         </form>
-        <p>¿No tienes cuenta? <a href="?uri=signup" id="signupLink">Crear cuenta</a></p>
-        <p>¿Olvidaste tu contraseña? <a href="#" id="forgotPasswordLink">Recuperar contraseña</a></p>
+        <p>¿Ya tienes una cuenta? <a href="?uri=login" id="loginLink">Inciar sesión</a></p>
     </div>
     <div class="social_login">
         <p>O inicia sesión con</p>
