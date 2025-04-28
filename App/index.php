@@ -7,6 +7,7 @@ require __DIR__ . '/Core/Router.php';
 require __DIR__ . '/Core/Database.php';
 require __DIR__ . '/Core/EmptyModel.php';
 require __DIR__ . '/Core/Config.php';
+require __DIR__ . '/Core/Security.php';
 
 /*
 require __DIR__ . '/Models/User.php';
@@ -40,6 +41,8 @@ $router->add('/user/login', 'UserController@login', 'POST');
 $router->add('/user/logout', 'UserController@logout', 'GET');
 $router->add('/user/signup', 'UserController@signup', 'POST');
 $router->add('/user/profile', 'UserController@profile', 'GET');
+$router->add('/user/login/github', 'UserController@loginGithub', 'GET');
+$router->add('/user/login/google', 'UserController@loginGoogle', 'GET');
 
 $router->run();
 

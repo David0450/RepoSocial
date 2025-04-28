@@ -6,6 +6,7 @@ include __DIR__ . '/../layouts/head.php';
 ?>
 <?php ob_start(); ?>
 <article class="projects_list_article">
+    <?php if (Security::isLoggedIn()): ?>
     <section class="project_creation_section">
         <div class="project_creation_container">
             <h1>Crear Proyecto</h1>
@@ -14,6 +15,7 @@ include __DIR__ . '/../layouts/head.php';
             </a>
         </div>
     </section>
+    <?php endif; ?>
     <section class="projects_section">
         <div class="projects_container">
             <h1>Proyectos</h1>
@@ -30,6 +32,8 @@ include __DIR__ . '/../layouts/head.php';
                 -->
             </div>
         </div>
+        <?php 
+        ?>
     </section>
     <!--<section class="project_search_section">
         <div class="project_search_container">

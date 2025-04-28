@@ -48,8 +48,14 @@ class UserController {
         include __DIR__ . '/../Views/profile/profile_view.php';
     }
 
-    public function dashboard() {
-        // Logic for dashboard
-        echo "Dashboard page";
+    public function loginGithub() {
+        if(isset($_GET['code'])) {
+            $clientId = Config::get('github_client_id');
+            $clientSecret = Config::get('github_client_secret');
+            print_r($this->userModel->githubToken($_GET['code'], $clientId, $clientSecret));
+            include __DIR__ . '/../Views/projects/projects_list.php';
+        } else {
+            $this->userModel->githubToken();
+        }
     }
 }

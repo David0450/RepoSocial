@@ -15,7 +15,7 @@
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 object {
@@ -407,9 +407,33 @@ header {
         & > div {
             display: flex;
             flex-direction: column;
-            row-gap: 20px;
+            row-gap: 10px;
 
-            & > h1 {
+            & > .sidebar_tags_header, & .sidebar_categories_header {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                padding: 10px 0;
+                color: var(--dodger-blue);
+
+                & > .add_category_button, & > .add_tag_button {
+                    background-color: transparent;
+                    color: var(--ghost-white);
+                    font-size: 1.25rem;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.3s ease-in-out;
+
+                    &:hover {
+                        scale: 1.2;
+                        rotate: -5deg;
+                    }
+                }
+            }
+
+            & h1 {
                 color: var(--ghost-white);
                 font-size: 1.5rem;
             }

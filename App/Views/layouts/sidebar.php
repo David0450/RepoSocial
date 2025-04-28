@@ -3,7 +3,12 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar_categories">
         <div>
-            <h1>Categorias</h1>
+            <div class="sidebar_categories_header">
+                <h1>Categorias</h1>
+                <button class="add_category_button" id="addCategoryButton">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
             <div class="categories_list" id="categories_list">
                 
             </div>
@@ -11,7 +16,12 @@
     </div>
     <div class="sidebar_tags">
         <div>
-            <h1>Etiquetas</h1>
+            <div class="sidebar_tags_header">
+                <h1>Etiquetas</h1>
+                <button class="add_tag_button" id="addTagButton">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
             <div class="tags_list" id="tags_list">
 
             </div>

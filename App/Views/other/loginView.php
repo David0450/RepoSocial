@@ -34,12 +34,11 @@ include __DIR__ . '/../layouts/head.php';
     <div class="social_login">
         <p>O inicia sesión con</p>
         <div class="social_buttons">
-            <!--<button id="googleLoginButton">Google</button>-->
-            <button class="social-btn">
+            <!--<button class="social-btn" id="googleLoginButton">
                 <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo">
                 <span>Google</span>
-            </button>
-            <button class="social-btn">
+            </button>-->
+            <button class="social-btn" id="githubLoginButton">
                 <i class="fa-brands fa-github"></i>
                 <span>GitHub</span>
             </button>
@@ -50,5 +49,6 @@ include __DIR__ . '/../layouts/head.php';
         <p><a href="#">Política de privacidad</a> | <a href="#">Términos de servicio</a></p>
     </div>
 </section>
+<script src="../Public/scripts/LoginScript.js"></script>
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>

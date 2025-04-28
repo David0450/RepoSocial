@@ -21,7 +21,7 @@
 					</div>
 				</div>
 				<div class="right-info">
-					<?php if (isset($_SESSION['user_id'])): ?>
+					<?php if (Security::isLoggedIn()): ?>
 					<div class="chat-icon icon">
 						<i class="fa-solid fa-comment-dots"></i>
 					</div>
