@@ -16,4 +16,5 @@ class Project extends EmptyModel {
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
+
 }

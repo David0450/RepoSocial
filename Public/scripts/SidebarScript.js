@@ -4,8 +4,38 @@ $(function() {
     let addCategoryButton = document.querySelector('#addCategoryButton');
     let addTagButton = document.querySelector('#addTagButton');
 
-    addCategoryButton.addEventListener('click', function() {
-        console.log("click en el botón de añadir categoría");
+    if (addCategoryButton) {addCategoryButton.addEventListener('click', function() {
+        $(document).on('click', '.deleteCategoryButton', function() {
+            const categoryId = this.dataset.id; 
+
+            Swal.fire({
+                title: "¿Estás seguro de que deseas eliminar esta categoría?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "red",
+                cancelButtonColor: "grey",
+                theme: 'dark',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "?uri=categories",
+                        data: { id: $(this).data("id") },
+                        success: function(response) {
+                            console.log("Categoría eliminada:", response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error de AJAX:", error);
+                            alert("Error en la comunicación con el servidor.");
+                        }
+                    });
+                }
+            });
+        });
+
         $.ajax({
             url: '?uri=categories',
             method: 'GET',
@@ -28,7 +58,7 @@ $(function() {
                                 <td class="border"><i class="${category.icon}"></i></td>
                                 <td class="border fw-bold">${category.title}</td>
                                 <td class="border" style="width: fit-content;">
-                                    <button class="btn btn-danger deleteProperty" data-id="">Eliminar</button>
+                                    <button class="btn btn-danger deleteCategoryButton" data-id="${category.id}">Eliminar</button>
                                 </td>
                             </tr>
                             `;
@@ -39,7 +69,6 @@ $(function() {
                     confirmButtonText: 'Añadir categoría',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Aquí puedes agregar la lógica para añadir una nueva categoría
                         Swal.fire({
                             title: 'Añadir nueva categoría',
                             theme: 'dark',
@@ -51,26 +80,43 @@ $(function() {
                             preConfirm: () => {
                                 const icon = document.getElementById('newCategoryIcon').value;
                                 const title = document.getElementById('newCategoryTitle').value;
-                                
-                                // Aquí puedes agregar la lógica para guardar la nueva categoría en el servidor
-                                console.log("Nueva categoría:", icon, title);
+
+                                if (!icon || !title) {
+                                    Swal.showValidationMessage('Por favor, completa todos los campos');
+                                    return false;
+                                }
+
+                                return { icon, title };
                             }
                         }).then((result) => {
                             if (result.isConfirmed) {
+                                const { icon, title } = result.value;
                                 $.ajax({
-                                    type: "POST",
+                                    method: "POST",
                                     url: "?uri=categories",
                                     data: {
-                                        producto_id: idProducto,
-                                        titulo: document.getElementById("propiedadTitulo").value,
-                                        valor: document.getElementById("propiedadValor").value
+                                        title: title,
+                                        icon: icon 
                                     },
-                                    success: function(response,data) {
-                                        getProperties();
+                                    success: function(response) {
+                                        console.log("Categoría añadida:", response);
+                                        Swal.fire({
+                                            icon: 'success',
+                                            theme: 'dark',
+                                            title: 'Categoría añadida',
+                                            text: 'La categoría ha sido añadida con éxito.',
+                                            confirmButtonText: 'Aceptar'
+                                        });
                                     },
                                     error: function(xhr, status, error) {
                                         console.error("Error de AJAX:", error);
-                                        alert("Error en la comunicación con el servidor.");
+                                        Swal.fire({
+                                            icon: 'error',
+                                            theme: 'dark',
+                                            title: 'Error',
+                                            text: 'No se pudo añadir la categoría.',
+                                            confirmButtonText: 'Aceptar'
+                                        });
                                     }
                                 });
                             }
@@ -85,9 +131,8 @@ $(function() {
         });
 
     });
-    addTagButton.addEventListener('click', function() {
-        sidebar.classList.toggle('show');
-    });
+    
+    }
     
     $.ajax({
         url: '?uri=categories',

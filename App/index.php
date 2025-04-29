@@ -44,6 +44,8 @@ $router->add('/user/profile', 'UserController@profile', 'GET');
 $router->add('/user/login/github', 'UserController@loginGithub', 'GET');
 $router->add('/user/login/google', 'UserController@loginGoogle', 'GET');
 
+$router->add('/projects/create', 'ProjectController@create');
+
 $router->run();
 
 

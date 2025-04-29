@@ -1071,6 +1071,62 @@ section.profile_section {
     text-align: center;
 }
 
+.project-item {
+    display: flex;
+    background-color: #2C353D;
+    padding: 10px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    width: 100%;
+
+    & > a {
+        transition: all 0.3s ease-in-out;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        & .project-image {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            column-gap: 20px;
+        }
+
+        & .project-details {
+            display: flex;
+            flex-direction: column;
+            padding: 0 20px;
+            row-gap: 15px;
+
+            & > p {
+                margin: 0;
+            }
+        }
+
+        & .project-languages {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            column-gap: 10px;
+            row-gap: 5px;
+        }
+    }
+    
+    &:hover {
+        background-color: var(--dodger-blue);
+        scale: 1.05;
+        & > a {
+            color: #17191C;
+        }
+    }
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .projects_list {
