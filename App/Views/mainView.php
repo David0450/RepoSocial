@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html class="h-100" lang='es'>
     <?= $head ?? '' ?>

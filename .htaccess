@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /programacion/PFC/
+
+# Evita procesar archivos y carpetas que existan
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirige todo lo demás hacia index.php
+RewriteRule ^(.*)$ index.php?uri=$1 [QSA,L]

@@ -1,9 +1,12 @@
-<?php ob_start(); ?>
+<?php
+
+
+ ob_start(); ?>
 <header>
 	<div>
-		<a class="logo-container" id="headerLogoContainer" href="?uri=home">
-			<object data="../Public/assets/images/logo/logo.svg">
-				<img src="../Public/assets/images/logo/logo.png" alt="logo">
+		<a class="logo-container" id="headerLogoContainer" href="<?= Config::PATH?>home">
+			<object data="<?=Config::PATH?>Public/assets/images/logo/logo.svg">
+				<img src="<?=Config::PATH?>Public/assets/images/logo/logo.png" alt="logo">
 			</object>
 			<h1 class="logo-title">TECHIE</h1>
 		</a>
@@ -15,8 +18,8 @@
 						<input type="text" name="asd" id="">
 					</div>
 					<div class="search-icon">
-						<object data="../Public/assets/icons/SearchIcon.svg">
-							<img src="../Public/assets/icons/SearchIcon.png" alt="search_icon">
+						<object data="<?=Config::PATH?>Public/assets/icons/SearchIcon.svg">
+							<img src="<?=Config::PATH?>Public/assets/icons/SearchIcon.png" alt="search_icon">
 						</object>
 					</div>
 				</div>
@@ -31,30 +34,34 @@
 					<div class="header-profile">
 						<div>
 							<div class="inside-box">									
-								<object data="../Public/assets/icons/User_light.svg">
-									<img src="../Public/assets/icons/User_light.png" alt="user_icon">
+								<object data="<?=Config::PATH?>Public/assets/icons/User_light.svg">
+									<img src="<?=Config::PATH?>Public/assets/icons/User_light.png" alt="user_icon">
 								</object>
 							</div>
 						</div>
 						<div class="profile-name">
-							<a href="?uri=user/profile"><?= $_SESSION['username'] ?></a>
+							<a href="<?= Config::PATH?>user/profile"><?= $_SESSION['user']['username'] ?></a>
 							<i id="dropdownIcon" class="fa-solid fa-caret-down"></i>
 						</div>
 					</div>
 					<div id="dropdown">
 						<ul>
-							<li><a href="?uri=user/profile">Perfil</a></li>
-							<li><a href="?uri=user/logout">Cerrar sesión</a></li>
+							<li><a href="<?= Config::PATH?>user/profile">Perfil</a></li>
+							<li><a href="<?=Config::PATH?>user/logout">Cerrar sesión</a></li>
 						</ul>
 					</div>
 					<?php else: ?>
-					<button class="login-button_header" id="loginButton">Iniciar sesión</button>
-					<button class="signup-button_header" id="signupButton">Crear cuenta</button>
+					<a href="<?= Config::PATH?>login">
+						<button class="login-button_header">Iniciar sesión</button>
+					</a>
+					<a href="<?= Config::PATH?>signup">
+						<button class="signup-button_header" id="signupButton">Crear cuenta</button>
+					</a>
 					<?php endif; ?>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="../Public/scripts/HeaderScript.js"></script>
+	<script src="<?=Config::PATH?>Public/scripts/HeaderScript.js"></script>
 </header>
 <?php $header = ob_get_clean(); ?>

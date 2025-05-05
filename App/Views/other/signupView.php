@@ -3,10 +3,10 @@ include __DIR__ . '/../layouts/footer.php';
 include __DIR__ . '/../layouts/head.php';
 ?>
 <?php ob_start(); ?>
-<section class="login_section">
-    <a class="logo-container" href="?uri=home">
-	    <object data="../Public/assets/images/logo/logo.svg">
-			<img src="../Public/assets/images/logo/logo.png" alt="logo">
+<section class="signup_section">
+    <a class="logo-container" href="<?=Config::PATH?>home">
+	    <object data="<?=Config::PATH?>Public/assets/images/logo/logo.svg">
+			<img src="<?=Config::PATH?>Public/assets/images/logo/logo.png" alt="logo">
 	    </object>
 		<h1 class="logo-title">TECHIE</h1>
 	</a>
@@ -44,20 +44,17 @@ include __DIR__ . '/../layouts/head.php';
             </div>
             <button type="submit" name="uri" value="user/signup">Crear cuenta</button>
         </form>
-        <p>¿Ya tienes una cuenta? <a href="?uri=login" id="loginLink">Inciar sesión</a></p>
+        <p>¿Ya tienes una cuenta? <a href="<?=Config::PATH?>login" id="loginLink">Inciar sesión</a></p>
     </div>
     <div class="social_login">
         <p>O inicia sesión con</p>
         <div class="social_buttons">
-            <!--<button id="googleLoginButton">Google</button>-->
-            <button class="social-btn">
-                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo">
-                <span>Google</span>
-            </button>
-            <button class="social-btn">
-                <i class="fa-brands fa-github"></i>
-                <span>GitHub</span>
-            </button>
+            <a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email&prompt=consent">
+                <button class="social-btn" id="githubLoginButton">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </button>
+            </a>
         </div>
     </div>
     <div class="footer">

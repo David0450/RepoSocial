@@ -5,19 +5,12 @@ let logoContainer = document.querySelector("#headerLogoContainer");
 let dropdownIcon = document.querySelector("#dropdownIcon");
 
 logoContainer.addEventListener("click", function() {
-    window.location.href = "?uri=home";
+    window.location.href = "/programacion/PFC/home";
 });
 
 
-if (loginButton && signupButton) {
-    loginButton.addEventListener("click", function() {
-        window.location.href = "?uri=login";
-    });
-    
-    signupButton.addEventListener("click", function() {
-        window.location.href = "?uri=signup";
-    });
-} else {
+
+if (!loginButton && !signupButton) {
     dropdownIcon.addEventListener("click", function() {
         let dropdown = document.querySelector("#dropdown");
         dropdown.classList.toggle("show");

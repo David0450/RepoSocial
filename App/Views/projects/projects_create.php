@@ -29,7 +29,7 @@ include __DIR__ . '/../layouts/head.php';
             </div>
         </div>
     </div>
-    <script src="../Public/scripts/ProjectCreationScript.js"></script>
+    <script src="<?=Config::PATH?>Public/scripts/ProjectCreationScript.js"></script>
 </section>
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>

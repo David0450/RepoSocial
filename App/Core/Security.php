@@ -7,14 +7,14 @@ class Security
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         } else {
-            session_regenerate_id(true); // Regenerate session ID to prevent session fixation attacks
+            session_regenerate_id(true);
         }
-        return isset($_SESSION['user_id']);
+        return isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id']);
     }
 
     public static function isAdmin()
     {
-        return isset($_SESSION['role']) && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin');
+        return isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'superadmin');
     }
 
     public static function redirectIfNotLoggedIn($redirectUrl = '/login')

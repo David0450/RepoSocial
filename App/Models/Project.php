@@ -17,4 +17,11 @@ class Project extends EmptyModel {
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public function getByUserId($userId) {
+		$sql = "SELECT * FROM {$this->table} WHERE user_id = :user_id";
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 }

@@ -1,4 +1,4 @@
-$(function() {
+/*$(function() {
     $.ajax({
         url: '?uri=categories',
         method: 'GET',
@@ -21,7 +21,14 @@ $(function() {
 
     const username = 'David0450';
     const url = `https://api.github.com/users/${username}/repos`;
-    fetch(url)
+    const token = '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';
+    fetch(url, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'User-Agent': 'Techie',
+        },
+      }
+    )
       .then(response => {
         if (!response.ok) {
           throw new Error('Error en la solicitud');
@@ -56,7 +63,12 @@ $(function() {
 
           const languagesUrl = `https://api.github.com/repos/${username}/${repo.name}/languages`;
 
-          fetch(languagesUrl)
+          fetch(languagesUrl, {
+            headers: {
+              'Authorization': `token ${token}`,
+              'User-Agent': 'Techie',
+            },
+          })
             .then(response => {
               if (!response.ok) {
                 throw new Error('Error en la solicitud de lenguajes');
@@ -80,4 +92,4 @@ $(function() {
       .catch(error => {
         console.error('Hubo un problema con la petición:', error);
       });
-});
+});*/

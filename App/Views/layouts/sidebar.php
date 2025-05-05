@@ -31,6 +31,6 @@
             </div>
         </div>
     </div>
-    <script src="../Public/scripts/SidebarScript.js"></script>
+    <script src="<?=Config::PATH?>/Public/scripts/SidebarScript.js"></script>
 </aside>
 <?php $sidebar = ob_get_clean(); ?>

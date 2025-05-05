@@ -1,4 +1,4 @@
-let githubButton = document.querySelector("#githubLoginButton");
+/*let githubButton = document.querySelector("#githubLoginButton");
 let googleButton = document.querySelector("#googleLoginButton");
 
 if (githubButton) {
@@ -10,4 +10,4 @@ if (googleButton) {
     googleButton.addEventListener("click", function() {
         window.location.href = "?uri=googleLogin";
     });
-}
+}*/

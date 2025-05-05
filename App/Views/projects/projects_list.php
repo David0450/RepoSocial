@@ -10,8 +10,8 @@ include __DIR__ . '/../layouts/head.php';
     <section class="project_creation_section">
         <div class="project_creation_container">
             <h1>Crear Proyecto</h1>
-            <a href="?uri=projects/create">
-                <button class="create_project_button">Crear Proyecto</button>
+            <a href="<?= Config::PATH ?>projects/create">
+                <button class="create_project_button" id="my_projects_button">Mis proyectos</button>
             </a>
         </div>
     </section>
@@ -43,7 +43,7 @@ include __DIR__ . '/../layouts/head.php';
             <div id="searchResults"></div>
         </div>
     </section>-->
-    <script src="../Public/scripts/ProjectScript.js"></script>
+    <script src="<?=Config::PATH?>Public/scripts/ProjectScript.js"></script>
 </article>
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>

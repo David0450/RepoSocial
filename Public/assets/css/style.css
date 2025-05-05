@@ -3,7 +3,7 @@
     --dodger-blue: #2F8EFF;
     --jordy-blue: #91BBFF;
     --ghost-white: #F6F9FF;
-    --font-title: 'Lobster', cursive;
+    --font-title: 'Righteous', sans-serif;
     --font-body: 'Montserrat', sans-serif;
 }
 
@@ -135,7 +135,7 @@ header {
             column-gap: 20px;
             align-items: center;
 
-            & > button.login-button_header {
+            & button.login-button_header {
                 background-color: var(--dodger-blue);
                 box-shadow: 0px 0px 0px 2px var(--oxford-blue);
                 color: var(--ghost-white);
@@ -152,7 +152,7 @@ header {
                 }
             }
 
-            & > button.signup-button_header {
+            & button.signup-button_header {
                 background-color: var(--oxford-blue);
                 box-shadow: 0px 0px 0px 2px var(--oxford-blue);
                 color: var(--ghost-white);
@@ -322,9 +322,10 @@ header {
 .logo-title {
     font-size: 2.5rem;
     color: var(--dodger-blue);
-    font-family: 'Lobster', cursive;
+    font-family: var(--font-title);
     text-decoration: none;
     margin-left: 10px;
+    margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
@@ -553,7 +554,7 @@ header {
 /*Sidebar Styles End*/
 
 /*Login Styles*/
-section.login_section {
+section.login_section, section.signup_section {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -662,13 +663,27 @@ section.login_section {
     }
 }
 
+section.signup_section {
+    font-size: 1.1rem;
+    gap: 10px;
+    padding: 0.75% 4%;
+
+    & > .login_form > form {
+
+        & input {
+            padding: 10px 10px;
+            font-size: 1rem;
+        }
+    }
+}
+
 .social_buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     column-gap: 10px;
-
+    margin-bottom: 1rem;
 }
 
 .social-btn {
@@ -1092,16 +1107,21 @@ section.profile_section {
         & .project-image {
             display: flex;
             flex-direction: row;
-            justify-content: center;
+            justify-content: start;
             align-items: center;
             column-gap: 20px;
+            width: 33%;
         }
 
         & .project-details {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             padding: 0 20px;
             row-gap: 15px;
+            color: var(--dodger-blue);
+            width: 33%;
 
             & > p {
                 margin: 0;
@@ -1111,10 +1131,11 @@ section.profile_section {
         & .project-languages {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: end;
             justify-content: center;
             column-gap: 10px;
             row-gap: 5px;
+            width: 33%;
         }
     }
     

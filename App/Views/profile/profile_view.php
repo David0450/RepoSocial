@@ -5,15 +5,15 @@
 <section class="profile_section">
     <div class="profile_container">
         <div class="profile_header">
-            <h1><?= $_SESSION['username'] ?></h1>
+            <h1><?= $_SESSION['user']['username'] ?></h1>
             <button id="editProfileButton">Editar Perfil</button>
         </div>
         <div class="profile_info">
             <div class="profile_picture">
-                <img src="../Public/assets/images/profile/default_profile.png" alt="Profile Picture" id="profilePicture">
+                <img src="<?=Config::PATH?>Public/assets/images/profile/default_profile.png" alt="Profile Picture" id="profilePicture">
             </div>
             <div class="profile_details">
-                <h2 id="username"><?= $_SESSION['username'] ?></h2>
+                <h2 id="username"><?= $_SESSION['user']['username'] ?></h2>
                 <p id="email">Correo Electrónico</p>
                 <p id="bio">Biografía breve del usuario.</p>
             </div>
@@ -46,7 +46,7 @@
             </form>
         </div>
     </div>
-    <script src="../Public/scripts/ProfileScript.js"></script>
+    <script src="<?=Config::PATH?>Public/scripts/ProfileScript.js"></script>
 </section>
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>

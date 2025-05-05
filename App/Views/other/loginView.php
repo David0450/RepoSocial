@@ -4,16 +4,16 @@ include __DIR__ . '/../layouts/head.php';
 ?>
 <?php ob_start(); ?>
 <section class="login_section">
-    <a class="logo-container" href="?uri=home">
-	    <object data="../Public/assets/images/logo/logo.svg">
-			<img src="../Public/assets/images/logo/logo.png" alt="logo">
+    <a class="logo-container" href="<?=Config::PATH?>home">
+	    <object data="<?=Config::PATH?>Public/assets/images/logo/logo.svg">
+			<img src="<?=Config::PATH?>Public/assets/images/logo/logo.png" alt="logo">
 	    </object>
 		<h1 class="logo-title">TECHIE</h1>
 	</a>
     <h1>Bienvenido a Techie</h1>
     <p>Forma parte de nuestra comunidad</p>
     <div class="login_form">
-        <form action="" method="POST" id="loginForm">
+        <form action="<?= Config::PATH?>user/login" method="POST" id="loginForm">
             <div class="input-container">
                 <div>
                     <label for="email">Correo electrónico</label>
@@ -26,9 +26,9 @@ include __DIR__ . '/../layouts/head.php';
                     <input type="password" name="password" id="password" required>
                 </div>
             </div>
-            <button type="submit" name="uri" value="user/login">Iniciar sesión</button>
+            <button type="submit">Iniciar sesión</button>
         </form>
-        <p>¿No tienes cuenta? <a href="?uri=signup" id="signupLink">Crear cuenta</a></p>
+        <p>¿No tienes cuenta? <a href="<?=Config::PATH?>signup" id="signupLink">Crear cuenta</a></p>
         <p>¿Olvidaste tu contraseña? <a href="#" id="forgotPasswordLink">Recuperar contraseña</a></p>
     </div>
     <div class="social_login">
@@ -38,10 +38,12 @@ include __DIR__ . '/../layouts/head.php';
                 <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo">
                 <span>Google</span>
             </button>-->
-            <button class="social-btn" id="githubLoginButton">
-                <i class="fa-brands fa-github"></i>
-                <span>GitHub</span>
-            </button>
+            <a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email">
+                <button class="social-btn" id="githubLoginButton">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </button>
+            </a>
         </div>
     </div>
     <div class="footer">
@@ -49,6 +51,6 @@ include __DIR__ . '/../layouts/head.php';
         <p><a href="#">Política de privacidad</a> | <a href="#">Términos de servicio</a></p>
     </div>
 </section>
-<script src="../Public/scripts/LoginScript.js"></script>
+<!--<script src="<?=Config::PATH?>Public/scripts/LoginScript.js"></script>-->
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>
