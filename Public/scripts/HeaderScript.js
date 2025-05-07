@@ -1,6 +1,6 @@
 let header = document.querySelector("header");
 let loginButton = document.querySelector("#loginButton");
-let signupButton = document.querySelector("#signupButton");
+let githubLoginButton = document.querySelector("#githubLoginButton");
 let logoContainer = document.querySelector("#headerLogoContainer");
 let dropdownIcon = document.querySelector("#dropdownIcon");
 
@@ -10,7 +10,7 @@ logoContainer.addEventListener("click", function() {
 
 
 
-if (!loginButton && !signupButton) {
+if (!loginButton && !githubLoginButton) {
     dropdownIcon.addEventListener("click", function() {
         let dropdown = document.querySelector("#dropdown");
         dropdown.classList.toggle("show");

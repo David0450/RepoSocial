@@ -3,7 +3,7 @@ include __DIR__ . '/../layouts/footer.php';
 include __DIR__ . '/../layouts/head.php';
 ?>
 <?php ob_start(); ?>
-<section class="login_section">
+<section class="login_section content_section">
     <a class="logo-container" href="<?=Config::PATH?>home">
 	    <object data="<?=Config::PATH?>Public/assets/images/logo/logo.svg">
 			<img src="<?=Config::PATH?>Public/assets/images/logo/logo.png" alt="logo">
@@ -16,8 +16,8 @@ include __DIR__ . '/../layouts/head.php';
         <form action="<?= Config::PATH?>user/login" method="POST" id="loginForm">
             <div class="input-container">
                 <div>
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" name="email" id="email" required>
+                    <label for="user">Usuario</label>
+                    <input type="text" name="user" id="user" required>
                 </div>
             </div>
             <div class="input-container">
@@ -28,16 +28,20 @@ include __DIR__ . '/../layouts/head.php';
             </div>
             <button type="submit">Iniciar sesión</button>
         </form>
-        <p>¿No tienes cuenta? <a href="<?=Config::PATH?>signup" id="signupLink">Crear cuenta</a></p>
+        <div class="signup_link">
+            <p>¿No tienes cuenta?</p>
+            <a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email">					
+				<button class="social-btn" id="githubLoginButton">
+            		<i class="fa-brands fa-github"></i>
+            		<span>Únete con GitHub</span>
+            	</button>
+			</a>
+</div>
         <p>¿Olvidaste tu contraseña? <a href="#" id="forgotPasswordLink">Recuperar contraseña</a></p>
     </div>
-    <div class="social_login">
+    <!--<div class="social_login">
         <p>O inicia sesión con</p>
         <div class="social_buttons">
-            <!--<button class="social-btn" id="googleLoginButton">
-                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo">
-                <span>Google</span>
-            </button>-->
             <a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email">
                 <button class="social-btn" id="githubLoginButton">
                     <i class="fa-brands fa-github"></i>
@@ -45,7 +49,7 @@ include __DIR__ . '/../layouts/head.php';
                 </button>
             </a>
         </div>
-    </div>
+    </div>-->
     <div class="footer">
         <p>&copy; 2025 Techie. Todos los derechos reservados.</p>
         <p><a href="#">Política de privacidad</a> | <a href="#">Términos de servicio</a></p>

@@ -3,7 +3,7 @@ include __DIR__ . '/../layouts/footer.php';
 include __DIR__ . '/../layouts/head.php';
 ?>
 <?php ob_start(); ?>
-<section class="signup_section">
+<section class="signup_section content_section">
     <a class="logo-container" href="<?=Config::PATH?>home">
 	    <object data="<?=Config::PATH?>Public/assets/images/logo/logo.svg">
 			<img src="<?=Config::PATH?>Public/assets/images/logo/logo.png" alt="logo">

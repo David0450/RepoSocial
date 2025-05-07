@@ -7,7 +7,12 @@ fetch(url)
     if (!response.ok) {
       throw new Error('Error en la solicitud');
     }
-    return response.json();
+	return response.text().then(text => {
+		if (!text) {
+			throw new Error("Respuesta vacía del servidor");
+		}
+		return JSON.parse(text);
+	});
   })
   .then(data => {
     console.log(data); // Aquí tienes los repositorios

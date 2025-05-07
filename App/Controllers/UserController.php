@@ -41,13 +41,8 @@ class UserController {
         header('Location: ' . Config::PATH . 'home');
     }
 
-    public function register() {
-        // Logic for registration
-        echo "Register page";
-    }
-
-    public function profile() {
-        include __DIR__ . '/../Views/profile/profile_view.php';
+    public function account() {
+        include __DIR__ . '/../Views/user/account.php';
     }
 
     public function loginGithub() {
@@ -86,7 +81,7 @@ class UserController {
             // Obtener los datos del usuario
             $user_info = file_get_contents("https://api.github.com/user", false, stream_context_create([
                 "http" => [
-                    "header" => "User-Agent: tu-app\r\nAuthorization: token $access_token\r\n"
+                    "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
                 ]
             ]));
         
@@ -103,7 +98,7 @@ class UserController {
             if(!$email) {
                 $emails_response = file_get_contents("https://api.github.com/user/emails", false, stream_context_create([
                     "http" => [
-                        "header" => "User-Agent: tu-app\r\nAuthorization: token $access_token\r\n"
+                        "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
                     ]
                 ]));
                 
@@ -130,36 +125,12 @@ class UserController {
                     'id' => $existingUser['id'],
                     'username' => $existingUser['username'],
                     'email' => $existingUser['email'],
-                    'github_id' => $existingUser['github_id']
+                    'github_id' => $existingUser['github_id'],
+                    'access_token' => $access_token,
                 ];
             }
 
-            ?>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'http://localhost/programacion/PFC/App/user/projects', true);
-                    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === XMLHttpRequest.DONE) {
-                            if (xhr.status === 200) {
-                                try {
-                                    var data = JSON.parse(xhr.responseText);
-                                    console.log(data); // Debugging line to check the response
-                                } catch (e) {
-                                    console.error('Error parsing JSON response:', e);
-                                }
-                            } else {
-                                console.error('Error fetching projects');
-                            }
-                        }
-                    };
-                    xhr.send(JSON.stringify({
-                        'token': '<?= $access_token; ?>'
-                    }));
-                });
-            </script>
-            <?php
+            //header('Location: ' . Config::PATH . 'user/projects/post?token=' . $access_token);
             header('Location: ' . Config::PATH . 'home');
         } else {
             if (isset($_GET['error'])) {
@@ -170,5 +141,29 @@ class UserController {
             }
             die("No se recibió el código de autorización.");
         }
+    }
+
+    public function getTotalRepos() {
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'login');
+            exit();
+        }
+        if (!isset($_SESSION['user']['access_token'])) {
+            http_response_code(401);
+            echo json_encode(['status' => 'error', 'message' => 'No access token provided.']);
+            exit();
+        }
+        $access_token = $_SESSION['user']['access_token'];
+
+        $response = file_get_contents("https://api.github.com/user", false, stream_context_create([
+            "http" => [
+                "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+            ]
+        ]));
+        $response = json_decode($response, true);
+        
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
     }
 }

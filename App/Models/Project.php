@@ -17,11 +17,20 @@ class Project extends EmptyModel {
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function getByUserId($userId) {
-		$sql = "SELECT * FROM {$this->table} WHERE user_id = :user_id";
+	public function getByUserId($userId,$offset = 0, $limit = 6) {
+		$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} WHERE user_id = :user_id LIMIT :offset, :limit";
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+		$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+		$stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 		$stmt->execute();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$totalSql = "SELECT FOUND_ROWS() AS total";
+		$totalStmt = $this->db->query($totalSql);
+		$total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+		return ['repos' => $results, 'total' => $total];
 	}
+
 }

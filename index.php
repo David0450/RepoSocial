@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Europe/Madrid');
 
 //require __DIR__ . '/autoload.php';
 
@@ -22,7 +23,10 @@ require __DIR__ . '/App/Controllers/UserController.php';
 
 $router = new Router();
 
-$router->add('/', 'ProjectController@index', 'GET');
+$router->add('/', function() {
+    header('Location: '. Config::PATH .'home');
+    exit();
+});
 $router->add('/home', 'ProjectController@index', 'GET');
 $router->add('/login', 'MainController@login');
 $router->add('/signup', 'MainController@signup');
@@ -40,11 +44,16 @@ $router->add('/tags', 'TagController@delete', 'DELETE');
 $router->add('/user/login', 'UserController@login', 'POST');
 $router->add('/user/logout', 'UserController@logout', 'GET');
 $router->add('/user/signup', 'UserController@signup', 'POST');
-$router->add('/user/profile', 'UserController@profile', 'GET');
+$router->add('/user/account', 'UserController@account', 'GET');
 $router->add('/user/login/google', 'UserController@loginGoogle', 'GET');
 
-$router->add('/user/projects', 'ProjectController@insertUserProjects', 'POST');
-$router->add('/user/projects', 'ProjectController@getUserProjects', 'GET');
+$router->add('/user/projects/post', 'ProjectController@insertUserProjects');
+$router->add('/user/projects/count', 'UserController@getTotalRepos', 'GET');
+$router->add('/user/projects/upload', 'ProjectController@uploadUserProjects');
+
+$router->add('/user/projects', 'ProjectController@userProjects', 'GET');
+$router->add('/user/projects/get', 'ProjectController@getUserProjects', 'GET');
+$router->add('/user/projects/getUploaded', 'ProjectController@getUploadedProjectsById', 'GET');
 
 $router->add('/projects/create', 'ProjectController@create');
 

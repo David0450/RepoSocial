@@ -2,7 +2,7 @@
 <?php include __DIR__ . '/../layouts/header.php'; ?>
 <?php include __DIR__ . '/../layouts/head.php'; ?>
 <?php ob_start(); ?>
-<section class="profile_section">
+<section class="profile_section content_section">
     <div class="profile_container">
         <div class="profile_header">
             <h1><?= $_SESSION['user']['username'] ?></h1>

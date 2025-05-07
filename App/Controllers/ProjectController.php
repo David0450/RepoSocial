@@ -28,7 +28,7 @@ class ProjectController {
     }
     public function create() {
         if (!Security::isLoggedIn()) {
-            header('Location: /login');
+            header('Location: '.Config::PATH.'/login');
             exit();
         }
         // Logic to create a new project
@@ -43,60 +43,134 @@ class ProjectController {
         }
     }
 
-    public function insertUserProjects() {
+    public function userProjects() {
         if (!Security::isLoggedIn()) {
-            header('Location: /login');
+            header('Location: '.Config::PATH.'login');
             exit();
         }
-
-        $access_token = $_GET['token'] ?? null;
-        if (!$access_token) {
-            echo "No access token provided.";
-            return;
-        }
-        $userId = $_SESSION['user']['id'];
-        $repos_response = file_get_contents("https://api.github.com/user/repos?visibility=all&per_page=100", false, stream_context_create([
-            "http" => [
-                "header" => "User-Agent: tu-app\r\nAuthorization: token $access_token\r\n"
-            ]
-        ]));
         
-        $repos = json_decode($repos_response, true);
-        
-        foreach ($repos as $repo) {
-            $repo_name = $repo['name'];
-            $repo_description = $repo['description'] ?? null;
-            $repo_url = $repo['html_url'];
-            $repo_id = $repo['id'];
-            $repo_private = $repo['private'] ? 1 : 0;
-            $repo_created_at = $repo['created_at'];
-            
-            // Check if the project already exists in the database
-            if (!$this->projectModel->getById($repo_id)) {
-                // Create a new project in the database
-                $this->projectModel->create([
-                    'id' => $repo_id,
-                    'user_id' => $userId,
-                    'title' => $repo_name,
-                    'description' => $repo_description,
-                    'html_url' => $repo_url,
-                    'private' => $repo_private,
-                    'created_at' => $repo_created_at,
-                    'status' => 'private',
-                ]);
-            }
-        }  
-        
-        header('Location: ' . Config::PATH . 'home');
+        include_once __DIR__ . '/../Views/projects/projects_create.php';
     }
 
+
     public function getUserProjects() {
+
         if (!Security::isLoggedIn()) {
-            header('Location: /login');
+            header('Location: '.Config::PATH.'login');
             exit();
         }
-        $userId = $_SESSION['user']['id'];
-        $projects = $this->projectModel->getByUserId($userId);
-        echo json_encode($projects);
+
+        if (!isset($_SESSION['user']['access_token'])) {
+            http_response_code(401);
+            echo json_encode(['status' => 'error', 'message' => 'No access token provided.']);
+            exit();
+        }
+
+        $access_token = $_SESSION['user']['access_token'];
+
+        $response = file_get_contents("https://api.github.com/user/repos?visibility=all&affiliation=owner&per_page=100", false, stream_context_create([
+            "http" => [
+                "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+            ]
+        ]));
+
+        if ($response === false) {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Error fetching repositories.']);
+            exit();
+        }
+
+        $total_repos = count(json_decode($response, true));
+
+        header('Content-Type: application/json');
+        echo json_encode(['repos' => $response, 'total' => $total_repos]);
+        exit();
+    }
+
+    public function getUserProjectsById($id) {
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'login');
+            exit();
+        }
+
+        if (!isset($_SESSION['user']['access_token'])) {
+            http_response_code(401);
+            echo json_encode(['status' => 'error', 'message' => 'No access token provided.']);
+            exit();
+        }
+
+        $access_token = $_SESSION['user']['access_token'];
+
+        $response = file_get_contents("https://api.github.com/user/repos?visibility=all&affiliation=owner&per_page=100", false, stream_context_create([
+            "http" => [
+                "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+            ]
+        ]));
+
+        if ($response === false) {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Error fetching repositories.']);
+            exit();
+        }
+
+        $repos = json_decode($response, true);
+
+        foreach ($repos as $repo) {
+            if ($repo['id'] == $id) {
+                header('Content-Type: application/json');
+                return json_encode($repo);
+            }
+        }
+
+        http_response_code(404);
+        echo json_encode(['status' => 'error', 'message' => 'Repository not found.']);
+        exit();
+    }
+
+    public function uploadUserProjects() {
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'login');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $repoId = $_GET['repo_id'] ?? null;
+            if (!$repoId) {
+                echo "No repository ID provided.";
+                return;
+            }
+            $repoData = json_decode($this->getUserProjectsById($repoId),true);
+            if (!$repoData) {
+                echo "No repository data found.";
+                return;
+            }
+            
+            $data = [
+                'id' => $repoData['id'],
+                'user_id' => $_SESSION['user']['id'],
+                'title' => $repoData['name'],
+                'description' => $repoData['description'] ?? null,
+                'html_url' => $repoData['html_url'],
+                'private' => $repoData['private'] ? 1 : 0,
+                'uploaded_at' => date('Y-m-d H:i:s'),
+                'status' => 'private',
+                'owner_avatar' => $repoData['owner']['avatar_url'],
+                'category_id' => null,
+            ];
+
+            $this->projectModel->create($data);
+            header('Location: ' . Config::PATH . 'home');
+            exit();
+        }
+    }
+
+    public function getUploadedProjectsById($id = null) {
+        if (!$id) {
+            $id = $_GET['repo_id'];
+        }
+
+        $uploadedRepo = $this->projectModel->getById($id);
+
+        echo json_encode($uploadedRepo);
     }
 }

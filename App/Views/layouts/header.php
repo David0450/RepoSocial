@@ -46,16 +46,23 @@
 					</div>
 					<div id="dropdown">
 						<ul>
-							<li><a href="<?= Config::PATH?>user/profile">Perfil</a></li>
+							<li><a href="<?= Config::PATH?>user/profile">Mi perfil</a></li>
+							<li><a href="<?= Config::PATH?>user/account">Mi cuenta</a></li>
 							<li><a href="<?=Config::PATH?>user/logout">Cerrar sesión</a></li>
 						</ul>
 					</div>
 					<?php else: ?>
 					<a href="<?= Config::PATH?>login">
-						<button class="login-button_header">Iniciar sesión</button>
+						<button class="login-button_header">
+							<i class="fa-solid fa-right-to-bracket"></i>
+							<span>Inicia sesión</span>
+						</button>
 					</a>
-					<a href="<?= Config::PATH?>signup">
-						<button class="signup-button_header" id="signupButton">Crear cuenta</button>
+					<a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email">					
+						<button class="social-btn" id="githubLoginButton">
+                    		<i class="fa-brands fa-github"></i>
+                    		<span>Únete con GitHub</span>
+                		</button>
 					</a>
 					<?php endif; ?>
 				</div>
