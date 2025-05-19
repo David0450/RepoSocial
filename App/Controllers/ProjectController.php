@@ -43,7 +43,7 @@ class ProjectController {
         }
     }
 
-    public function userProjects() {
+    public function showGithubReposView() {
         if (!Security::isLoggedIn()) {
             header('Location: '.Config::PATH.'login');
             exit();
@@ -53,7 +53,7 @@ class ProjectController {
     }
 
 
-    public function getUserProjects() {
+    public function getUserGithubRepos() {
 
         if (!Security::isLoggedIn()) {
             header('Location: '.Config::PATH.'login');
@@ -68,7 +68,7 @@ class ProjectController {
 
         $access_token = $_SESSION['user']['access_token'];
 
-        $response = file_get_contents("https://api.github.com/user/repos?visibility=all&affiliation=owner&per_page=100", false, stream_context_create([
+        $response = file_get_contents("https://api.github.com/user/repos?visibility=public&affiliation=owner&per_page=100", false, stream_context_create([
             "http" => [
                 "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
             ]
@@ -101,7 +101,7 @@ class ProjectController {
 
         $access_token = $_SESSION['user']['access_token'];
 
-        $response = file_get_contents("https://api.github.com/user/repos?visibility=all&affiliation=owner&per_page=100", false, stream_context_create([
+        $response = file_get_contents("https://api.github.com/user/repos?visibility=public&affiliation=owner&per_page=100", false, stream_context_create([
             "http" => [
                 "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
             ]
@@ -127,7 +127,7 @@ class ProjectController {
         exit();
     }
 
-    public function uploadUserProjects() {
+    public function importGithubRepo() {
         if (!Security::isLoggedIn()) {
             header('Location: '.Config::PATH.'login');
             exit();
@@ -164,8 +164,8 @@ class ProjectController {
         }
     }
 
-    public function getUploadedProjectById($id = null) {
-        if (!$id) {
+    public function getStoredProjectById($id = null) {
+        if ($id == null) {
             $id = $_GET['repo_id'];
         }
 
@@ -174,12 +174,18 @@ class ProjectController {
         echo json_encode($uploadedRepo);
     }
 
-    public function getAllUserUploadedProjects($userId = null) {
-        if ($userId == null && isset($_GET['parametro'])) {
-            $userId = $_GET['parametro'];
-        }
-
+    public function getStoredUserProjects($userId = null) {
+        $userId = $_GET['userId'];
         $response = $this->projectModel->getByUserId($userId, 0, 100);
+        echo json_encode($response);
+        exit;
+    }
+
+    public function getStoredProjects() {
+        $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
+		$limit = 10;
+
+        $response = $this->projectModel->getStoredProjects($offset, $limit);
         echo json_encode($response);
         exit;
     }

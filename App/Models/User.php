@@ -157,7 +157,7 @@ class User extends EmptyModel {
         }
     }
 
-    public function getFollowersFollows($userId) {
+    public function getFollowStats($userId) {
         $query = $this->db->prepare("
         SELECT
             (SELECT COUNT(*) 

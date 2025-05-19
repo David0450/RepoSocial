@@ -1,7 +1,7 @@
 $(function() {
-	const reposUrl = BASE_PATH+`user/projects/get`;
-	const uploadedReposUrl = BASE_PATH+`user/projects/getUploaded`;
-	const userUrl = BASE_PATH+`user/projects/count`;
+	const reposUrl = BASE_PATH+`users/@`+USERNAME+`/github-repos`;
+	const uploadedReposUrl = BASE_PATH+`projects/getById`;
+	const userUrl = BASE_PATH+`users/${USERNAME}/github/repos/count`;
 	let currentPage = 0;
 	let totalRepos = 0;
 
@@ -53,14 +53,13 @@ $(function() {
 					const projectActionsDiv = document.createElement('div');
 					projectActionsDiv.className = 'project-actions';
 
-					/*const uploadLink = document.createElement('a');
-					uploadLink.href = `${BASE_PATH}user/projects/upload?repo_id=${repo.id}`;*/
+					const uploadLink = document.createElement('a');
+					uploadLink.href = `${BASE_PATH}users/@${USERNAME}/github-repos/import?repo_id=${repo.id}`;
 
 					const uploadButton = document.createElement('button');
 					uploadButton.className = 'upload-btn';
 					uploadButton.innerHTML = '<span>Súbelo a tu perfil de Techie</span>';
 
-					//uploadLink.appendChild(uploadButton);
 
 					const githubLink = document.createElement('a');
 					githubLink.href = repo.html_url;
@@ -86,15 +85,16 @@ $(function() {
 								alreadyUploaded.className = 'uploaded-btn';
 								alreadyUploaded.setAttribute('disabled', '');
 								alreadyUploaded.innerHTML = '<span>Ya esta subido</span>';
-								projectActionsDiv.appendChild(alreadyUploaded);
+								uploadLink.appendChild(alreadyUploaded);
 							} else {
-								projectActionsDiv.appendChild(uploadButton);
+								uploadLink.appendChild(uploadButton);
 							}
 						},
 						error: function(xhr, status, error) {
 							console.error(`Error checking uploaded repository for ID ${repo.id}:`, error);
 						},
 						complete: function() {
+							projectActionsDiv.appendChild(uploadLink);
 							projectActionsDiv.appendChild(githubLink);
 						}
 					});

@@ -45,13 +45,15 @@ class UserController {
         include __DIR__ . '/../Views/user/account.php';
     }
 
-    public function profile($id = null) {
-        $user = $_SESSION['user'];
+    public function profile() {
+        if (isset($_GET['parametro'])) {
+            $user = $_SESSION['user'];
+        }
 
         include __DIR__ . '/../Views/user/profile.php';
     }
 
-    public function getByUsername($username = null) {
+    public function getStoredUserByUsername($username = null) {
         if (isset($_GET['parametro'])) {
             $username = $_GET['parametro'];
             $userData = $this->userModel->getByUsername($username);
@@ -145,7 +147,6 @@ class UserController {
                 ];
             }
 
-            //header('Location: ' . Config::PATH . 'user/projects/post?token=' . $access_token);
             header('Location: ' . Config::PATH . 'home');
         } else {
             if (isset($_GET['error'])) {
@@ -158,7 +159,7 @@ class UserController {
         }
     }
 
-    public function getTotalRepos() {
+    public function getGithubRepoCount() {
         if (!Security::isLoggedIn()) {
             header('Location: '.Config::PATH.'login');
             exit();
@@ -182,12 +183,12 @@ class UserController {
         exit();
     }
 
-    public function getFollowersFollows($userId = null) {
+    public function getFollowStats($userId = null) {
         if ($userId == null && isset($_GET['parametro'])) {
             $userId = $_GET['parametro'];
         }
 
-        $response = $this->userModel->getFollowersFollows($userId);
+        $response = $this->userModel->getFollowStats($userId);
         echo json_encode($response);
         exit;
     }

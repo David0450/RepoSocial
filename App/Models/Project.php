@@ -33,4 +33,26 @@ class Project extends EmptyModel {
 		return ['repos' => $results, 'total' => $total];
 	}
 
+	public function getStoredProjects($offset = 0, $limit = 10) {
+		$sql = "SELECT projects.*, 
+					users.username, users.avatar_url,
+					categories.title AS category_name, 
+					GROUP_CONCAT(tags.title) AS tags 
+				FROM projects 
+				JOIN users ON projects.user_id = users.id 
+				LEFT JOIN categories ON projects.category_id = categories.id 
+				LEFT JOIN project_tags ON projects.id = project_tags.project_id 
+				LEFT JOIN tags ON project_tags.tag_id = tags.id 
+				GROUP BY projects.id 
+				ORDER BY projects.uploaded_at DESC 
+				LIMIT :limit OFFSET :offset";
+
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+		$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+		$stmt->execute();
+
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 }

@@ -46,21 +46,20 @@ $router->add('/user/login', 'UserController@login', 'POST');
 $router->add('/user/logout', 'UserController@logout', 'GET');
 $router->add('/user/signup', 'UserController@signup', 'POST');
 
-$router->add('/user/account', 'UserController@account', 'GET');
-$router->add('/user/profile', 'UserController@profile', 'GET');
+$router->add('/{username}/account', 'UserController@account', 'GET');
+$router->add('/{username}/profile', 'UserController@profile', 'GET');
 
-$router->add('/user/projects/post', 'ProjectController@insertUserProjects');
-$router->add('/user/projects/count', 'UserController@getTotalRepos', 'GET');
-$router->add('/user/projects/upload', 'ProjectController@uploadUserProjects');
+$router->add('/users/{username}/github-repos', 'ProjectController@getUserGithubRepos');
+$router->add('/users/{username}/github-repos/view', 'ProjectController@showGithubReposView');
+$router->add('/users/{username}/github-repos/import', 'ProjectController@importGithubRepo');
 
-$router->add('/user/projects', 'ProjectController@userProjects', 'GET');
-$router->add('/user/projects/get', 'ProjectController@getUserProjects', 'GET');
-$router->add('/projects/getUploaded', 'ProjectController@getUploadedProjectById', 'GET');
-$router->add('/user/projects/getUploaded', 'ProjectController@getAllUserUploadedProjects');
-$router->add('/user/getByUsername', 'UserController@getByUsername');
-$router->add('/user/getFollowersFollows','UserController@getFollowersFollows');
+$router->add('/users/{username}/projects', 'ProjectController@getStoredUserProjects');
+$router->add('/projects/getById', 'ProjectController@getStoredProjectById');
+$router->add('/projects', 'ProjectController@getStoredProjects');
 
-$router->add('/projects/create', 'ProjectController@create');
+$router->add('/users/{username}/github/repos/count', 'UserController@getGithubRepoCount');
+$router->add('/users/{username}/data', 'UserController@getStoredUserByUsername');
+$router->add('/users/{username}/follow-stats', 'UserController@getFollowStats');
 
 $router->add('/github_callback', 'UserController@loginGithub', 'GET');
 

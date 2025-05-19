@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let userId;
     let totalRepos; // Declarar la variable fuera del alcance de las funciones
 
-    fetch(`${PATH}user/getByUsername?parametro=${encodeURIComponent(username)}`)
+    fetch(`${BASE_PATH}users/@${USERNAME}/data`)
         .then(response => {
             if(!response.ok) {
                 throw new Error('Error al obtener el id');
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => {
             userId = response.id;
-            fetch(`${PATH}user/projects/getUploaded?parametro=${encodeURIComponent(userId)}`)
+            fetch(`${BASE_PATH}users/@${USERNAME}/projects?userId=${encodeURIComponent(userId)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al obtener proyectos');
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     projectActionsDiv.className = 'project-actions';
 
                     /*const uploadLink = document.createElement('a');
-                    uploadLink.href = `${BASE_PATH}user/projects/upload?repo_id=${repo.id}`;*/
+                    uploadLink.href = `${BASE_BASE_PATH}user/projects/upload?repo_id=${repo.id}`;*/
 
                     const uploadButton = document.createElement('button');
                     uploadButton.className = 'upload-btn';
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById('projects_list').appendChild(listItem);
                 });
 
-                fetch(`${PATH}user/getFollowersFollows?parametro=${encodeURIComponent(username)}`)
+                fetch(`${BASE_PATH}users/@${USERNAME}/follow-stats`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Error');
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-    fetch(`https://api.github.com/users/${username}`)
+    fetch(`https://api.github.com/users/${USERNAME}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Usuario no encontrado');

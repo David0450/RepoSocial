@@ -27,7 +27,7 @@ class Router
         // Check if the URI contains an @ symbol
         if (preg_match("#/@([^/]+)/#", $uriGet, $matches)) {
             $username = $matches[1]; // Extract the username
-            $uriGet = str_replace("/@$username", "/user", $uriGet); // Replace @username with 'user'
+            $uriGet = str_replace("/@$username", "/{username}", $uriGet); // Replace @username with 'user'
 
             $_GET['parametro'] = $username;
         }

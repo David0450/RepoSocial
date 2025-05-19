@@ -37,8 +37,8 @@
     </div>
 </section>
 <script>
-    const username = '<?= $_GET['parametro'] ?>';
-    const PATH = '<?=Config::PATH?>';
+    const USERNAME = '<?= $_GET['parametro'] ?>';
+    const BASE_PATH = '<?=Config::PATH?>';
 </script>
 <script src="<?=Config::PATH?>Public/scripts/ProfileScript.js"></script>
 <?php $content = ob_get_clean(); ?>

@@ -6,25 +6,8 @@ include __DIR__ . '/../layouts/head.php';
 <?php ob_start(); ?>
 <section style="width: 100%" class="content_section">
     <div class="project_creation_section">
-        <div class="project_creation_container">
+        <div class="project_upload_container">
             <h1>Mis Proyectos</h1>
-            <!--<form id="createProjectForm" method="POST" action="?uri=projects/create">
-                <div class="input-container">
-                    <label for="title">Título del Proyecto</label>
-                    <input type="text" id="title" name="title" required>
-                </div>
-                <div class="input-container">
-                    <label for="description">Descripción</label>
-                    <textarea id="description" name="description" required></textarea>
-                </div>
-                <div class="input-container">
-                    <label for="category">Categoría</label>
-                    <select id="categorySelect" name="category" required >
-                        <option value="" disabled selected>Selecciona una categoría</option>
-                    </select>
-                </div>
-                <button type="submit">Crear Proyecto</button>
-            </form>-->
             <div class="projects_list" id="projects_list">
 
             </div>
@@ -35,7 +18,10 @@ include __DIR__ . '/../layouts/head.php';
             </div>-->
         </div>
     </div>
-    <script>const BASE_PATH = "<?= Config::PATH ?>"</script>
+    <script>
+    const BASE_PATH = "<?= Config::PATH ?>";
+    const USERNAME = "<?= $_GET['parametro'] ?>";
+    </script>
     <script src="<?=Config::PATH?>Public/scripts/ProjectCreationScript.js"></script>
 </section>
 <?php $content = ob_get_clean(); ?>
