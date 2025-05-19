@@ -8,8 +8,8 @@ class Config {
     const DB_USER = 'root';
     const DB_PASSWORD = '';
     const DB_CHARSET = 'utf8';
-    const GITHUB_CLIENT_ID = ' Ov23lijzgiVY3WIWZerl';
-    const GITHUB_CLIENT_SECRET = 'ea71066559278001f21d82cd9b98c13d4f3d1195';
+    const GITHUB_CLIENT_ID = 'Ov23lijzgiVY3WIWZerl';
+    const GITHUB_CLIENT_SECRET = '37676bfac8d1b856c112fb634289ac7cfc4307f7';
     const PATH = 'http://localhost/programacion/PFC/';
 
     public static function get($key) {

@@ -1,64 +1,146 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const editProfileButton = document.getElementById('editProfileButton');
-    const editProfileModal = document.getElementById('editProfileModal');
-    const closeModal = document.getElementById('closeModal');
-    const editProfileForm = document.getElementById('editProfileForm');
+document.addEventListener("DOMContentLoaded", () => {
 
-    // Abrir el modal de edición de perfil
-    editProfileButton.addEventListener('click', () => {
-        editProfileModal.style.display = 'block';
-    });
+    let userId;
+    let totalRepos; // Declarar la variable fuera del alcance de las funciones
 
-    // Cerrar el modal de edición de perfil
-    closeModal.addEventListener('click', () => {
-        editProfileModal.style.display = 'none';
-    });
-
-    // Cerrar el modal si se hace clic fuera de él
-    window.addEventListener('click', (event) => {
-        if (event.target === editProfileModal) {
-            editProfileModal.style.display = 'none';
-        }
-    });
-
-    // Manejar el envío del formulario de edición de perfil
-    editProfileForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const newUsername = document.getElementById('newUsername').value;
-        const newEmail = document.getElementById('newEmail').value;
-        const newBio = document.getElementById('newBio').value;
-
-        try {
-            const response = await fetch('/profile/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: newUsername,
-                    email: newEmail,
-                    bio: newBio,
-                }),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                alert('Perfil actualizado con éxito.');
-
-                // Actualizar los datos en la página
-                document.getElementById('username').textContent = result.username;
-                document.getElementById('email').textContent = result.email;
-                document.getElementById('bio').textContent = result.bio;
-
-                // Cerrar el modal
-                editProfileModal.style.display = 'none';
-            } else {
-                alert('Error al actualizar el perfil. Inténtalo de nuevo.');
+    fetch(`${PATH}user/getByUsername?parametro=${encodeURIComponent(username)}`)
+        .then(response => {
+            if(!response.ok) {
+                throw new Error('Error al obtener el id');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Ocurrió un error al procesar la solicitud.');
-        }
-    });
+            return response.json();
+        })
+        .then(response => {
+            userId = response.id;
+            fetch(`${PATH}user/projects/getUploaded?parametro=${encodeURIComponent(userId)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener proyectos');
+                }
+                return response.json();
+            })
+            .then(data => {
+                repos = data['repos'];
+                totalRepos = data['total']; // Asignar el valor a la variable totalRepos
+                document.getElementById('projects_list').innerHTML = ''; // Limpiar la lista antes de agregar nuevos elementos
+                $.each(repos, function(index, repo) {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'project-item';
+                    const projectLink = document.createElement('div');
+
+                    const projectImageDiv = document.createElement('div');
+                    projectImageDiv.className = 'project-image';
+
+                    const projectInfoDiv = document.createElement('div');
+                    const projectTitle = document.createElement('h3');
+                    projectTitle.textContent = repo.title;
+
+                    const projectVisibility = document.createElement('small');
+                    projectVisibility.textContent = repo.private === 0 ? 'Repositorio Público' : 'Repositorio Privado';
+                    projectVisibility.textContent += ' en Github'
+
+                    projectInfoDiv.appendChild(projectTitle);
+                    projectInfoDiv.appendChild(projectVisibility);
+
+                    projectImageDiv.appendChild(projectInfoDiv);
+
+                    const projectDetailsDiv = document.createElement('div');
+                    projectDetailsDiv.className = 'project-details';
+
+                    const projectDescription = document.createElement('p');
+                    projectDescription.textContent = repo.description || 'Sin descripción';
+
+                    projectDetailsDiv.appendChild(projectDescription);
+
+                    const projectActionsDiv = document.createElement('div');
+                    projectActionsDiv.className = 'project-actions';
+
+                    /*const uploadLink = document.createElement('a');
+                    uploadLink.href = `${BASE_PATH}user/projects/upload?repo_id=${repo.id}`;*/
+
+                    const uploadButton = document.createElement('button');
+                    uploadButton.className = 'upload-btn';
+                    uploadButton.innerHTML = '<span>Súbelo a tu perfil de Techie</span>';
+
+                    //uploadLink.appendChild(uploadButton);
+
+                    const githubLink = document.createElement('a');
+                    githubLink.href = repo.html_url;
+                    githubLink.target = '_blank';
+
+                    const githubButton = document.createElement('button');
+                    githubButton.className = 'social-btn';
+                    githubButton.id = 'githubLoginButton';
+                    githubButton.innerHTML = '<i class="fa-brands fa-github"></i><span>Ver en Github</span>';
+
+                    githubLink.appendChild(githubButton);
+                    
+                    projectLink.appendChild(projectImageDiv);
+                    projectLink.appendChild(projectDetailsDiv);
+                    projectLink.appendChild(projectActionsDiv);
+
+                    listItem.appendChild(projectLink);
+                    document.getElementById('projects_list').appendChild(listItem);
+                });
+
+                fetch(`${PATH}user/getFollowersFollows?parametro=${encodeURIComponent(username)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error');
+                        }
+                        return response.json();
+                    })
+                    .then(response => {
+                        let followersCount = document.getElementById('followersCount');
+                        followersCount.textContent = '';
+                    
+                        const followersSpan = document.createElement('span');
+                        followersSpan.textContent = 'Seguidores';
+                    
+                        const followersNum = document.createElement('span');
+                        followersNum.textContent = response.followers;
+
+                        followersCount.appendChild(followersSpan);
+                        followersCount.appendChild(followersNum);
+
+                        let followsCount = document.getElementById('followingCount');
+                        followsCount.textContent = '';
+                    
+                        const followsSpan = document.createElement('span');
+                        followsSpan.textContent = 'Siguiendo';
+                    
+                        const followsNum = document.createElement('span');
+                        followsNum.textContent = response.follows;
+
+                        followsCount.appendChild(followsSpan);
+                        followsCount.appendChild(followsNum);
+                    
+                        let postsCount = document.getElementById('postsCount');
+                        postsCount.textContent = '';
+
+                        const postsSpan = document.createElement('span');
+                        postsSpan.textContent = 'Publicaciones';
+
+                        const postsNum = document.createElement('span');
+                        postsNum.textContent = totalRepos;
+
+                        postsCount.appendChild(postsSpan);
+                        postsCount.appendChild(postsNum);
+                    });
+            });
+        });
+
+    fetch(`https://api.github.com/users/${username}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Usuario no encontrado');
+            }
+            return response.json();
+        })
+        .then(user => {
+            let userBio = document.getElementById('userBio');
+            userBio.textContent = user.bio;
+        });
+    
+
 });

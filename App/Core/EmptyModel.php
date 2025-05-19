@@ -46,7 +46,7 @@ class EmptyModel {
         $this->query($sql, array_merge(array_values($data), [$id]));
     }
 
-    // Eliminar un registro por clave primaria
+    // Eliminar un registro por clave pri   maria
     public function delete($id) {
         $sql = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = ?";
         $this->query($sql, [$id]);

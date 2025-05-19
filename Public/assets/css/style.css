@@ -745,8 +745,8 @@ section.signup_section {
     }
 }
 
-/* Profile Section Styles */
-section.profile_section {
+/* Account Section Styles */
+section.account_section {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -760,14 +760,14 @@ section.profile_section {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-.profile_container {
+.account_container {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.profile_header {
+.account_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -776,13 +776,13 @@ section.profile_section {
     padding-bottom: 10px;
 }
 
-.profile_header h1 {
+.account_header h1 {
     font-size: 2rem;
     font-family: var(--font-title);
     color: var(--dodger-blue);
 }
 
-.profile_header button {
+.account_header button {
     background-color: var(--dodger-blue);
     color: var(--ghost-white);
     border: none;
@@ -793,19 +793,19 @@ section.profile_section {
     transition: all 0.3s ease-in-out;
 }
 
-.profile_header button:hover {
+.account_header button:hover {
     background-color: var(--oxford-blue);
     scale: 1.1;
 }
 
-.profile_info {
+.account_info {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 20px;
 }
 
-.profile_picture img {
+.account_picture img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -813,34 +813,34 @@ section.profile_section {
     object-fit: cover;
 }
 
-.profile_details {
+.account_details {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.profile_details h2 {
+.account_details h2 {
     font-size: 1.5rem;
     color: var(--jordy-blue);
 }
 
-.profile_details p {
+.account_details p {
     font-size: 1rem;
     color: var(--ghost-white);
 }
 
-.profile_projects {
+.account_projects {
     width: 100%;
     margin-top: 20px;
 }
 
-.profile_projects h2 {
+.account_projects h2 {
     font-size: 1.5rem;
     color: var(--dodger-blue);
     margin-bottom: 10px;
 }
 
-.profile_projects ul {
+.account_projects ul {
     list-style: none;
     padding: 0;
     display: flex;
@@ -848,7 +848,7 @@ section.profile_section {
     gap: 10px;
 }
 
-.profile_projects ul li {
+.account_projects ul li {
     background-color: #2C353D;
     padding: 10px 15px;
     border-radius: 7px;
@@ -857,7 +857,7 @@ section.profile_section {
     cursor: pointer;
 }
 
-.profile_projects ul li:hover {
+.account_projects ul li:hover {
     background-color: var(--dodger-blue);
     color: #17191C;
     scale: 1.05;
@@ -949,25 +949,25 @@ section.profile_section {
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-    .profile_info {
+    .account_info {
         flex-direction: column;
         align-items: center;
     }
 
-    .profile_picture img {
+    .account_picture img {
         width: 120px;
         height: 120px;
     }
 
-    .profile_details h2 {
+    .account_details h2 {
         font-size: 1.2rem;
     }
 
-    .profile_details p {
+    .account_details p {
         font-size: 0.9rem;
     }
 }
-/* End of Profile Section Styles */
+/* End of account Section Styles */
 
 /* General Styles for Projects Page */
 .projects_list_section {
@@ -1237,3 +1237,88 @@ div#pagination {
     }
 }
 /* End of General Styles for Projects Page */
+
+/* Start of Profile Styles */
+
+.profile_section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+}
+
+.profile_info {
+    width: 25%;
+    background-color: #262D34;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+div:has(> .profile_avatar) {
+    border: 3px solid var(--dodger-blue);
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.profile_avatar {
+    background-color: var(--jordy-blue);
+    border-radius: 10px;
+
+    & img {
+        width: 200px;
+    }
+}
+
+.profile_username {
+    font-size: 2rem;
+    padding: 10px 0;
+}
+
+.profile_bio {
+    font-size: 1.1rem;
+    padding: 0 20px;
+}
+
+.profile_counts {
+    display: flex;
+    flex-direction: row;
+    column-gap: 25px;
+    margin: 20px 0;
+    background-color: #2C353D;
+    padding: 10px 20px;
+    align-items: center;
+    border-radius: 10px;
+
+    & h5 {
+        font-size: 1rem;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+
+        & > span:first-of-type {
+            font-weight: bold;
+        }
+    }
+
+}
+
+.profile_projects {
+    width: 100%;
+    background-color: #262D34;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+
+    & h1 {
+        color: var(--dodger-blue);
+    }
+}
+
+/* End of Profile Styles */

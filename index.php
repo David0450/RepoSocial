@@ -24,6 +24,7 @@ require __DIR__ . '/App/Controllers/UserController.php';
 $router = new Router();
 
 $router->add('/', function() {
+    Security::isLoggedIn();
     header('Location: '. Config::PATH .'home');
     exit();
 });
@@ -44,8 +45,9 @@ $router->add('/tags', 'TagController@delete', 'DELETE');
 $router->add('/user/login', 'UserController@login', 'POST');
 $router->add('/user/logout', 'UserController@logout', 'GET');
 $router->add('/user/signup', 'UserController@signup', 'POST');
+
 $router->add('/user/account', 'UserController@account', 'GET');
-$router->add('/user/login/google', 'UserController@loginGoogle', 'GET');
+$router->add('/user/profile', 'UserController@profile', 'GET');
 
 $router->add('/user/projects/post', 'ProjectController@insertUserProjects');
 $router->add('/user/projects/count', 'UserController@getTotalRepos', 'GET');
@@ -53,7 +55,10 @@ $router->add('/user/projects/upload', 'ProjectController@uploadUserProjects');
 
 $router->add('/user/projects', 'ProjectController@userProjects', 'GET');
 $router->add('/user/projects/get', 'ProjectController@getUserProjects', 'GET');
-$router->add('/user/projects/getUploaded', 'ProjectController@getUploadedProjectsById', 'GET');
+$router->add('/projects/getUploaded', 'ProjectController@getUploadedProjectById', 'GET');
+$router->add('/user/projects/getUploaded', 'ProjectController@getAllUserUploadedProjects');
+$router->add('/user/getByUsername', 'UserController@getByUsername');
+$router->add('/user/getFollowersFollows','UserController@getFollowersFollows');
 
 $router->add('/projects/create', 'ProjectController@create');
 

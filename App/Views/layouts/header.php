@@ -1,7 +1,4 @@
-<?php
-
-
- ob_start(); ?>
+<?php ob_start(); ?>
 <header>
 	<div>
 		<a class="logo-container" id="headerLogoContainer" href="<?= Config::PATH?>home">
@@ -34,19 +31,19 @@
 					<div class="header-profile">
 						<div>
 							<div class="inside-box">									
-								<object data="<?=Config::PATH?>Public/assets/icons/User_light.svg">
+								<object data="<?=Config::PATH?><?= $_SESSION['user']['avatar_url'] ?>">
 									<img src="<?=Config::PATH?>Public/assets/icons/User_light.png" alt="user_icon">
 								</object>
 							</div>
 						</div>
 						<div class="profile-name">
-							<a href="<?= Config::PATH?>user/profile"><?= $_SESSION['user']['username'] ?></a>
+							<a href="<?= Config::PATH?>@<?= $_SESSION['user']['username'] ?>/profile"><?= $_SESSION['user']['username'] ?></a>
 							<i id="dropdownIcon" class="fa-solid fa-caret-down"></i>
 						</div>
 					</div>
 					<div id="dropdown">
 						<ul>
-							<li><a href="<?= Config::PATH?>user/profile">Mi perfil</a></li>
+							<li><a href="<?= Config::PATH?>@<?= $_SESSION['user']['username'] ?>/profile">Mi perfil</a></li>
 							<li><a href="<?= Config::PATH?>user/account">Mi cuenta</a></li>
 							<li><a href="<?=Config::PATH?>user/logout">Cerrar sesión</a></li>
 						</ul>

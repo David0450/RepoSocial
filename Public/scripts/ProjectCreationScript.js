@@ -34,6 +34,7 @@ $(function() {
 
 					const projectVisibility = document.createElement('small');
 					projectVisibility.textContent = repo.visibility === 'public' ? 'Repositorio Público' : 'Repositorio Privado';
+					projectVisibility.textContent += ' en Github';
 
 					projectInfoDiv.appendChild(projectTitle);
 					projectInfoDiv.appendChild(projectVisibility);
@@ -59,7 +60,7 @@ $(function() {
 					uploadButton.className = 'upload-btn';
 					uploadButton.innerHTML = '<span>Súbelo a tu perfil de Techie</span>';
 
-					uploadLink.appendChild(uploadButton);
+					//uploadLink.appendChild(uploadButton);
 
 					const githubLink = document.createElement('a');
 					githubLink.href = repo.html_url;

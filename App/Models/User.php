@@ -114,6 +114,13 @@ class User extends EmptyModel {
         return true;
     }
 
+    public function getByUsername($username) {
+        $query = $this->db->prepare("SELECT * FROM users WHERE username = :username");
+        $query->bindParam(':username', $username);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function githubExists($github_id) {
         $query = $this->db->prepare("SELECT * FROM users WHERE github_id = :github_id");
         $query->bindParam(':github_id', $github_id);
@@ -148,5 +155,20 @@ class User extends EmptyModel {
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function getFollowersFollows($userId) {
+        $query = $this->db->prepare("
+        SELECT
+            (SELECT COUNT(*) 
+            FROM user_follows 
+            WHERE following_user_id = :user_id) AS follows,
+            (SELECT COUNT(*) 
+            FROM user_follows 
+            WHERE followed_user_id = :user_id) AS followers;
+        ");
+        $query->bindParam(":user_id", $userId);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 }

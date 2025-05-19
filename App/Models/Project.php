@@ -18,7 +18,7 @@ class Project extends EmptyModel {
 	}
 
 	public function getByUserId($userId,$offset = 0, $limit = 6) {
-		$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} WHERE user_id = :user_id LIMIT :offset, :limit";
+		$sql = "SELECT * FROM {$this->table} WHERE user_id = :user_id LIMIT :offset, :limit";
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
 		$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);

@@ -164,7 +164,7 @@ class ProjectController {
         }
     }
 
-    public function getUploadedProjectsById($id = null) {
+    public function getUploadedProjectById($id = null) {
         if (!$id) {
             $id = $_GET['repo_id'];
         }
@@ -172,5 +172,15 @@ class ProjectController {
         $uploadedRepo = $this->projectModel->getById($id);
 
         echo json_encode($uploadedRepo);
+    }
+
+    public function getAllUserUploadedProjects($userId = null) {
+        if ($userId == null && isset($_GET['parametro'])) {
+            $userId = $_GET['parametro'];
+        }
+
+        $response = $this->projectModel->getByUserId($userId, 0, 100);
+        echo json_encode($response);
+        exit;
     }
 }

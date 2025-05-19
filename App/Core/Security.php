@@ -9,7 +9,7 @@ class Security
         } else {
             session_regenerate_id(true);
         }
-        return isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id']);
+        return isset($_SESSION['user']['id']) && is_array($_SESSION['user']) && !empty($_SESSION['user']['id']);
     }
 
     public static function isAdmin()

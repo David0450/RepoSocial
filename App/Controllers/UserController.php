@@ -45,9 +45,23 @@ class UserController {
         include __DIR__ . '/../Views/user/account.php';
     }
 
+    public function profile($id = null) {
+        $user = $_SESSION['user'];
+
+        include __DIR__ . '/../Views/user/profile.php';
+    }
+
+    public function getByUsername($username = null) {
+        if (isset($_GET['parametro'])) {
+            $username = $_GET['parametro'];
+            $userData = $this->userModel->getByUsername($username);
+            echo json_encode($userData);
+            exit;
+        }
+    }
+ 
     public function loginGithub() {
-        $client_id = 'Ov23lijzgiVY3WIWZerl';
-        $client_secret = '37676bfac8d1b856c112fb634289ac7cfc4307f7';
+
         
         if (isset($_GET['code'])) {
             $code = $_GET['code'];
@@ -56,8 +70,8 @@ class UserController {
             $token_url = "https://github.com/login/oauth/access_token";
         
             $data = [
-                "client_id" => $client_id,
-                "client_secret" => $client_secret,
+                "client_id" => Config::GITHUB_CLIENT_ID,
+                "client_secret" => Config::GITHUB_CLIENT_SECRET,
                 "code" => $code
             ];
         
@@ -127,6 +141,7 @@ class UserController {
                     'email' => $existingUser['email'],
                     'github_id' => $existingUser['github_id'],
                     'access_token' => $access_token,
+                    'avatar_url' => $existingUser['avatar_url']
                 ];
             }
 
@@ -165,5 +180,15 @@ class UserController {
         header('Content-Type: application/json');
         echo json_encode($response);
         exit();
+    }
+
+    public function getFollowersFollows($userId = null) {
+        if ($userId == null && isset($_GET['parametro'])) {
+            $userId = $_GET['parametro'];
+        }
+
+        $response = $this->userModel->getFollowersFollows($userId);
+        echo json_encode($response);
+        exit;
     }
 }

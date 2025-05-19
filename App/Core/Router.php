@@ -24,13 +24,22 @@ class Router
         $uriGet = isset($_POST['uri']) ? '/' . $_POST['uri'] : (isset($_GET['uri']) ? '/' . $_GET['uri'] : '/');
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+        // Check if the URI contains an @ symbol
+        if (preg_match("#/@([^/]+)/#", $uriGet, $matches)) {
+            $username = $matches[1]; // Extract the username
+            $uriGet = str_replace("/@$username", "/user", $uriGet); // Replace @username with 'user'
+
+            $_GET['parametro'] = $username;
+        }
+
+
         foreach ($this->_uri as $key => $value) 
         {
             if (preg_match("#^$value$#", $uriGet) && $this->_methods[$key] === $requestMethod) 
             {
-                $action = $this->_action[$key];
-                $parametro = isset($_GET['parametro']) ? $_GET['parametro'] : null;
-                $this->runAction($action, $parametro);
+            $action = $this->_action[$key];
+            $parametro = isset($_GET['parametro']) ? $_GET['parametro'] : null;
+            $this->runAction($action, $parametro);
             }
         }
     }
