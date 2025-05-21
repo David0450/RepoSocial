@@ -5,13 +5,9 @@ require_once __DIR__ . '/../Models/Category.php';
 
 class ProjectController {
     private $projectModel;
-    private $categoryModel;
-    private $commentModel;
 
     public function __construct() {
         $this->projectModel = new Project();
-        $this->categoryModel = new Category();
-        //$this->commentModel = new Comment();
     }
 
     public function index() {
@@ -38,7 +34,6 @@ class ProjectController {
             header('Location: /projects');
             exit();
         } else {
-            $categories = $this->categoryModel->getAll();
             include __DIR__ . '/../Views/projects/projects_create.php';
         }
     }
@@ -135,6 +130,7 @@ class ProjectController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $repoId = $_GET['repo_id'] ?? null;
+            $categoryId = $_GET['categorie'] ?? null;
             if (!$repoId) {
                 echo "No repository ID provided.";
                 return;
@@ -155,10 +151,11 @@ class ProjectController {
                 'uploaded_at' => date('Y-m-d H:i:s'),
                 'status' => 'private',
                 'owner_avatar' => $repoData['owner']['avatar_url'],
-                'category_id' => null,
+                'category_id' => $categoryId,
             ];
 
-            $this->projectModel->create($data);
+            $this->projectModel->import($data, $_GET['parametro']);
+
             header('Location: ' . Config::PATH . 'home');
             exit();
         }
@@ -187,6 +184,31 @@ class ProjectController {
 
         $response = $this->projectModel->getStoredProjects($offset, $limit);
         echo json_encode($response);
+        exit;
+    }
+
+    public function getLanguages() {
+        $languages = $this->projectModel->getProjectLanguages();
+        print_r(array_keys($languages));
+    }
+
+    public function getByCategory() {
+        $categoryId = isset($_GET['category']) ? $_GET['category'] : null;
+        
+        if ($categoryId) {
+            $projects = $this->projectModel->getByCategory($categoryId);
+            echo json_encode($projects);
+        }
+        exit;
+    }
+
+    public function getByTag() {
+        $tagId = isset($_GET['tag']) ? $_GET['tag'] : null;
+        
+        if ($tagId) {
+            $projects = $this->projectModel->getByTag($tagId);
+            echo json_encode($projects);
+        }
         exit;
     }
 }

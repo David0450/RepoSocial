@@ -18,7 +18,8 @@ class UserController {
 
             header('Location: ' . Config::PATH . 'home');
         } else {
-            header('Location: ' . Config::PATH . 'login');
+            var_dump($_POST);
+            //header('Location: ' . Config::PATH . 'login');
         }
     }
 

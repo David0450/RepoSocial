@@ -32,6 +32,17 @@ class Router
             $_GET['parametro'] = $username;
         }
 
+        if (preg_match("~:([^/]+)~", $uriGet, $matches)) {
+            $category = $matches[1];
+            $uriGet = str_replace(":$category", "{category}", $uriGet);
+            $_GET['category'] = $category;
+        }
+
+        if (preg_match("~;([^/]+)~", $uriGet, $matches)) {
+            $category = $matches[1];
+            $uriGet = str_replace(";$category", "{tag}", $uriGet);
+            $_GET['tag'] = $category;
+        }
 
         foreach ($this->_uri as $key => $value) 
         {

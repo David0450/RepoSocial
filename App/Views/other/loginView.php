@@ -16,8 +16,8 @@ include __DIR__ . '/../layouts/head.php';
         <form action="<?= Config::PATH?>user/login" method="POST" id="loginForm">
             <div class="input-container">
                 <div>
-                    <label for="user">Usuario</label>
-                    <input type="text" name="user" id="user" required>
+                    <label for="username">Usuario</label>
+                    <input type="text" name="username" id="username" required>
                 </div>
             </div>
             <div class="input-container">

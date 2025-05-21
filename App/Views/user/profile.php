@@ -17,7 +17,7 @@
         <div class="profile_counts">
             <h5 class="posts_count" id="postsCount">
                 <span>Publicaciones</span>
-                <span>Error</span>
+                <span></span>
             </h5>
             <h5 class="followers_count" id="followersCount">
                 <span>Seguidores</span>

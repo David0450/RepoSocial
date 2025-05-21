@@ -41,7 +41,7 @@ include __DIR__ . '/../layouts/head.php';
     <?php endif; ?>
     <section class="projects_section">
         <div class="projects_container">
-            <h1>Tu Feed</h1>
+            <h1>Feed</h1>
             <div id="loading" class="fw-bold ta-center h5">Cargando...</div>
             <div class="projects_list" id="projects_list">
             </div>

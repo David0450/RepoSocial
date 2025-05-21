@@ -27,7 +27,7 @@ class User extends EmptyModel {
 
     public function login() {
         try {
-            $email = $_POST['email'];
+            $username = $_POST['username'];
             $password = $_POST['password'];
 
             $query = $this->db->prepare(
@@ -37,9 +37,9 @@ class User extends EmptyModel {
                 ON u.id = ur.user_id 
                 JOIN roles as r 
                 ON ur.role_id = r.id 
-                WHERE email = :email"
+                WHERE username = :username"
                 );
-            $query->bindParam(':email', $email);
+            $query->bindParam(':username', $username);
             $query->execute();
 
             $user = $query->fetch(PDO::FETCH_ASSOC);
@@ -51,6 +51,7 @@ class User extends EmptyModel {
                 $_SESSION['user']['email'] = $user['email'];
                 $_SESSION['user']['name'] = $user['name'];
                 $_SESSION['user']['last_name'] = $user['last_name'];
+                $_SESSION['user']['avatar_url'] = $user['avatar_url'];
                 $_SESSION['user']['role'] = $user['title'];
                 return true;
             } else {

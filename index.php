@@ -17,6 +17,7 @@ require __DIR__ . '/Models/Project.php';
 */
 
 require __DIR__ . '/App/Controllers/CategoryController.php';
+require __DIR__ . '/App/Controllers/TagController.php';
 require __DIR__ . '/App/Controllers/MainController.php';
 require __DIR__ . '/App/Controllers/ProjectController.php';
 require __DIR__ . '/App/Controllers/UserController.php';
@@ -56,12 +57,15 @@ $router->add('/users/{username}/github-repos/import', 'ProjectController@importG
 $router->add('/users/{username}/projects', 'ProjectController@getStoredUserProjects');
 $router->add('/projects/getById', 'ProjectController@getStoredProjectById');
 $router->add('/projects', 'ProjectController@getStoredProjects');
+$router->add('/projects/{category}', 'ProjectController@getByCategory');
+$router->add('/projects/{tag}', 'ProjectController@getByTag');
 
 $router->add('/users/{username}/github/repos/count', 'UserController@getGithubRepoCount');
 $router->add('/users/{username}/data', 'UserController@getStoredUserByUsername');
 $router->add('/users/{username}/follow-stats', 'UserController@getFollowStats');
 
 $router->add('/github_callback', 'UserController@loginGithub', 'GET');
+$router->add('/project/tags', 'TagController@getTagsByProject', 'GET');
 
 $router->run();
 
