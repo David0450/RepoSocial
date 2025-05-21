@@ -2,7 +2,7 @@
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$dbname = "chat";
+$dbname = "pfc";
 
 $conn = mysqli_connect($hostname, $username, $password, $dbname);
 if (!$conn) {

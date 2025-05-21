@@ -64,6 +64,8 @@ $router->add('/users/{username}/github/repos/count', 'UserController@getGithubRe
 $router->add('/users/{username}/data', 'UserController@getStoredUserByUsername');
 $router->add('/users/{username}/follow-stats', 'UserController@getFollowStats');
 
+$router->add('/users/{username}/follow', 'UserController@follow', 'POST');
+
 $router->add('/github_callback', 'UserController@loginGithub', 'GET');
 $router->add('/project/tags', 'TagController@getTagsByProject', 'GET');
 

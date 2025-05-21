@@ -1380,7 +1380,7 @@ div:has(> .profile_avatar) {
     display: flex;
     flex-direction: row;
     column-gap: 25px;
-    margin: 20px 0;
+    margin: 20px 0 15px 0;
     background-color: #2C353D;
     padding: 10px 20px;
     align-items: center;
@@ -1414,4 +1414,41 @@ div:has(> .profile_avatar) {
     }
 }
 
+
+.profile_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+    & button {
+        display: block;
+        margin: 0 auto;
+        background-color: var(--dodger-blue);
+        color: var(--ghost-white);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 7px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            scale: 1.1;
+        }
+    }
+}
+
+.btn.follow_btn {
+    background: var(--dodger-blue);
+}
+.btn.follow_btn:hover {
+    background: #0056b3;
+}
+.btn.message_btn {
+    background: #2C353D;
+}
+.btn.message_btn:hover {
+    background: #3b434b;
+}
 /* End of Profile Styles */

@@ -47,8 +47,14 @@ class UserController {
     }
 
     public function profile() {
-        if (isset($_GET['parametro'])) {
+        if (!isset($_GET['parametro'])) {
             $user = $_SESSION['user'];
+        } else {
+            $user = $this->userModel->getByUsername($_GET['parametro']);
+            if (!$user) {
+                header('Location: ' . Config::PATH . 'home');
+                exit();
+            }
         }
 
         include __DIR__ . '/../Views/user/profile.php';
@@ -184,13 +190,39 @@ class UserController {
         exit();
     }
 
-    public function getFollowStats($userId = null) {
-        if ($userId == null && isset($_GET['parametro'])) {
-            $userId = $_GET['parametro'];
+    public function getFollowStats($username = null) {
+        if ($username == null && isset($_GET['parametro'])) {
+            $username = $_GET['parametro'];
         }
 
-        $response = $this->userModel->getFollowStats($userId);
+        $response = $this->userModel->getFollowStats($username);
         echo json_encode($response);
         exit;
     }
+
+    public function follow() {
+        if (isset($_POST['followerId'])) {
+            $followerId = $_POST['followerId'];
+        }
+        if (isset($_POST['followedId'])) {
+            $followedId = $_POST['followedId'];
+        }
+
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'login');
+            exit();
+        }
+        if (!isset($_SESSION['user']['id'])) {
+            http_response_code(401);
+            echo json_encode(['status' => 'error', 'message' => 'No estás logeado.']);
+            exit();
+        }
+
+        $response = $this->userModel->follow($followerId, $followedId);
+        if ($response) {
+            echo json_encode(['status' => 'success', 'message' => 'Usuario seguido.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al seguir al usuario.']);
+        }
+    }   
 }

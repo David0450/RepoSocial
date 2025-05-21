@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let userId;
     let totalRepos; // Declarar la variable fuera del alcance de las funciones
 
-    fetch(`${BASE_PATH}users/@${USERNAME}/data`)
+    // Obtener los datos del usuario
+    fetch(`${BASE_PATH}users/@${PROFILE_USERNAME}/data`)
         .then(response => {
             if(!response.ok) {
                 throw new Error('Error al obtener el id');
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => {
             userId = response.id;
-            fetch(`${BASE_PATH}users/@${USERNAME}/projects?userId=${encodeURIComponent(userId)}`)
+            fetch(`${BASE_PATH}users/@${PROFILE_USERNAME}/projects?userId=${encodeURIComponent(userId)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al obtener proyectos');
@@ -83,7 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById('projects_list').appendChild(listItem);
                 });
 
-                fetch(`${BASE_PATH}users/@${USERNAME}/follow-stats`)
+                // Obtener el número de seguidores y seguidos
+                fetch(`${BASE_PATH}users/@${PROFILE_USERNAME}/follow-stats`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Error');
@@ -130,7 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-    fetch(`https://api.github.com/users/${USERNAME}`)
+    // Obtener la biografía del usuario
+    fetch(`https://api.github.com/users/${PROFILE_USERNAME}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Usuario no encontrado');
@@ -142,5 +145,31 @@ document.addEventListener("DOMContentLoaded", () => {
             userBio.textContent = user.bio;
         });
     
+    let followButton = document.getElementById('followButton');
+    if (followButton) {
+        followButton.addEventListener('click', function() {
+            const followerId = parseInt(USER_ID);
+            const followedId = parseInt(userId);
 
+            fetch(`${BASE_PATH}users/@${PROFILE_USERNAME}/follow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `followerId=${encodeURIComponent(followerId)}&followedId=${encodeURIComponent(followedId)}`
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al seguir al usuario');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Ahora sigues a este usuario');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
 });

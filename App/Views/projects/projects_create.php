@@ -20,7 +20,7 @@ include __DIR__ . '/../layouts/head.php';
     </div>
     <script>
     const BASE_PATH = "<?= Config::PATH ?>";
-    const USERNAME = "<?= $_GET['parametro'] ?>";
+    const USERNAME = "<?= $_SESSION['user']['username'] ?>";
     </script>
     <script src="<?=Config::PATH?>Public/scripts/ProjectCreationScript.js"></script>
 </section>

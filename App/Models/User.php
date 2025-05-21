@@ -158,7 +158,8 @@ class User extends EmptyModel {
         }
     }
 
-    public function getFollowStats($userId) {
+    public function getFollowStats($username) {
+        $userId = $this->getByUsername($username)['id'];
         $query = $this->db->prepare("
         SELECT
             (SELECT COUNT(*) 
@@ -171,5 +172,15 @@ class User extends EmptyModel {
         $query->bindParam(":user_id", $userId);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function follow($followerId, $followedId) {
+        echo "Follower ID: $followerId, Followed ID: $followedId";
+        $query = $this->db->prepare("INSERT INTO user_follows (following_user_id, followed_user_id, follows_since) VALUES (:follower_id, :followed_id, :follows_since)");
+        $followsSince = date('Y-m-d H:i:s');
+        $query->bindParam(':follows_since', $followsSince);
+        $query->bindParam(':follower_id', $followerId);
+        $query->bindParam(':followed_id', $followedId);
+        return $query->execute();
     }
 }

@@ -28,6 +28,12 @@
                 <span></span>
             </h5>
         </div>
+        <?php if (Security::isLoggedIn() && $_SESSION['user']['username'] != $_GET['parametro']): ?>
+        <div class="profile_actions">
+            <button class="btn follow_btn" id="followButton">Seguir</button>
+            <button class="btn message_btn">Mensaje</button>
+        </div>
+        <?php endif; ?>
     </div>
     <div class="profile_projects">
         <h1>Proyectos subidos</h1>
@@ -37,7 +43,8 @@
     </div>
 </section>
 <script>
-    const USERNAME = '<?= $_GET['parametro'] ?>';
+    const PROFILE_USERNAME = '<?= $_GET['parametro'] ?>';
+    const USER_ID = '<?= intval($_SESSION['user']['id']) ?>';
     const BASE_PATH = '<?=Config::PATH?>';
 </script>
 <script src="<?=Config::PATH?>Public/scripts/ProfileScript.js"></script>
