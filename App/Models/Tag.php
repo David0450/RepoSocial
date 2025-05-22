@@ -1,5 +1,9 @@
 <?php 
 
+namespace App\Models;
+use App\Core\EmptyModel;
+use PDO;
+
 
 class Tag extends EmptyModel {
     public function __construct() {

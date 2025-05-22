@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Core;
+use PDO;
+use App\Core\Database;
 
 class EmptyModel {
     protected $db;

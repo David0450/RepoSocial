@@ -1,8 +1,5 @@
 <?php
-
-use Random\Engine\Secure;
-
- include __DIR__ . '/../layouts/footer.php'; ?>
+include __DIR__ . '/../layouts/footer.php'; ?>
 <?php include __DIR__ . '/../layouts/head.php'; ?>
 <?php include __DIR__ . '/../layouts/header.php'; ?>
 <?php ob_start(); ?>
@@ -10,7 +7,7 @@ use Random\Engine\Secure;
     <div class="profile_info">
         <div>
             <div class="profile_avatar">
-                <img src="<?= Config::PATH ?><?= $user['avatar_url'] ?>" alt="Avatar del perfil">
+                <img src="<?= $PATH ?><?= $user['avatar_url'] ?>" alt="Avatar del perfil">
             </div>
         </div>
         <h1 class="profile_username">
@@ -32,7 +29,7 @@ use Random\Engine\Secure;
                 <span></span>
             </h5>
         </div>
-        <?php if (Security::isLoggedIn() && $_SESSION['user']['username'] != $_GET['parametro']): ?>
+        <?php if ($isLoggedIn && $_SESSION['user']['username'] != $_GET['parametro']): ?>
         <div class="profile_actions">
             <button class="btn follow_btn" id="followButton">Seguir</button>
             <button class="btn message_btn">Mensaje</button>
@@ -49,9 +46,9 @@ use Random\Engine\Secure;
 <script>
     const USERNAME = '<?= $_GET['parametro'] ?>';
     const PROFILE_USERNAME = '<?= $_GET['parametro'] ?>';
-    const USER_ID = '<?php if(Security::isLoggedIn()) {echo intval($_SESSION['user']['id']);} else {echo '';} ?>';
-    const BASE_PATH = '<?=Config::PATH?>';
+    const USER_ID = '<?php if($isLoggedIn) {echo intval($_SESSION['user']['id']);} else {echo '';} ?>';
+    const BASE_PATH = '<?=$PATH?>';
 </script>
-<script src="<?=Config::PATH?>Public/scripts/ProfileScript.js"></script>
+<script src="<?=$PATH?>Public/scripts/ProfileScript.js"></script>
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>

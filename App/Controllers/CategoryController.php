@@ -1,7 +1,8 @@
 <?php 
 
-require __DIR__ . '/../Models/Category.php';
-require __DIR__ . '/../Models/Project.php';
+namespace App\Controllers;
+use App\Models\Category;
+use App\Models\Project;
 
 class CategoryController {
     

@@ -1,30 +1,69 @@
 <?php
 
+namespace App\Controllers;
+use App\Core\Security;
+use App\Core\Config;
+
 class MainController {
-    public function login() {
+    public function renderLogin() {
+        $isLoggedIn = Security::isLoggedIn();
+        $PATH = Config::PATH;
+        $isAdmin = Security::isAdmin();
         // Logic for login
         require __DIR__ . '/../Views/other/loginView.php';
         exit();
     }
 
-    public function signup() {
+    public function renderSignup() {
+        $isLoggedIn = Security::isLoggedIn();
+        $PATH = Config::PATH;
+        $isAdmin = Security::isAdmin();
         // Logic for signup
         require __DIR__ . '/../Views/other/signupView.php';
         exit();
+    }   
+
+    public function renderHome() {
+        $isLoggedIn = Security::isLoggedIn();
+        $PATH = Config::PATH;
+        $isAdmin = Security::isAdmin();
+        // Logic for home
+        require __DIR__ . '/../Views/projects/projects_list.php';
+        exit();
     }
 
-    public function logout() {
-        // Logic for logout
-        echo "Logout page";
+    public function renderProjectCreate() {
+        $isLoggedIn = Security::isLoggedIn();
+        if (!$isLoggedIn) {
+            header('Location: ' . Config::PATH . 'login');
+            exit();
+        }
+        $PATH = Config::PATH;
+        $isAdmin = Security::isAdmin();
+        // Logic for project creation
+        require __DIR__ . '/../Views/projects/projects_create.php';
+        exit();
     }
 
-    public function register() {
-        // Logic for registration
-        echo "Register page";
+    public function renderProfile($user) {
+        $isLoggedIn = Security::isLoggedIn();
+        $PATH = Config::PATH;
+        $isAdmin = Security::isAdmin();
+        // Logic for profile
+        require __DIR__ . '/../Views/user/profile.php';
+        exit();
     }
 
-    public function dashboard() {
-        // Logic for dashboard
-        echo "Dashboard page";
+    public function renderChat($chats, $userId) {
+        $isLoggedIn = Security::isLoggedIn();
+        if (!$isLoggedIn) {
+            header('Location: ' . Config::PATH . 'login');
+            exit();
+        }
+        $PATH = Config::PATH;
+        $isAdmin = Security::isAdmin();
+        // Logic for chat
+        require __DIR__ . '/../Views/chats/chat_view.php';
+        exit();
     }
 }

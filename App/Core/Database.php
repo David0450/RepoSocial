@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Core;
+use PDO;
+use PDOException;
+use App\Core\Config;
 
 class Database extends PDO {
     private $dbh;

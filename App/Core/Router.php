@@ -1,6 +1,6 @@
 <?php
 
-
+namespace App\Core;
 
 class Router 
 {
@@ -44,6 +44,15 @@ class Router
             $_GET['tag'] = $category;
         }
 
+        if (preg_match("~_([^/]+)~", $uriGet, $matches)) {
+            $chatId = $matches[1];
+            $uriGet = str_replace("_$chatId", "{chat_id}", $uriGet);
+            $_GET['chat_id'] = $chatId;
+        }
+
+
+
+
         foreach ($this->_uri as $key => $value) 
         {
             if (preg_match("#^$value$#", $uriGet) && $this->_methods[$key] === $requestMethod) 
@@ -64,7 +73,11 @@ class Router
         else 
         {
             $params = explode('@', $action);
-            $obj = new $params[0];
+            $className = 'App\\Controllers\\' . $params[0];
+            if (!class_exists($className)) {
+                throw new \Exception("Controller class $className not found.");
+            }
+            $obj = new $className;
             if ($parametro === null) {
                 $obj->{$params[1]}();
             } else {

@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Models;
+use App\Core\EmptyModel;
+use PDO;
+
 class Project extends EmptyModel {
 	public $id;
 	public $title;

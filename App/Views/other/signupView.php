@@ -4,9 +4,9 @@ include __DIR__ . '/../layouts/head.php';
 ?>
 <?php ob_start(); ?>
 <section class="signup_section content_section">
-    <a class="logo-container" href="<?=Config::PATH?>home">
-	    <object data="<?=Config::PATH?>Public/assets/images/logo/logo.svg">
-			<img src="<?=Config::PATH?>Public/assets/images/logo/logo.png" alt="logo">
+    <a class="logo-container" href="<?=$PATH?>home">
+	    <object data="<?=$PATH?>Public/assets/images/logo/logo.svg">
+			<img src="<?=$PATH?>Public/assets/images/logo/logo.png" alt="logo">
 	    </object>
 		<h1 class="logo-title">TECHIE</h1>
 	</a>
@@ -44,7 +44,7 @@ include __DIR__ . '/../layouts/head.php';
             </div>
             <button type="submit" name="uri" value="user/signup">Crear cuenta</button>
         </form>
-        <p>¿Ya tienes una cuenta? <a href="<?=Config::PATH?>login" id="loginLink">Inciar sesión</a></p>
+        <p>¿Ya tienes una cuenta? <a href="<?=$PATH?>login" id="loginLink">Inciar sesión</a></p>
     </div>
     <div class="social_login">
         <p>O inicia sesión con</p>

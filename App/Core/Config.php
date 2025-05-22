@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+use Exception;
 
 class Config {
     const DB_HOST = 'localhost';

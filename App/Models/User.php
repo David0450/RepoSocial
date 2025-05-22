@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Models;
+use App\Core\EmptyModel;
+use PDO;
+use Exception;
+
 class User extends EmptyModel {
     public $id;
     public $username;

@@ -10,7 +10,7 @@
         </div>
         <div class="account_info">
             <div class="account_picture">
-                <img src="<?=Config::PATH?>Public/assets/images/account/default_account.png" alt="account Picture" id="accountPicture">
+                <img src="<?=$PATH?>Public/assets/images/account/default_account.png" alt="account Picture" id="accountPicture">
             </div>
             <div class="account_details">
                 <h2 id="username"><?= $_SESSION['user']['username'] ?></h2>
@@ -46,7 +46,7 @@
             </form>
         </div>
     </div>
-    <script src="<?=Config::PATH?>Public/scripts/accountScript.js"></script>
+    <script src="<?=$PATH?>Public/scripts/accountScript.js"></script>
 </section>
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>

@@ -19,10 +19,10 @@ include __DIR__ . '/../layouts/head.php';
         </div>
     </div>
     <script>
-    const BASE_PATH = "<?= Config::PATH ?>";
+    const BASE_PATH = "<?= $PATH ?>";
     const USERNAME = "<?= $_SESSION['user']['username'] ?>";
     </script>
-    <script src="<?=Config::PATH?>Public/scripts/ProjectCreationScript.js"></script>
+    <script src="<?=$PATH?>Public/scripts/ProjectCreationScript.js"></script>
 </section>
 <?php $content = ob_get_clean(); ?>
 <?php include __DIR__ . '/../mainView.php'; ?>

@@ -1,9 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../Models/Project.php';
-require_once __DIR__ . '/../Models/Category.php';
+namespace App\Controllers;
+use App\Core\Config;
+use App\Models\Project;
+use App\Core\Security;
+use App\Controllers\MainController;
 
-class ProjectController {
+class ProjectController extends MainController{
     private $projectModel;
 
     public function __construct() {
@@ -13,7 +16,7 @@ class ProjectController {
     public function index() {
         // Logic to display all projects
         //$projects = $this->projectModel->getAll();
-        include __DIR__ . '/../Views/projects/projects_list.php';
+        $this->renderHome();
         exit();
     }
 
@@ -43,8 +46,8 @@ class ProjectController {
             header('Location: '.Config::PATH.'login');
             exit();
         }
-        
-        include_once __DIR__ . '/../Views/projects/projects_create.php';
+        $this->renderProjectCreate();
+        exit();
     }
 
 

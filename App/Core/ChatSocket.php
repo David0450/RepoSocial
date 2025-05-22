@@ -4,60 +4,71 @@ namespace App\Core;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use App\Controllers\ChatController;
-
+use PDO;
 
 class ChatSocket implements MessageComponentInterface {
     protected $clients;
     protected $userConnections = [];
+    protected $userIds = [];
     protected $chatController;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage();
-        $this->chatController = new ChatController();
+        $this->chatController = new ChatController(); // <-- se le pasa $db
     }
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
-            echo "Nueva coneasxión: {$conn->resourceId}\n";
+        echo "Nueva conexión: {$conn->resourceId}\n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-            echo "Mensaje recibido: $msg\n";
         $data = json_decode($msg, true);
-
-        // Identificación de usuario
+        echo "Mensaje recibido: $msg\n";
         if ($data['type'] === 'identificar') {
             $username = $data['user'];
-            $this->userConnections[$username] = $from;
+            $userId = $this->chatController->obtenerIdPorNombre($username); // deberías crear este método
+
+            if (!$userId) {
+                echo "Usuario no encontrado\n";
+                return;
+            }
+
             $from->username = $username;
+            $this->userConnections[$username] = $from;
+            $this->userIds[$username] = $userId;
 
             $this->broadcastUserList();
-            return;
         }
 
-        // Envío de mensaje privado
-        if ($data['type'] === 'privado') {
-            $to = $data['to'];
-            $text = $data['text'];
-            $fromUser = $from->username ?? 'anónimo';
+        if ($data['type'] === 'mensaje_chat') {
+            $chatId = $data['chat_id'];
+            $texto = $data['text'];
+            $userId = $this->userIds[$from->username] ?? null;
 
-            if (isset($this->userConnections[$to])) {
-                $this->userConnections[$to]->send(json_encode([
-                    'type' => 'mensaje',
-                    'from' => $fromUser,
-                    'text' => $text
-                ]));
+            if ($chatId && $userId && $texto) {
+                $this->chatController->guardarMensajeDirecto($chatId, $userId, $texto); // método personalizado
+
+                // reenviar mensaje a los usuarios conectados del chat
+                foreach ($this->userConnections as $nombre => $cliente) {
+                    if ($this->chatController->usuarioPerteneceAlChat($nombre, $chatId)) {
+                        $cliente->send(json_encode([
+                            'type' => 'mensaje',
+                            'chat_id' => $chatId,
+                            'from' => $from->username,
+                            'text' => $texto
+                        ]));
+                    }
+                }
             }
-            return;
         }
     }
 
     public function onClose(ConnectionInterface $conn) {
         $this->clients->detach($conn);
-
-        // Eliminar usuario desconectado
         if (isset($conn->username)) {
             unset($this->userConnections[$conn->username]);
+            unset($this->userIds[$conn->username]);
             $this->broadcastUserList();
         }
     }
@@ -67,10 +78,8 @@ class ChatSocket implements MessageComponentInterface {
         $conn->close();
     }
 
-    // Envía la lista actual de usuarios conectados a todos
     protected function broadcastUserList() {
         $usernames = array_keys($this->userConnections);
-        echo "Usuarios conectados: " . implode(', ', $usernames) . "\n"; // debug
         foreach ($this->clients as $client) {
             $client->send(json_encode([
                 'type' => 'usuarios',
@@ -78,5 +87,4 @@ class ChatSocket implements MessageComponentInterface {
             ]));
         }
     }
-
 }

@@ -1,8 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../Models/User.php';
+namespace App\Controllers;
+use App\Models\User;
+use App\Core\Config;
+use App\Core\Security;
+use App\Controllers\MainController;
 
-class UserController {
+class UserController extends MainController {
 
     private $userModel;
 
@@ -57,7 +61,7 @@ class UserController {
             }
         }
 
-        include __DIR__ . '/../Views/user/profile.php';
+        $this->renderProfile($user);
     }
 
     public function getStoredUserByUsername($username = null) {

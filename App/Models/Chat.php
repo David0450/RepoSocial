@@ -1,42 +1,82 @@
 <?php
+namespace App\Models;
+
+use PDO;
+use App\Core\EmptyModel;
 
 class Chat extends EmptyModel{
+    protected $db;
+
     public function __construct() {
         parent::__construct('chats');
-    }
-    
-    public function guardarMensajePrivado($emisorId, $receptorId, $mensaje) {
-        // 1. Buscar un chat existente entre los dos usuarios
-        $sql = "
-            SELECT c.id FROM Chat c
-            JOIN Chat_Members m1 ON c.id = m1.chat_id AND m1.user_id = ?
-            JOIN Chat_Members m2 ON c.id = m2.chat_id AND m2.user_id = ?
-            LIMIT 1
-        ";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$emisorId, $receptorId]);
-        $chatId = $stmt->fetchColumn();
-    
-        // 2. Si no existe, crear nuevo chat y miembros
-        if (!$chatId) {
-            $this->db->beginTransaction();
-        
-            $this->db->exec("INSERT INTO Chat (created_at) VALUES (NOW())");
-            $chatId = $this->db->lastInsertId();
-        
-            $stmt = $this->db->prepare("INSERT INTO Chat_Members (chat_id, user_id, joined_at) VALUES (?, ?, NOW())");
-            $stmt->execute([$chatId, $emisorId]);
-            $stmt->execute([$chatId, $receptorId]);
-        
-            $this->db->commit();
-        }
-    
-        // 3. Insertar el mensaje
-        $stmt = $this->db->prepare("
-            INSERT INTO Chat_Messages (chat_id, user_id, body, created_at)
-            VALUES (?, ?, ?, NOW())
-        ");
-        return $stmt->execute([$chatId, $emisorId, $mensaje]);
+    }   
+
+    public function obtenerIdPorNombre($nombre) {
+        $stmt = $this->db->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->execute([$nombre]);
+        return $stmt->fetchColumn();
     }
 
+    public function obtenerNombrePorId($id) {
+        $stmt = $this->db->prepare("SELECT username FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetchColumn();
+    }
+
+    public function obtenerChatsDeUsuario($userId) {
+        $stmt = $this->db->prepare("
+            SELECT c.id AS chat_id,
+                   GROUP_CONCAT(u.username SEPARATOR ', ') AS miembros
+            FROM chats c
+            JOIN chat_members m ON c.id = m.chat_id
+            JOIN users u ON u.id = m.user_id
+            WHERE c.id IN (
+                SELECT chat_id FROM Chat_Members WHERE user_id = ?
+            )
+            GROUP BY c.id
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function guardarMensaje($chatId, $userId, $mensaje) {
+        $stmt = $this->db->prepare("
+            INSERT INTO chat_messages (chat_id, user_id, body, created_at)
+            VALUES (?, ?, ?, NOW())
+        ");
+        return $stmt->execute([$chatId, $userId, $mensaje]);
+    }
+
+    public function obtenerMiembrosDeChat($chatId) {
+        $stmt = $this->db->prepare("
+            SELECT u.username
+            FROM chat_members cm
+            JOIN users u ON u.id = cm.user_id
+            WHERE cm.chat_id = ?
+        ");
+        $stmt->execute([$chatId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function usuarioPerteneceAlChat($nombreUsuario, $chatId) {
+        $stmt = $this->db->prepare("
+            SELECT COUNT(*) FROM chat_members cm
+            JOIN users u ON u.id = cm.user_id
+            WHERE cm.chat_id = ? AND u.username = ?
+        ");
+        $stmt->execute([$chatId, $nombreUsuario]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public function obtenerMensajesDeChat($chatId) {
+        $stmt = $this->db->prepare("
+            SELECT u.username AS autor, m.body, m.created_at
+            FROM chat_messages m
+            JOIN users u ON u.id = m.user_id
+            WHERE m.chat_id = ?
+            ORDER BY m.created_at ASC
+        ");
+        $stmt->execute([$chatId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -1,6 +1,7 @@
 <?php 
 
-require __DIR__ . '/../Models/Tag.php';
+namespace App\Controllers;
+use App\Models\Tag;
 
 class TagController {
     

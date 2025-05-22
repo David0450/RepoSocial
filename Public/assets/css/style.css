@@ -1082,6 +1082,8 @@ section.account_section {
 .post {
     display: flex;
     flex-direction: column;
+    align-items: start;
+    row-gap: 5px;
 }
 
 /* Projects List Styles */
@@ -1452,3 +1454,103 @@ div:has(> .profile_avatar) {
     background: #3b434b;
 }
 /* End of Profile Styles */
+
+/* Start of Chat Styles */
+main:has(> .chat_section) {
+    height: 90vh;
+    overflow-y: hidden;
+}
+
+body:has( .chat_section) {
+    overflow-y: hidden;
+}
+
+.chat_section {
+    width: 100%;
+    height: 90%;
+    display: grid;
+    background-color: #262D34;
+    color: var(--ghost-white);
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    grid-template-columns: 1fr 3fr;
+}
+
+.chat_list {
+    border-right: 2px solid var(--dodger-blue);
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: 1fr;
+    border-radius: 12px 0 0 12px;
+}
+
+.chat_list_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #262D34;
+    border-top-left-radius: 12px;
+
+    & h3 {
+        margin: 0;
+    }
+}
+
+.chat_list_body {
+    border-bottom-left-radius: 12px;
+}
+
+#listaChats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    height: 100%;
+    padding: 0;
+
+    & li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        column-gap: 10px;
+        padding: 10px;
+        background-color: #2C353D;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background-color: var(--dodger-blue);
+            color: #17191C;
+            font-size: 1.1rem;
+        }
+
+    }
+}
+
+#messages {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+
+    & li {
+        list-style-type: none;
+        border-radius: 12px;
+        background-color: var(--jordy-blue);
+        color: #000;
+        padding: 10px;
+        align-self: flex-start;
+    }
+
+    & li.self {
+        list-style-type: none;
+        border-radius: 12px;
+        background-color: var(--oxford-blue);
+        color: var(--ghost-white);
+        padding: 10px;
+        align-self: flex-end;
+    }
+}

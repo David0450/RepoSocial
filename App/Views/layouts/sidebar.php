@@ -5,7 +5,7 @@
         <div>
             <div class="sidebar_categories_header">
                 <h1>Categorias</h1>
-                <?php if (Security::isAdmin()): ?>
+                <?php if ($isAdmin): ?>
                 <button class="add_category_button" id="addCategoryButton">
                     <i class="fa-solid fa-plus"></i>
                 </button>
@@ -20,7 +20,7 @@
         <div>
             <div class="sidebar_tags_header">
                 <h1>Etiquetas</h1>
-                <?php if (Security::isAdmin()): ?>
+                <?php if ($isAdmin): ?>
                 <button class="add_tag_button" id="addTagButton">
                     <i class="fa-solid fa-plus"></i>
                 </button>
@@ -31,6 +31,6 @@
             </div>
         </div>
     </div>
-    <script src="<?=Config::PATH?>/Public/scripts/SidebarScript.js"></script>
+    <script src="<?=$PATH?>/Public/scripts/SidebarScript.js"></script>
 </aside>
 <?php $sidebar = ob_get_clean(); ?>

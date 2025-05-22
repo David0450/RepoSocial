@@ -1,65 +1,38 @@
 <?php
 include __DIR__ . '/../layouts/footer.php';
 include __DIR__ . '/../layouts/head.php';
+include __DIR__ . '/../layouts/header.php';
 ?>
 <?php ob_start(); ?>
-<section class="signup_section content_section">
-    <h1>Chat</h1>
-    <select id="destinatario"></select>
-    <input id="msg" type="text">
-    <button onclick="sendMessage()">Enviar</button>
-    <ul id="messages"></ul>
-
-    <?= $_SESSION['user']['username']?>
-
-    <script>
-        const username = "<?= $_SESSION['user']['username'] ?? 'anonimo' ?>";
-        const conn = new WebSocket('ws://localhost:8080');
-        
-        conn.onopen = () => {
-            console.log(username);
-            conn.send(JSON.stringify({
-                type: "identificar",
-                user: username
-            }));
-        };
-
-        conn.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-        
-            if (data.type === "usuarios") {
-                const select = document.getElementById('destinatario');
-                select.innerHTML = '';
-            
-                data.usuarios.forEach(user => {
-                    if (user !== username) { // no incluirte a ti mismo
-                        const option = document.createElement('option');
-                        option.value = user;
-                        option.textContent = user;
-                        select.appendChild(option);
-                    }
-                });
-            }
-        
-            if (data.type === "mensaje") {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${data.from}:</strong> ${data.text}`;
-                document.getElementById('messages').appendChild(li);
-            }
-        };
-
-        function sendMessage() {
-            const to = document.getElementById('destinatario').value;
-            const text = document.getElementById('msg').value;
-        
-            conn.send(JSON.stringify({
-                type: "privado",
-                to: to,
-                text: text
-            }));
-        
-            document.getElementById('msg').value = '';
-        }
-
-    </script>
+<section class="chat_section content_section">
+    <div class="chat_list text-bg-dark">
+        <div class="chat_list_header">
+            <h3>Lista de chats</h3>
+        </div>
+        <div class="chat_list_body">
+            <ul id="listaChats">
+                <?php foreach ($chats as $chat): ?>
+                    <li data-chat-id="<?= $chat['chat_id'] ?>">
+                        <?= htmlspecialchars(implode(', ', array_filter(explode(',', $chat['miembros']), function($miembro) {
+                            return trim($miembro) !== $_SESSION['user']['username'];
+                        }))) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <input type="text" id="msg" placeholder="Escribe un mensaje">
+        <button onclick="enviarMensaje()">Enviar</button>
+        <ul id="messages"></ul>
+    </div>
 </section>
+<script>
+    const username = '<?= htmlspecialchars($_SESSION['user']['username']) ?>';
+    const PATH = '<?= htmlspecialchars($PATH) ?>';
+</script>
+<script src="<?=$PATH?>Public/scripts/ChatScript.js"></script>
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../mainView.php';
+?>

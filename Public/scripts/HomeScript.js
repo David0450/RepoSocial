@@ -209,7 +209,6 @@ categoriesList.addEventListener('click', function(event) {
 						<div id='post_tags_container' class='tags_list'>
 
 						</div>
-						<hr>
 					`;
 
 					function timeAgo(dateString) {
