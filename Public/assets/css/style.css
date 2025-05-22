@@ -1469,6 +1469,7 @@ body:has( .chat_section) {
     width: 100%;
     height: 90%;
     display: grid;
+    overflow: hidden;
     background-color: #262D34;
     color: var(--ghost-white);
     border-radius: 12px;
@@ -1482,6 +1483,8 @@ body:has( .chat_section) {
     grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
     grid-template-columns: 1fr;
     border-radius: 12px 0 0 12px;
+    height: 100%;
+    overflow: hidden;
 }
 
 .chat_list_header {
@@ -1528,29 +1531,144 @@ body:has( .chat_section) {
     }
 }
 
-#messages {
+.chat_window {
+    padding-bottom: 0;
+    background-color: #2C353D;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.chat_window_header {
+    background-color: #262D34;
+    padding: 20px;
+    flex-shrink: 0;
+
+    & .chatName {
+        margin: 0;
+        color: var(--ghost-white);
+        font-size: 1.75rem;
+    }
+}
+
+.chat_window_body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    min-height: 0; 
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+.chat_input {
+    position: relative;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 2px;
+    flex-shrink: 0;
+
+    &:has( input:focus) {
+        border: 2px solid var(--dodger-blue);
+    }
+    
+    & input {
+        border: none;
+        background-color: #17191C;
+        width: 100%;
+        padding: 10px;
+        color: var(--ghost-white);
+        font-size: 1rem;
+        transition: all 0.3s ease-in-out;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:has(~ button:hover) {
+            font-size: 1.1rem;
+        }
+    }
+
+    & button {
+        background-color: #17191C;
+        color: var(--ghost-white);
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background-color: var(--oxford-blue);
+            font-size: 1.1rem;
+        }
+    }
+}
+
+ul#messages {
     display: flex;
     align-items: start;
     justify-content: start;
     flex-direction: column;
     gap: 10px;
     padding: 20px;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    min-height: 0;
 
     & li {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: start;
+        align-self: flex-start;
         list-style-type: none;
+    }
+
+    & li:has(> span.self) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: end;
+        align-self: flex-end;
+        list-style-type: none;
+
+        & div {
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            background-color: var(--oxford-blue);
+            height: 15px;
+            width: 15px;
+        }
+    }
+
+    & span {
         border-radius: 12px;
         background-color: var(--jordy-blue);
         color: #000;
         padding: 10px;
-        align-self: flex-start;
     }
 
-    & li.self {
-        list-style-type: none;
+    & span.self {
         border-radius: 12px;
         background-color: var(--oxford-blue);
         color: var(--ghost-white);
         padding: 10px;
-        align-self: flex-end;
+    }
+
+    & span ~ div {
+        clip-path: polygon(100% 0, 0 50%, 100% 100%);
+        background-color: var(--jordy-blue);
+        width: 15px;
+        height: 15px;
     }
 }
