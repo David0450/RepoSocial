@@ -1,0 +1,17 @@
+{
+    "name": "david/pfc",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "David",
+            "email": "450@cifpceuta.es"
+        }
+    ],
+    "require": {
+        "cboden/ratchet": "^0.4.4"
+    }
+}

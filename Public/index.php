@@ -1,9 +1,10 @@
-<?php
-include __DIR__ . '/../layouts/footer.php';
-include __DIR__ . '/../layouts/head.php';
-?>
-<?php ob_start(); ?>
-<section class="signup_section content_section">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat WebSocket</title>
+</head>
+<body>
+    <?php session_start(); ?>
     <h1>Chat</h1>
     <select id="destinatario"></select>
     <input id="msg" type="text">
@@ -62,4 +63,5 @@ include __DIR__ . '/../layouts/head.php';
         }
 
     </script>
-</section>
+</body>
+</html>

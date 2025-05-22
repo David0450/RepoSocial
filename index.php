@@ -22,6 +22,8 @@ require __DIR__ . '/App/Controllers/MainController.php';
 require __DIR__ . '/App/Controllers/ProjectController.php';
 require __DIR__ . '/App/Controllers/UserController.php';
 
+use App\Controllers\ChatController;
+
 $router = new Router();
 
 $router->add('/', function() {

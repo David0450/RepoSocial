@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-
+    
     let userId;
     let totalRepos; // Declarar la variable fuera del alcance de las funciones
 

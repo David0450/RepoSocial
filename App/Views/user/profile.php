@@ -1,4 +1,8 @@
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
+<?php
+
+use Random\Engine\Secure;
+
+ include __DIR__ . '/../layouts/footer.php'; ?>
 <?php include __DIR__ . '/../layouts/head.php'; ?>
 <?php include __DIR__ . '/../layouts/header.php'; ?>
 <?php ob_start(); ?>
@@ -43,8 +47,9 @@
     </div>
 </section>
 <script>
+    const USERNAME = '<?= $_GET['parametro'] ?>';
     const PROFILE_USERNAME = '<?= $_GET['parametro'] ?>';
-    const USER_ID = '<?= intval($_SESSION['user']['id']) ?>';
+    const USER_ID = '<?php if(Security::isLoggedIn()) {echo intval($_SESSION['user']['id']);} else {echo '';} ?>';
     const BASE_PATH = '<?=Config::PATH?>';
 </script>
 <script src="<?=Config::PATH?>Public/scripts/ProfileScript.js"></script>
