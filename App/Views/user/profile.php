@@ -32,7 +32,9 @@ include __DIR__ . '/../layouts/footer.php'; ?>
         <?php if ($isLoggedIn && $_SESSION['user']['username'] != $_GET['parametro']): ?>
         <div class="profile_actions">
             <button class="btn follow_btn" id="followButton">Seguir</button>
-            <button class="btn message_btn">Mensaje</button>
+            <a href="<?= $PATH ?>chats/new/@<?= $_GET['parametro'] ?>">
+                <button class="btn message_btn">Mensaje</button>
+            </a>
         </div>
         <?php endif; ?>
     </div>

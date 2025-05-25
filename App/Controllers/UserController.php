@@ -114,7 +114,6 @@ class UserController extends MainController {
         
             $user = json_decode($user_info, true);
         
-            // Aquí puedes iniciar sesión, guardar en BD, etc.
             $github_id = $user['id'];
             $username = $user['login'];
             $email = $user['email'] ?? null;
@@ -136,10 +135,6 @@ class UserController extends MainController {
                         break;
                     }
                 }
-            }
-
-            if (!$email) {
-                die("No se pudo obtener el correo electrónico del usuario.");
             }
 
             // Verificar si ya existe

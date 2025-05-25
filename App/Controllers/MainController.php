@@ -54,7 +54,7 @@ class MainController {
         exit();
     }
 
-    public function renderChat($chats, $userId) {
+    public function renderChat() {
         $isLoggedIn = Security::isLoggedIn();
         if (!$isLoggedIn) {
             header('Location: ' . Config::PATH . 'login');

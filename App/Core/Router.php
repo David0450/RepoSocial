@@ -25,9 +25,9 @@ class Router
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         // Check if the URI contains an @ symbol
-        if (preg_match("#/@([^/]+)/#", $uriGet, $matches)) {
+        if (preg_match("~@([^/]+)~", $uriGet, $matches)) {
             $username = $matches[1]; // Extract the username
-            $uriGet = str_replace("/@$username", "/{username}", $uriGet); // Replace @username with 'user'
+            $uriGet = str_replace("@$username", "{username}", $uriGet); // Replace @username with 'user'
 
             $_GET['parametro'] = $username;
         }
@@ -44,7 +44,7 @@ class Router
             $_GET['tag'] = $category;
         }
 
-        if (preg_match("~_([^/]+)~", $uriGet, $matches)) {
+        if (preg_match("~/_([^/]+)~", $uriGet, $matches)) {
             $chatId = $matches[1];
             $uriGet = str_replace("_$chatId", "{chat_id}", $uriGet);
             $_GET['chat_id'] = $chatId;

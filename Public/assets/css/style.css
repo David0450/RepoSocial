@@ -1479,9 +1479,9 @@ body:has( .chat_section) {
 
 .chat_list {
     border-right: 2px solid var(--dodger-blue);
-    display: grid;
-    grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    background-color: #262D34;
     border-radius: 12px 0 0 12px;
     height: 100%;
     overflow: hidden;
@@ -1493,20 +1493,23 @@ body:has( .chat_section) {
     align-items: center;
     background-color: #262D34;
     border-top-left-radius: 12px;
+    padding: 20px;
 
-    & h3 {
+    & span {
         margin: 0;
+        font-size: 1.75rem;
     }
 }
 
 .chat_list_body {
     border-bottom-left-radius: 12px;
+    flex: 1 1 auto;
 }
 
 #listaChats {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     overflow-y: auto;
     height: 100%;
     padding: 0;
@@ -1521,13 +1524,79 @@ body:has( .chat_section) {
         background-color: #2C353D;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
+        overflow: hidden;
 
         &:hover {
             background-color: var(--dodger-blue);
             color: #17191C;
             font-size: 1.1rem;
+
+            & .avatar-container {
+                border: 2px solid #17191C;
+
+                & img {
+                    background-color: #3b434b;
+                    border-radius: 50%;
+                    padding: 2px;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
+            & .chat-item-content {
+                color: #17191C;
+            }
         }
 
+        & .avatar-container {
+            border: 2px solid var(--dodger-blue);
+            border-radius: 50%;
+            padding: 4px;
+            transition: all 0.3s ease-in-out;
+
+            & img {
+                background-color: var(--jordy-blue);
+                border-radius: 50%;
+                padding: 2px;
+                width: 40px;
+                height: 40px;
+                transition: all 0.3s ease-in-out;
+            }
+        }
+
+    }
+}
+
+.chat-item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    color: var(--ghost-white);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+
+    & .chat-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    & .chat-preview {
+        font-size: 1rem;
+        margin: 0;
+        opacity: 0.6;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+        text-align: start;
+
+        & strong {
+            font-weight: 600;
+        }
     }
 }
 
@@ -1544,11 +1613,16 @@ body:has( .chat_section) {
 
 .chat_window_header {
     background-color: #262D34;
-    padding: 20px;
     flex-shrink: 0;
 
+    &:has( .chatName) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
     & .chatName {
-        margin: 0;
         color: var(--ghost-white);
         font-size: 1.75rem;
     }
@@ -1614,6 +1688,29 @@ body:has( .chat_section) {
     }
 }
 
+ul#messages::-webkit-scrollbar {
+    width: 6px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+ul#messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+ul#messages:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+ul#messages::-webkit-scrollbar-thumb {
+    background-color: var(--dodger-blue);
+    border-radius: 10px;
+}
+
+ul#messages:hover {
+    scrollbar-width: thin;
+}
+
 ul#messages {
     display: flex;
     align-items: start;
@@ -1625,50 +1722,83 @@ ul#messages {
     height: 100%;
     overflow-y: auto;
     min-height: 0;
+    scrollbar-width: none;
+    scrollbar-arrow-color: var(--dodger-blue);
+    scrollbar-color: var(--dodger-blue) transparent;
+    transition: all 0.3s ease-in-out;
 
     & li {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+        align-self: flex-start;
+        list-style-type: none;
+        width: 100%;
+    }
+
+    & li:has( div.self) {
+        align-self: flex-end;
+    }
+
+    & .message:has( div.self) {
+        flex-direction: row;
+        justify-content: end;
+        align-self: flex-end;
+
+        & > div:not(.self) {
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            background-color: var(--oxford-blue);
+        }
+    }
+
+    .message {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
         justify-content: start;
         align-self: flex-start;
-        list-style-type: none;
+        max-width: 70%;
     }
 
-    & li:has(> span.self) {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: end;
-        align-self: flex-end;
-        list-style-type: none;
-
-        & div {
-            clip-path: polygon(0 0, 100% 50%, 0 100%);
-            background-color: var(--oxford-blue);
-            height: 15px;
-            width: 15px;
-        }
-    }
-
-    & span {
+    & div.message-container {
         border-radius: 12px;
         background-color: var(--jordy-blue);
         color: #000;
         padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        max-width: calc(100% - 15px);
     }
 
-    & span.self {
+    & div.self {
         border-radius: 12px;
         background-color: var(--oxford-blue);
         color: var(--ghost-white);
         padding: 10px;
     }
 
-    & span ~ div {
+    & div.message-container ~ div {
         clip-path: polygon(100% 0, 0 50%, 100% 100%);
         background-color: var(--jordy-blue);
         width: 15px;
         height: 15px;
+    }
+
+    & div.self > span.autor-name {
+        display: none;
+    }
+
+    & span.autor-name {
+        font-weight: bold;
+    }
+
+    & span.message-text {
+        font-size: 1rem;
+        margin: 0;
+        width: 100%;
+        overflow-wrap: break-word;
+        text-align: start;
     }
 }

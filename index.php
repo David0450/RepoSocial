@@ -9,27 +9,6 @@ use App\Core\Router;
 use App\Core\Security;
 use App\Core\Config;
 
-/*
-require __DIR__ . '/App/Core/Router.php';
-require __DIR__ . '/App/Core/Database.php';
-require __DIR__ . '/App/Core/EmptyModel.php';
-require __DIR__ . '/App/Core/Config.php';
-require __DIR__ . '/App/Core/Security.php';
-*/
-
-/*
-require __DIR__ . '/Models/User.php';
-require __DIR__ . '/Models/Chat.php';
-require __DIR__ . '/Models/Project.php';
-*/
-
-/*
-require __DIR__ . '/App/Controllers/CategoryController.php';
-require __DIR__ . '/App/Controllers/TagController.php';
-require __DIR__ . '/App/Controllers/MainController.php';
-require __DIR__ . '/App/Controllers/ProjectController.php';
-require __DIR__ . '/App/Controllers/UserController.php';
-*/
 
 use App\Controllers\ChatController;
 use App\Controllers\MainController;
@@ -82,11 +61,14 @@ $router->add('/users/{username}/follow-stats', 'UserController@getFollowStats');
 
 $router->add('/users/{username}/follow', 'UserController@follow', 'POST');
 
-$router->add('/github_callback', 'UserController@loginGithub', 'GET');
+$router->add('/github-callback', 'UserController@loginGithub', 'GET');
 $router->add('/project/tags', 'TagController@getTagsByProject', 'GET');
 
 $router->add('/chats', 'ChatController@mostrarVistaChat', 'GET');
+$router->add('/getChats', 'ChatController@obtenerListaChatsJson', 'GET');
+$router->add('/chats/new/{username}', 'ChatController@crearChatConUsuario', 'GET');
 $router->add('/chats/{chat_id}/messages', 'ChatController@obtenerMensajes', 'GET');
+$router->add('/chats/{chat_id}/avatar', 'ChatController@obtenerAvatar', 'GET');
 
 $router->run();
 
