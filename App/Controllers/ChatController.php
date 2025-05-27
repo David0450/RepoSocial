@@ -55,7 +55,7 @@ class ChatController extends MainController{
 
         $chatId = (int)$_GET['chat_id'];
         $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
-        $limite = 20;
+        $limite = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
 
         header('Content-Type: application/json');
         echo json_encode($this->chatModel->obtenerMensajesDeChat($chatId, $limite, $offset));

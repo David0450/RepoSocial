@@ -5,7 +5,10 @@
 			<object data="<?=$PATH?>Public/assets/images/logo/logo.svg">
 				<img src="<?=$PATH?>Public/assets/images/logo/logo.png" alt="logo">
 			</object>
-			<h1 class="logo-title">TECHIE</h1>
+			<div>
+				<h1 class="logo-title">RepoSocial</h1>
+				<small>Administrador</small>
+			</div>
 		</a>
 		<div>
 			<div class="main-header">
@@ -43,8 +46,11 @@
 					</div>
 					<div id="dropdown">
 						<ul>
+							<?php if ($isAdmin): ?>
+							<li><a href="<?= $PATH?>admin">Panel de administración</a></li>
+							<?php endif; ?>
 							<li><a href="<?= $PATH?>@<?= $_SESSION['user']['username'] ?>/profile">Mi perfil</a></li>
-							<li><a href="<?= $PATH?>user/account">Mi cuenta</a></li>
+							<li><a href="<?= $PATH?>@<?= $_SESSION['user']['username'] ?>/account">Mi cuenta</a></li>
 							<li><a href="<?=$PATH?>user/logout">Cerrar sesión</a></li>
 						</ul>
 					</div>

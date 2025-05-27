@@ -188,4 +188,17 @@ class User extends EmptyModel {
         $query->bindParam(':followed_id', $followedId);
         return $query->execute();
     }
+
+    public function unfollow($followerId, $followedId) {
+        $query = $this->db->prepare("DELETE FROM user_follows WHERE following_user_id = :follower_id AND followed_user_id = :followed_id");
+        $query->bindParam(':follower_id', $followerId);
+        $query->bindParam(':followed_id', $followedId);
+        return $query->execute();
+    }
+
+    public function getUsersCount() {
+        $query = $this->db->prepare("SELECT COUNT(*) AS total FROM users");
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC)['total'];
+    }
 }

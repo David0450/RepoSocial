@@ -11,20 +11,13 @@ function loadPosts() {
 
   	if (loading || noMorePosts) return;
   	loading = true;
-  	document.getElementById('loading').style.display = 'block';
 
 	const feed = document.getElementById('projects_list');
-	while (feed.firstChild) {
-		feed.removeChild(feed.firstChild);
-	}
+
   	fetch(`${repos_url}?offset=${offset}`)
   	  	.then(res => res.json())
-  	  	.then(posts => {
-  	  	  	if (posts.length === 0) {
-  	  	  		noMorePosts = true;
-  	  	  		document.getElementById('loading').innerText = 'No hay más posts.';
-  	  	  		return;
-  	  	  	}
+  	  	.then(posts => {	
+			document.getElementById('loading').textContent = '';
 			noMorePosts = false;
   	  	  	posts.forEach(post => {
   	  	  	  	const el = document.createElement('div');

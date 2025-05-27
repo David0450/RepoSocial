@@ -14,6 +14,17 @@ class UserController extends MainController {
         $this->userModel = new User();
     }
 
+    public function getAll() {
+        if (!Security::isLoggedIn()) {
+            header('Location: ' . Config::PATH . 'login');
+            exit();
+        }
+
+        $users = $this->userModel->getAll();
+        echo json_encode($users);
+        exit;
+    }
+
     public function login() {
 
         if ($this->userModel->login()) {
@@ -47,7 +58,17 @@ class UserController extends MainController {
     }
 
     public function account() {
-        include __DIR__ . '/../Views/user/account.php';
+        if (!isset($_GET['parametro'])) {
+            $user = $_SESSION['user'];
+        } else {
+            $user = $this->userModel->getByUsername($_GET['parametro']);
+            if (!$user) {
+                header('Location: ' . Config::PATH . 'home');
+                exit();
+            }
+        }
+
+        $this->renderAccount($user);
     }
 
     public function profile() {
@@ -108,7 +129,7 @@ class UserController extends MainController {
             // Obtener los datos del usuario
             $user_info = file_get_contents("https://api.github.com/user", false, stream_context_create([
                 "http" => [
-                    "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+                    "header" => "User-Agent: RepoSocial\r\nAuthorization: token $access_token\r\n"
                 ]
             ]));
         
@@ -124,7 +145,7 @@ class UserController extends MainController {
             if(!$email) {
                 $emails_response = file_get_contents("https://api.github.com/user/emails", false, stream_context_create([
                     "http" => [
-                        "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+                        "header" => "User-Agent: RepoSocial\r\nAuthorization: token $access_token\r\n"
                     ]
                 ]));
                 
@@ -179,7 +200,7 @@ class UserController extends MainController {
 
         $response = file_get_contents("https://api.github.com/user", false, stream_context_create([
             "http" => [
-                "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+                "header" => "User-Agent: RepoSocial\r\nAuthorization: token $access_token\r\n"
             ]
         ]));
         $response = json_decode($response, true);
@@ -223,5 +244,16 @@ class UserController extends MainController {
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Error al seguir al usuario.']);
         }
-    }   
+    }
+    
+    public function getUsersCount() {
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'login');
+            exit();
+        }
+
+        $count = $this->userModel->getUsersCount();
+        echo json_encode(['count' => $count]);
+        exit();
+    }
 }

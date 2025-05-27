@@ -16,7 +16,7 @@ class ProjectController extends MainController{
     public function index() {
         // Logic to display all projects
         //$projects = $this->projectModel->getAll();
-        $this->renderHome();
+        $this->renderProjects();
         exit();
     }
 
@@ -68,7 +68,7 @@ class ProjectController extends MainController{
 
         $response = file_get_contents("https://api.github.com/user/repos?visibility=public&affiliation=owner&per_page=100", false, stream_context_create([
             "http" => [
-                "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+                "header" => "User-Agent: RepoSocial\r\nAuthorization: token $access_token\r\n"
             ]
         ]));
 
@@ -101,7 +101,7 @@ class ProjectController extends MainController{
 
         $response = file_get_contents("https://api.github.com/user/repos?visibility=public&affiliation=owner&per_page=100", false, stream_context_create([
             "http" => [
-                "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+                "header" => "User-Agent: RepoSocial\r\nAuthorization: token $access_token\r\n"
             ]
         ]));
 
@@ -212,6 +212,18 @@ class ProjectController extends MainController{
             $projects = $this->projectModel->getByTag($tagId);
             echo json_encode($projects);
         }
+        exit;
+    }
+
+    public function getProjectsCount() {
+        $count = $this->projectModel->getProjectsCount();
+        echo json_encode(['count' => $count]);
+        exit;
+    }
+
+    public function getAll() {
+        $projects = $this->projectModel->getAll();
+        echo json_encode($projects);
         exit;
     }
 }

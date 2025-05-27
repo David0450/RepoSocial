@@ -8,9 +8,9 @@ include __DIR__ . '/../layouts/head.php';
 	    <object data="<?=$PATH?>Public/assets/images/logo/logo.svg">
 			<img src="<?=$PATH?>Public/assets/images/logo/logo.png" alt="logo">
 	    </object>
-		<h1 class="logo-title">TECHIE</h1>
+		<h1 class="logo-title">RepoSocial</h1>
 	</a>
-    <h1>Bienvenido a Techie</h1>
+    <h1>Bienvenido a RepoSocial</h1>
     <p>Forma parte de nuestra comunidad</p>
     <div class="login_form">
         <form action="<?= $PATH?>user/login" method="POST" id="loginForm">
@@ -51,7 +51,7 @@ include __DIR__ . '/../layouts/head.php';
         </div>
     </div>-->
     <div class="footer">
-        <p>&copy; 2025 Techie. Todos los derechos reservados.</p>
+        <p>&copy; 2025 RepoSocial. Todos los derechos reservados.</p>
         <p><a href="#">Política de privacidad</a> | <a href="#">Términos de servicio</a></p>
     </div>
 </section>

@@ -2,8 +2,7 @@
 session_start();
 date_default_timezone_set('Europe/Madrid');
 
-//require __DIR__ . '/autoload.php';
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use App\Core\Router;
 use App\Core\Security;
@@ -16,6 +15,7 @@ use App\Controllers\ProjectController;
 use App\Controllers\UserController;
 use App\Controllers\CategoryController;
 use App\Controllers\TagController;
+use App\Controllers\AdminController;
 
 $router = new App\Core\Router();
 
@@ -24,7 +24,7 @@ $router->add('/', function() {
     header('Location: '. Config::PATH .'home');
     exit();
 });
-$router->add('/home', 'ProjectController@index', 'GET');
+$router->add('/home', 'MainController@renderLanding', 'GET');
 $router->add('/login', 'MainController@renderLogin');
 $router->add('/signup', 'MainController@renderSignup');
 
@@ -54,10 +54,13 @@ $router->add('/projects/getById', 'ProjectController@getStoredProjectById');
 $router->add('/projects', 'ProjectController@getStoredProjects');
 $router->add('/projects/{category}', 'ProjectController@getByCategory');
 $router->add('/projects/{tag}', 'ProjectController@getByTag');
+$router->add('/projects/view', 'ProjectController@index');
+$router->add('/projects/count', 'ProjectController@getProjectsCount', 'GET');
 
 $router->add('/users/{username}/github/repos/count', 'UserController@getGithubRepoCount');
 $router->add('/users/{username}/data', 'UserController@getStoredUserByUsername');
 $router->add('/users/{username}/follow-stats', 'UserController@getFollowStats');
+$router->add('/users/count', 'UserController@getUsersCount');
 
 $router->add('/users/{username}/follow', 'UserController@follow', 'POST');
 
@@ -69,6 +72,13 @@ $router->add('/getChats', 'ChatController@obtenerListaChatsJson', 'GET');
 $router->add('/chats/new/{username}', 'ChatController@crearChatConUsuario', 'GET');
 $router->add('/chats/{chat_id}/messages', 'ChatController@obtenerMensajes', 'GET');
 $router->add('/chats/{chat_id}/avatar', 'ChatController@obtenerAvatar', 'GET');
+
+$router->add('/admin', 'AdminController@index', 'GET');
+
+$router->add('/admin/projects', 'ProjectController@getAll', 'GET');
+$router->add('/admin/users', 'UserController@getAll', 'GET');
+$router->add('/admin/categories', 'CategoryController@getAll', 'GET');
+$router->add('/admin/tags', 'TagController@getAll', 'GET');
 
 $router->run();
 

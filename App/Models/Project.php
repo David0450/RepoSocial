@@ -92,7 +92,7 @@ class Project extends EmptyModel {
 
 		$options = [
 			'http' => [
-                "header" => "User-Agent: Techie\r\nAuthorization: token $access_token\r\n"
+                "header" => "User-Agent: RepoSocial\r\nAuthorization: token $access_token\r\n"
 			]
 		];
 		
@@ -155,5 +155,11 @@ class Project extends EmptyModel {
 		$stmt->bindParam(":tag_id", $tagId, PDO::PARAM_INT);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getProjectsCount() {
+		$sql = "SELECT COUNT(*) AS total FROM {$this->table}";
+		$stmt = $this->db->query($sql);
+		return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 	}
 }

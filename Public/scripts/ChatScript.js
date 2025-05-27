@@ -1,7 +1,7 @@
 const conn = new WebSocket('ws://localhost:8080');
 let chatIdActivo = null;
 let offset = 0;
-const limit = 20;
+const limit = 10;
 const messagesContainer = document.getElementById('messages');
 let cargando = false;
 

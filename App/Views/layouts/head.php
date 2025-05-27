@@ -5,7 +5,7 @@
     <meta name='author' content='David Peral'>
     <meta name='description' content=''>
     <meta name='keywords' content=''>
-    <title>Techie</title>
+    <title>RepoSocial</title>
     <link rel="icon" type="image/png" href="<?=$PATH?>Public/assets/images/logo/logo.png">
     <script src="https://kit.fontawesome.com/aaeebdae3e.js" crossorigin="anonymous"></script>	
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
