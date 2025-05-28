@@ -31,12 +31,12 @@ $router->add('/signup', 'MainController@renderSignup');
 $router->add('/categories', 'CategoryController@getAll', 'GET');
 $router->add('/categories',  'CategoryController@create', 'POST');
 $router->add('/categories',  'CategoryController@update', 'PUT');
-$router->add('/categories',  'CategoryController@delete', 'DELETE');
+$router->add('/categories/delete',  'CategoryController@delete', 'POST');
 
 $router->add('/tags', 'TagController@getAll', 'GET');
 $router->add('/tags', 'TagController@create', 'POST');
 $router->add('/tags', 'TagController@update', 'PUT');
-$router->add('/tags', 'TagController@delete', 'DELETE');
+$router->add('/tags/delete', 'TagController@delete', 'POST');
 
 $router->add('/user/login', 'UserController@login', 'POST');
 $router->add('/user/logout', 'UserController@logout', 'GET');
@@ -56,11 +56,13 @@ $router->add('/projects/{category}', 'ProjectController@getByCategory');
 $router->add('/projects/{tag}', 'ProjectController@getByTag');
 $router->add('/projects/view', 'ProjectController@index');
 $router->add('/projects/count', 'ProjectController@getProjectsCount', 'GET');
+$router->add('/projects/delete', 'ProjectController@delete', 'POST');
 
 $router->add('/users/{username}/github/repos/count', 'UserController@getGithubRepoCount');
 $router->add('/users/{username}/data', 'UserController@getStoredUserByUsername');
 $router->add('/users/{username}/follow-stats', 'UserController@getFollowStats');
 $router->add('/users/count', 'UserController@getUsersCount');
+$router->add('/users/delete', 'UserController@delete', 'POST');
 
 $router->add('/users/{username}/follow', 'UserController@follow', 'POST');
 

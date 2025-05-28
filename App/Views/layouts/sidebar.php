@@ -5,11 +5,6 @@
         <div>
             <div class="sidebar_categories_header">
                 <h1>Categorias</h1>
-                <?php if ($isAdmin): ?>
-                <button class="add_category_button" id="addCategoryButton">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <?php endif; ?>
             </div>
             <div class="categories_list" id="categories_list">
                 
@@ -20,11 +15,6 @@
         <div>
             <div class="sidebar_tags_header">
                 <h1>Etiquetas</h1>
-                <?php if ($isAdmin): ?>
-                <button class="add_tag_button" id="addTagButton">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <?php endif; ?>
             </div>
             <div class="tags_list" id="tags_list">
 

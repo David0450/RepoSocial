@@ -20,6 +20,21 @@ class ProjectController extends MainController{
         exit();
     }
 
+    public function delete() {
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'/login');
+            exit();
+        }
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $this->projectModel->delete($id);
+            echo json_encode(['status' => 'success', 'message' => 'Project deleted successfully.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Project ID not provided.']);
+        }
+        exit();
+    }
+
     public function show($id) {
         // Logic to display a single project
         $project = $this->projectModel->getById($id);

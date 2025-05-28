@@ -14,13 +14,31 @@ class UserController extends MainController {
         $this->userModel = new User();
     }
 
-    public function getAll() {
+    public function delete() {
         if (!Security::isLoggedIn()) {
             header('Location: ' . Config::PATH . 'login');
             exit();
         }
 
-        $users = $this->userModel->getAll();
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $this->userModel->delete($id);
+            echo json_encode(['status' => 'success', 'message' => 'Usuario eliminado correctamente.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'ID de usuario no proporcionado.']);
+        }
+        exit();
+    }
+
+    public function getAll() {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) {
+            $page = 1;
+        }
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+        $offset = ($page - 1) * $limit;
+
+        $users = $this->userModel->getAll($offset, $limit);
         echo json_encode($users);
         exit;
     }
@@ -33,8 +51,7 @@ class UserController extends MainController {
 
             header('Location: ' . Config::PATH . 'home');
         } else {
-            var_dump($_POST);
-            //header('Location: ' . Config::PATH . 'login');
+            header('Location: ' . Config::PATH . 'login');
         }
     }
 

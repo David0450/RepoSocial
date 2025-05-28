@@ -14,10 +14,4 @@ class Config {
     const GITHUB_CLIENT_SECRET = '37676bfac8d1b856c112fb634289ac7cfc4307f7';
     const PATH = 'http://localhost/programacion/PFC/';
 
-    public static function get($key) {
-        if (defined("self::" . strtoupper($key))) {
-            return constant("self::" . strtoupper($key));
-        }
-        throw new Exception("La clave de configuración '$key' no existe.");
-    }
 }

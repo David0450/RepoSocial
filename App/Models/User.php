@@ -201,4 +201,23 @@ class User extends EmptyModel {
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC)['total'];
     }
+
+    public function getAll($offset = 0, $limit = 100) {
+        // Obtener los usuarios paginados
+        $query = $this->db->prepare("SELECT id, username, email, name, last_name, avatar_url, github_id FROM users LIMIT :offset, :limit");
+        $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $query->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $query->execute();
+        $users = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        // Obtener el total de usuarios
+        $countQuery = $this->db->prepare("SELECT COUNT(*) as total FROM users");
+        $countQuery->execute();
+        $total = $countQuery->fetch(PDO::FETCH_ASSOC)['total'];
+
+        return [
+            'data' => $users,
+            'total' => $total
+        ];
+    }
 }

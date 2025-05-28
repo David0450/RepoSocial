@@ -23,6 +23,7 @@ class TagController {
     
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            var_dump($_POST);
             $title = $_POST['title'];
 
             $data = [
@@ -54,15 +55,14 @@ class TagController {
             echo json_encode(['status' => 'error', 'message' => 'Método incorrecto.']);
         }
     }
+
     public function delete() {
-        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-            parse_str(file_get_contents("php://input"), $_DELETE);
-            $id = $_DELETE['id'];
-            
+        $id = $_POST['id'] ?? null;
+        if ($id) {
             $this->tagModel->delete($id);
             echo json_encode(['status' => 'success', 'message' => 'Etiqueta eliminada.']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Método incorrecto.']);
+            echo json_encode(['status' => 'error', 'message' => 'ID de etiqueta no proporcionado.']);
         }
     }
 

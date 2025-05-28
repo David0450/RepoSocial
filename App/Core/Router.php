@@ -39,9 +39,9 @@ class Router
         }
 
         if (preg_match("~;([^/]+)~", $uriGet, $matches)) {
-            $category = $matches[1];
-            $uriGet = str_replace(";$category", "{tag}", $uriGet);
-            $_GET['tag'] = $category;
+            $tag = $matches[1];
+            $uriGet = str_replace(";$tag", "{tag}", $uriGet);
+            $_GET['tag'] = $tag;
         }
 
         if (preg_match("~/_([^/]+)~", $uriGet, $matches)) {
