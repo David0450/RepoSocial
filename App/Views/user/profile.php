@@ -6,12 +6,18 @@ include __DIR__ . '/../layouts/footer.php'; ?>
 <section class="profile_section content_section">
     <div class="profile_info">
         <div>
-            <div class="profile_avatar">
+            <div class="profile_avatar" id="profileAvatar">
+                <?php if ($isLoggedIn && $_SESSION['user']['username'] == $_GET['parametro']): ?>
+                <div id="changePhotoOverlay">Cambiar foto de perfil</div>
+                <?php endif; ?>
                 <img src="<?= $PATH ?><?= $user['avatar_url'] ?>" alt="Avatar del perfil">
             </div>
         </div>
         <h1 class="profile_username">
             <?= $_GET['parametro'] ?>
+            <?php if ($isLoggedIn && $_SESSION['user']['username'] == $_GET['parametro']): ?>
+                <i class="fa-solid fa-pen-to-square edit_profile_icon" id="editUsernameButton"></i>
+            <?php endif; ?>
         </h1>
         <h3 class="profile_bio" id="userBio">
         </h3>
@@ -39,8 +45,7 @@ include __DIR__ . '/../layouts/footer.php'; ?>
         <?php endif; ?>
     </div>
     <div class="profile_projects">
-        <h1>Proyectos subidos</h1>
-        <div class="projects_list" id="projects_list">
+        <div class="profile_projects_list" id="projects_list">
 
         </div>
     </div>
@@ -50,6 +55,7 @@ include __DIR__ . '/../layouts/footer.php'; ?>
     const PROFILE_USERNAME = '<?= $_GET['parametro'] ?>';
     const USER_ID = '<?php if($isLoggedIn) {echo intval($_SESSION['user']['id']);} else {echo '';} ?>';
     const BASE_PATH = '<?=$PATH?>';
+    const TOKEN = '<?=$token?>';
 </script>
 <script src="<?=$PATH?>Public/scripts/ProfileScript.js"></script>
 <?php $content = ob_get_clean(); ?>

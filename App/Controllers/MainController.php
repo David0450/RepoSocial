@@ -68,6 +68,9 @@ class MainController {
         $isLoggedIn = Security::isLoggedIn();
         $PATH = Config::PATH;
         $isAdmin = Security::isAdmin();
+        if (isset($_SESSION['user']['access_token'])) {
+            $token = $_SESSION['user']['access_token'];
+        }
         // Logic for profile
         require __DIR__ . '/../Views/user/profile.php';
         exit();
@@ -98,7 +101,7 @@ class MainController {
     public function renderAdminDashboard() {
         $isLoggedIn = Security::isLoggedIn();
         if (!$isLoggedIn || !Security::isAdmin()) {
-            header('Location: ' . Config::PATH . 'home');
+            header('Location: ' . Config::PATH . 'hub');
             exit();
         }
         $PATH = Config::PATH;

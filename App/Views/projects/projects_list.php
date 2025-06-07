@@ -33,7 +33,7 @@ include __DIR__ . '/../layouts/head.php';
                     Sube tus proyectos
                 </span>
                 <a href="<?= $PATH ?>users/@<?= $_SESSION['user']['username'] ?>/github-repos/view">
-                    <button class="create_project_button">Mis proyectos</button>
+                    <button class="create_project_button">Mis repositorios</button>
                 </a>
             </div>
         </div>
@@ -41,22 +41,14 @@ include __DIR__ . '/../layouts/head.php';
     <?php endif; ?>
     <section class="projects_section">
         <div class="projects_container">
-            <h1>Feed</h1>
-            <div id="loading" class="fw-bold ta-center h5">Cargando...</div>
             <div class="projects_list" id="projects_list">
             </div>
+            <div id="loading" class="fw-bold ta-center h5">Cargando...</div>
+            <div id="noProjects" class="fw-bold ta-center h5">No se han encontrado proyectos</div>
         </div>
         <?php 
         ?>
     </section>
-    <!--<section class="project_search_section">
-        <div class="project_search_container">
-            <h1>Buscar Proyecto</h1>
-            <input type="text" id="searchInput" placeholder="Buscar por título...">
-            <button id="searchButton">Buscar</button>
-            <div id="searchResults"></div>
-        </div>
-    </section>-->
     <script>
         const BASE_PATH = '<?= $PATH ?>';
     </script>

@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Core\Config;
 use App\Core\Security;
 use App\Controllers\MainController;
+use Random\Engine\Secure;
 
 class UserController extends MainController {
 
@@ -30,6 +31,34 @@ class UserController extends MainController {
         exit();
     }
 
+    public function update() {
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'/hub');
+            exit;
+        }
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $name = $_POST['name'];
+            $lastName = $_POST['last_name'];
+            $avatarUrl = $_POST['avatar_url'];
+            $githubId = $_POST['github_id'];
+
+            $data = [
+                'username' => $username,
+                'email' => $email,
+                'name' => $name,
+                'last_name' => $lastName,
+                'avatar_url' => $avatarUrl,
+                'github_id' => $githubId,
+            ];
+            
+            $this->userModel->update($data, $id);
+            echo json_encode(['status' => 'success', 'message' => 'Categoría actualizada.']);
+        }
+    }
+
     public function getAll() {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($page < 1) {
@@ -49,7 +78,7 @@ class UserController extends MainController {
             $_POST['uri'] = '';
             $_GET['uri'] = '';
 
-            header('Location: ' . Config::PATH . 'home');
+            header('Location: ' . Config::PATH . 'hub');
         } else {
             header('Location: ' . Config::PATH . 'login');
         }
@@ -60,7 +89,7 @@ class UserController extends MainController {
             $_POST['uri'] = '';
             $_GET['uri'] = '';
 
-            header('Location: ' . Config::PATH . 'home');
+            header('Location: ' . Config::PATH . 'hub');
         } else {
             header('Location: ' . Config::PATH . 'signup');
         }
@@ -71,7 +100,7 @@ class UserController extends MainController {
         $this->userModel->logout();
         $_POST['uri'] = '';
         $_GET['uri'] = '';
-        header('Location: ' . Config::PATH . 'home');
+        header('Location: ' . Config::PATH . 'hub');
     }
 
     public function account() {
@@ -80,7 +109,7 @@ class UserController extends MainController {
         } else {
             $user = $this->userModel->getByUsername($_GET['parametro']);
             if (!$user) {
-                header('Location: ' . Config::PATH . 'home');
+                header('Location: ' . Config::PATH . 'hub');
                 exit();
             }
         }
@@ -94,7 +123,7 @@ class UserController extends MainController {
         } else {
             $user = $this->userModel->getByUsername($_GET['parametro']);
             if (!$user) {
-                header('Location: ' . Config::PATH . 'home');
+                header('Location: ' . Config::PATH . 'hub');
                 exit();
             }
         }
@@ -191,7 +220,7 @@ class UserController extends MainController {
                 ];
             }
 
-            header('Location: ' . Config::PATH . 'home');
+            header('Location: ' . Config::PATH . 'hub');
         } else {
             if (isset($_GET['error'])) {
                 if ($_GET['error'] == 'access_denied') {
@@ -271,6 +300,83 @@ class UserController extends MainController {
 
         $count = $this->userModel->getUsersCount();
         echo json_encode(['count' => $count]);
+        exit();
+    }
+
+    public function editUsername() {
+        if (!Security::isLoggedIn() || $_GET['parametro'] !== $_SESSION['user']['username']) {
+            exit();
+        }
+        $newUsername = $_POST['newUsername'];
+        $response = $this->userModel->editUsername($newUsername, $_SESSION['user']['username']);
+        echo json_encode(['success' => $response]);
+        return;
+    }
+
+    public function uploadProfileImage() {
+        // Verificar si el usuario está autenticado
+        if (!Security::isLoggedIn()) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'No autorizado.']);
+            exit();
+        }
+
+        // Validar datos recibidos
+        if (!isset($_GET['parametro']) || !isset($_FILES['imagen'])) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Datos insuficientes.']);
+            exit();
+        }
+
+        $username = $_GET['parametro'];
+        $imagenData = $_FILES['imagen'];
+
+        // Validar el archivo subido
+        if ($imagenData['error'] !== UPLOAD_ERR_OK) {
+            echo json_encode(['success' => false, 'message' => 'Error al subir la imagen.']);
+            exit();
+        }
+
+        // Validar tipo de imagen
+        $allowedTypes = ['image/jpeg' => 'jpg', 'image/png' => 'png'];
+        $fileType = mime_content_type($imagenData['tmp_name']);
+        if (!array_key_exists($fileType, $allowedTypes)) {
+            echo json_encode(['success' => false, 'message' => 'Tipo de imagen no permitido.']);
+            exit();
+        }
+        $type = $allowedTypes[$fileType];
+
+        // Guardar la imagen en el servidor
+        $uploadDir = __DIR__ . '/../../Public/assets/images/profiles/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $filename = $username . '_' . uniqid() . '.' . $type;
+        $filePath = $uploadDir . $filename;
+
+        if (!move_uploaded_file($imagenData['tmp_name'], $filePath)) {
+            echo json_encode(['success' => false, 'message' => 'No se pudo guardar la imagen.']);
+            exit();
+        }
+
+        // Ruta accesible públicamente
+        $publicPath = 'Public/assets/images/profiles/' . $filename;
+
+        // Obtener el usuario
+        $user = $this->userModel->getByUsername($username);
+        if (!$user) {
+            echo json_encode(['success' => false, 'message' => 'Usuario no encontrado.']);
+            exit();
+        }
+
+        // Actualizar la imagen en la base de datos
+        $update = $this->userModel->updateProfileImage($user['id'], $publicPath);
+
+        if ($update) {
+            echo json_encode(['success' => true, 'avatar_url' => $publicPath]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No se pudo actualizar la imagen en la base de datos.']);
+        }
         exit();
     }
 }

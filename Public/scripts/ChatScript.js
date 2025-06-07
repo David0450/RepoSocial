@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (soloUnMiembro) {
                     chatName = document.createElement('a');
                     chatName.classList.add('chatName');
-                    chatName.href = `${PATH}@${li.dataset.chatName}/profile`;
+                    chatName.href = `${PATH}@${li.dataset.chatName}`;
                 } else {
                     chatName = document.createElement('span');
                     chatName.classList.add('chatName');

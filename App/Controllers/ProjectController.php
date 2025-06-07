@@ -22,7 +22,7 @@ class ProjectController extends MainController{
 
     public function delete() {
         if (!Security::isLoggedIn()) {
-            header('Location: '.Config::PATH.'/login');
+            header('Location: '.Config::PATH.'/hub');
             exit();
         }
         if (isset($_POST['id'])) {
@@ -33,6 +33,40 @@ class ProjectController extends MainController{
             echo json_encode(['status' => 'error', 'message' => 'Project ID not provided.']);
         }
         exit();
+    }
+
+    public function update() {
+        if (!Security::isLoggedIn()) {
+            header('Location: '.Config::PATH.'/hub');
+            exit;
+        }
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $title = $_POST['title'];
+            $private = $_POST['private'];
+            $description = $_POST['description'];
+            $categoryId = $_POST['category_id'];
+            $userId = $_POST['user_id'];
+            $uploadedAt = $_POST['uploaded_at'];
+            $status = $_POST['status'];
+            $htmlUrl = $_POST['html_url'];
+            $ownerAvatar = $_POST['owner_avatar'];
+
+            $data = [
+                'title' => $title,
+                'private' => $private,
+                'description' => $description,
+                'category_id' => $categoryId,
+                'user_id' => $userId,
+                'uploaded_at' => $uploadedAt,
+                'status' => $status,
+                'html_url' => $htmlUrl,
+                'owner_avatar' => $ownerAvatar
+            ];
+            
+            $this->projectModel->update($data, $id);
+            echo json_encode(['status' => 'success', 'message' => 'Categoría actualizada.']);
+        }
     }
 
     public function show($id) {
@@ -174,7 +208,7 @@ class ProjectController extends MainController{
 
             $this->projectModel->import($data, $_GET['parametro']);
 
-            header('Location: ' . Config::PATH . 'home');
+            header('Location: ' . Config::PATH . 'users/@'. $_SESSION['user']['username'] .'/github-repos/view');
             exit();
         }
     }
@@ -197,11 +231,27 @@ class ProjectController extends MainController{
     }
 
     public function getStoredProjects() {
-        $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
-		$limit = 10;
+        $data = json_decode(file_get_contents("php://input"), true);
 
-        $response = $this->projectModel->getStoredProjects($offset, $limit);
-        echo json_encode($response);
+        $offset = isset($data['offset']) ? intval($data['offset']) : 0;
+        $limit = 10;
+
+        $order = $data['order'];
+        $direction = $data['direction'];
+
+        $category = $data['category'];
+        $tags = empty($data['tags']) ? null : $data['tags'];
+
+        $projects = $this->projectModel->getStoredProjects($offset, $limit, $category, $tags, $order, $direction);
+
+        // Para cada proyecto, obtener sus likes
+        foreach ($projects as &$project) {
+            $response = $this->getLikes(($project['id']));
+            $project['like_count'] = $response['like_count'];
+            $project['has_liked'] = $response['has_liked'];
+        }
+
+        echo json_encode($projects);
         exit;
     }
 
@@ -239,6 +289,32 @@ class ProjectController extends MainController{
     public function getAll() {
         $projects = $this->projectModel->getAll();
         echo json_encode($projects);
+        exit;
+    }
+
+    private function getLikes($projectId) {
+        $userId = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : null;
+        $likes = $this->projectModel->getLikes($projectId, $userId);
+        return $likes;
+    }
+
+    public function addLike() {
+        $input = json_decode(file_get_contents('php://input'), true);
+        $projectId = $input['project_id'];
+        $userId = $_SESSION['user']['id'];
+
+        $this->projectModel->addLike($projectId, $userId);
+        echo json_encode(['status' => 'success', 'message' => 'Like added successfully.']);
+        exit;
+    }
+
+    public function removeLike() {
+        $input = json_decode(file_get_contents('php://input'), true);
+        $projectId = $input['project_id'];
+        $userId = $_SESSION['user']['id'];
+
+        $this->projectModel->removeLike($projectId, $userId);
+        echo json_encode(['status' => 'success', 'message' => 'Like removed successfully.']);
         exit;
     }
 }

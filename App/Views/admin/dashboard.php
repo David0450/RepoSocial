@@ -33,7 +33,6 @@ include __DIR__ . '/../layouts/footer.php';
     </article>
 </section>
 <script>
-    const PATH = '<?= htmlspecialchars($PATH) ?>';
 </script>
 <script src="<?=$PATH?>Public/scripts/DashboardScript.js"></script>
 <?php 

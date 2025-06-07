@@ -220,4 +220,46 @@ class User extends EmptyModel {
             'total' => $total
         ];
     }
+
+    public function searchUsersByPrefix($prefix) {
+        $stmt = $this->db->prepare("SELECT username, avatar_url FROM users WHERE username LIKE ? LIMIT 10");
+        $search = $prefix . '%';
+        $stmt->execute([$search]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function editUsername($newUsername, $oldUsername) {
+        try {
+            $query = $this->db->prepare("UPDATE users SET username = :newUsername WHERE username = :oldUsername");
+            $query->bindParam(':newUsername', $newUsername);
+            $query->bindParam(':oldUsername', $oldUsername);
+            if ($query->execute()) {
+            // Si el usuario en sesión es el que se ha cambiado, actualiza la sesión
+            if (isset($_SESSION['user']['username']) && $_SESSION['user']['username'] === $oldUsername) {
+                $_SESSION['user']['username'] = $newUsername;
+            }
+            return true;
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function updateProfileImage($userId, $path) {
+        try {
+            $query = $this->db->prepare("UPDATE users SET avatar_url = :avatar_url WHERE id = :user_id");
+            $query->bindParam(':avatar_url', $path);
+            $query->bindParam(':user_id', $userId);
+            if ($query->execute()) {
+                if (isset($_SESSION['user']) && $_SESSION['user']['id'] == $userId) {
+                    $_SESSION['user']['avatar_url'] = $path;
+                }
+                return true;
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }

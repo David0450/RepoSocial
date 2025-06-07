@@ -86,19 +86,7 @@ class Router
         }
     }
 
-    function getCurrentRoute() {
-        // Obtiene la URI completa de la petición
-        $uri = $_SERVER['REQUEST_URI'];
-    
-        // Remueve la parte de la cadena de consulta si existe (por ejemplo, ?id=5)
-        $path = parse_url($uri, PHP_URL_PATH);
-    
-        // Se eliminan las barras al inicio y al final para normalizar la ruta
-        $route = trim($path, '/');
-    
-        // Si la ruta queda vacía, podemos asumir que es la "home"
-        return $route === '' ? 'home' : $route;
-    }
+
     
 }
 ?>

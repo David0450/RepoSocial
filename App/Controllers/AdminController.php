@@ -9,7 +9,7 @@ use App\Core\Security;
 class AdminController extends UserController {
     public function index() {
         if (!Security::isLoggedIn() || !Security::isAdmin()) {
-            header('Location: ' . Config::PATH . 'home');
+            header('Location: ' . Config::PATH . 'hub');
             exit();
         }
 

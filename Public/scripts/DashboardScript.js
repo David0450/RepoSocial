@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function mostrarTabla(tabla) {
         const contenedor = document.getElementById('dashboardTable');
+        const tableActions = document.createElement('div');
+        tableActions.classList.add('table-actions');
         let currentPage = 1;
         const pageSize = 10;
 
@@ -68,6 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 contenedor.innerHTML = '';
+
+                // Crear input de búsqueda
+                const searchDiv = document.createElement('div');
+                searchDiv.style.marginBottom = '10px';
+                const searchInput = document.createElement('input');
+                searchInput.type = 'text';
+                searchInput.placeholder = 'Buscar...';
+                searchInput.style.padding = '5px';
+                searchInput.style.width = '200px';
+                searchDiv.appendChild(searchInput);
+                tableActions.appendChild(searchDiv);
+                contenedor.appendChild(tableActions);
 
                 // Botón "Crear" solo para tags y categories
                 if (tabla === 'tags' || tabla === 'categories') {
@@ -110,7 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             })
                             .then(() => {
                                 document.body.removeChild(modal);
+                                // Limpiar acciones previas antes de volver a renderizar
                                 fetchAndRender(currentPage);
+                                tableActions.innerHTML = '';
                             });
                         };
 
@@ -158,8 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.body.appendChild(modal);
                     };
                     crearDiv.appendChild(btnCrear);
-                    contenedor.appendChild(crearDiv);
+                    tableActions.appendChild(crearDiv);
                 }
+                contenedor.appendChild(tableActions);
 
                 if (!data || data.length === 0) {
                     contenedor.innerHTML += '<p>No hay datos para mostrar.</p>';
@@ -175,17 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         return rest;
                     });
                 }
-
-                // Crear input de búsqueda
-                const searchDiv = document.createElement('div');
-                searchDiv.style.marginBottom = '10px';
-                const searchInput = document.createElement('input');
-                searchInput.type = 'text';
-                searchInput.placeholder = 'Buscar...';
-                searchInput.style.padding = '5px';
-                searchInput.style.width = '200px';
-                searchDiv.appendChild(searchInput);
-                contenedor.appendChild(searchDiv);
 
                 const table = document.createElement('table');
                 const thead = document.createElement('thead');
@@ -251,15 +257,18 @@ document.addEventListener('DOMContentLoaded', () => {
                                 inputs.forEach(input => {
                                     updated[input.name] = input.value;
                                 });
-                                fetch(`${PATH}admin/${tabla}/${item[headers[0]]}`, {
-                                    method: 'PUT',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(updated)
+                                updated[headers[0]] = item[headers[0]];
+                                const formData = new FormData();
+                                Object.keys(updated).forEach(key => {
+                                    formData.append(key, updated[key]);
+                                });
+                                fetch(`${PATH}${tabla}/update`, {
+                                    method: 'POST',
+                                    body: formData
                                 })
                                 .then(() => {
                                     document.body.removeChild(modal);
+                                    tableActions.innerHTML = '';
                                     fetchAndRender(currentPage);
                                 });
                             };
@@ -364,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 })
                                 .then(() => {
                                     document.body.removeChild(modal);
+                                    tableActions.innerHTML = '';
                                     fetchAndRender(currentPage);
                                 });
                             };

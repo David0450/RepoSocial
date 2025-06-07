@@ -25,7 +25,6 @@ include __DIR__ . '/../layouts/header.php';
 </section>
 <script>
     const username = '<?= htmlspecialchars($_SESSION['user']['username']) ?>';
-    const PATH = '<?= htmlspecialchars($PATH) ?>';
 </script>
 <script src="<?=$PATH?>Public/scripts/ChatScript.js"></script>
 <?php

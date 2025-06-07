@@ -46,11 +46,9 @@ class CategoryController {
     }
 
     public function update() {
-        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-            parse_str(file_get_contents("php://input"), $_PUT);
-            $id = $_PUT['id'];
-            $title = $_PUT['title'];
-            $icon = $_PUT['icon'];
+            $id = $_POST['id'];
+            $title = $_POST['title'];
+            $icon = $_POST['icon'];
 
             $data = [
                 'title' => $title,
@@ -59,9 +57,6 @@ class CategoryController {
             
             $this->categoryModel->update($data, $id);
             echo json_encode(['status' => 'success', 'message' => 'Categoría actualizada.']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Método incorrecto.']);
-        }
     }
     public function delete() {
         $id = $_POST['id'] ?? null;
