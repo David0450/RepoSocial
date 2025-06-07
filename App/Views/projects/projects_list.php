@@ -44,7 +44,6 @@ include __DIR__ . '/../layouts/head.php';
             <div class="projects_list" id="projects_list">
             </div>
             <div id="loading" class="fw-bold ta-center h5">Cargando...</div>
-            <div id="noProjects" class="fw-bold ta-center h5">No se han encontrado proyectos</div>
         </div>
         <?php 
         ?>

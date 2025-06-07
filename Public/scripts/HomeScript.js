@@ -82,9 +82,11 @@ filterIcon.addEventListener('click', function (e) {
 	filterDropdown.style.visibility = filterDropdown.style.visibility === 'hidden' ? 'visible' : 'hidden';
 });
 
-// Ocultar dropdown al hacer click fuera
-document.addEventListener('click', function () {
-	filterDropdown.style.visibility = 'hidden';
+// Ocultar dropdown al hacer click fuera de filterDropdown
+document.addEventListener('click', function (e) {
+	if (!filterDropdown.contains(e.target) && !filterIcon.contains(e.target)) {
+		filterDropdown.style.visibility = 'hidden';
+	}
 });
 
 // Añadir icono y dropdown al filterSection
@@ -158,9 +160,7 @@ sortSelect.addEventListener('change', function() {
 });
 
 function loadPosts() {
-	const noProjectsEl = document.getElementById('noProjects');
 	const loadingEl = document.getElementById('loading');
-	noProjectsEl.style.display = 'none';
 
 	let loadingTimeout;
 	loadingEl.style.display = 'none';
@@ -187,11 +187,6 @@ function loadPosts() {
 	})
 		.then(res => res.json())
 		.then(posts => {	
-			noMorePosts = false;
-
-			if (!posts || posts.length === 0) {
-				noProjectsEl.style.display = 'inline';
-			}
 
 			posts.forEach(post => {
 				const el = document.createElement('div');
@@ -415,30 +410,64 @@ window.addEventListener('scroll', () => {
   	}
 });
 
+['categories_list', 'mobile_categories_list'].forEach(listId => {
+	const categoriesList = document.getElementById(listId);
+	if (!categoriesList) return;
+	categoriesList.addEventListener('click', function(event) {
+		const target = event.target.closest('.category_item');
+		if (!target) return;
 
-const categoriesList = document.getElementById('categories_list');
-categoriesList.addEventListener('click', function(event) {
-	const target = event.target.closest('.category_item');
-	if (!target) return;
+		feed.innerHTML = '';
 
-	feed.innerHTML = '';
-
-	if (target.classList.contains('active')) {
-		target.classList.remove('active');
-		category = null;
-	} else {
-		const oldActiveCategory = categoriesList.querySelector('.active');
-		if (oldActiveCategory) {
-			oldActiveCategory.classList.remove('active');
+		if (target.classList.contains('active')) {
+			target.classList.remove('active');
+			category = null;
+		} else {
+			const oldActiveCategory = categoriesList.querySelector('.active');
+			if (oldActiveCategory) {
+				oldActiveCategory.classList.remove('active');
+			}
+			target.classList.add('active');
+			category = target.getAttribute('value');
 		}
-		target.classList.add('active');
-		category = target.getAttribute('value');
-	}
-	offset = 0;
-	noMorePosts = false;
-	loadPosts();
-})
+		offset = 0;
+		noMorePosts = false;
+		loadPosts();
+	});
+});
 
+['tags_list', 'mobile_tags_list'].forEach(listId => {
+	const tagsList = document.getElementById(listId);
+	if (!tagsList) return;
+	tagsList.addEventListener('click', function(event) {
+		const target = event.target.closest('.tag_item');
+		if (!target) return;
+
+		feed.innerHTML = '';
+
+		if (target.classList.contains('active')) {
+			target.classList.remove('active');
+		} else {
+			target.classList.add('active');
+		}
+
+		const tagValue = target.getAttribute('value');
+		if (target.classList.contains('active')) {
+			if (!tags.includes(tagValue)) {
+				tags.push(tagValue);
+			}
+		} else {
+			const index = tags.indexOf(tagValue);
+			if (index !== -1) {
+				tags.splice(index, 1);
+			}
+		}
+
+		offset = 0;
+		noMorePosts = false;
+		loadPosts();
+	});
+});
 const tagsList = document.getElementById('tags_list');
 tagsList.addEventListener('click', function(event) {
 	const target = event.target.closest('.tag_item');

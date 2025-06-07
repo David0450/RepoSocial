@@ -64,12 +64,12 @@
 						</ul>
 					</div>
 					<?php else: ?>
-					<a href="<?= $PATH?>login">
+					<!--<a href="<?= $PATH?>login">
 						<button class="login-button_header">
 							<i class="fa-solid fa-right-to-bracket"></i>
 							<span>Inicia sesión</span>
 						</button>
-					</a>
+					</a>-->
 					<a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email">					
 						<button class="social-btn" id="githubLoginButton">
                     		<i class="fa-brands fa-github"></i>

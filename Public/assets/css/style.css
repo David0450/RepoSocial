@@ -134,14 +134,14 @@ header {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: end;
         width: 100%;
-        column-gap: 10%;
+        column-gap: 100px;
 
         & .left-info {
             display: flex;
             flex-direction: column;
-            width: 100%
+            width: calc(100% - 250px - 100px);
         }
 
         & .search-results {
@@ -257,8 +257,8 @@ header {
         & > .right-info {
             display: flex;
             flex-direction: row;
-            width: fit-content;
             column-gap: 20px;
+            width: 250px;
             align-items: center;
 
             & button.login-button_header {
@@ -1452,6 +1452,7 @@ section.signup_section {
         box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
         border-radius: 8px;
         right: calc(100% - 0.7rem);
+        visibility: hidden;
 
         & > div {
             box-shadow: none;

@@ -216,7 +216,8 @@ class UserController extends MainController {
                     'email' => $existingUser['email'],
                     'github_id' => $existingUser['github_id'],
                     'access_token' => $access_token,
-                    'avatar_url' => $existingUser['avatar_url']
+                    'avatar_url' => $existingUser['avatar_url'],
+                    'role' => $existingUser['role']
                 ];
             }
 

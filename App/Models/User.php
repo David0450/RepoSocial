@@ -128,7 +128,13 @@ class User extends EmptyModel {
     }
 
     public function githubExists($github_id) {
-        $query = $this->db->prepare("SELECT * FROM users WHERE github_id = :github_id");
+        $query = $this->db->prepare(
+            "SELECT u.*, r.title AS role 
+             FROM users u
+             JOIN user_roles ur ON u.id = ur.user_id
+             JOIN roles r ON ur.role_id = r.id
+             WHERE u.github_id = :github_id"
+        );
         $query->bindParam(':github_id', $github_id);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
