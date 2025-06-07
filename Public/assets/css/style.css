@@ -1404,25 +1404,6 @@ section.signup_section {
             column-gap: 10px;
         }
 
-        & > .filter_section {
-            & .filter-dropdown {
-                display: block;
-                position: absolute;
-                background: rgb(34, 34, 34);
-                border: 1px solid rgb(68, 68, 68);
-                padding: 12px;
-                z-index: 1000;
-                min-width: 200px;
-                box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
-                border-radius: 8px;
-                right: calc(100% - 0.7rem);
-            }
-
-            & > i {
-                font-size: 1.4rem;
-            }
-        }
-
         & .sort_title {
             font-weight: bold;
         }
@@ -1454,6 +1435,44 @@ section.signup_section {
 
     & i {
         font-size: 1.2rem;
+    }
+}
+
+.filter_section {
+    visibility: hidden;
+
+    & .filter-dropdown {
+        display: block;
+        position: absolute;
+        background: rgb(34, 34, 34);
+        border: 1px solid rgb(68, 68, 68);
+        padding: 12px;
+        z-index: 1000;
+        min-width: 200px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
+        border-radius: 8px;
+        right: calc(100% - 0.7rem);
+
+        & > div {
+            box-shadow: none;
+
+            &:first-of-type {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &:last-of-type {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                & h1 {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    & > i {
+        font-size: 1.4rem;
     }
 }
 
@@ -1663,6 +1682,10 @@ section.signup_section {
 @media screen and (max-width: 1050px) {
     main:has(> .projects_list_section) {
         flex-direction: column;
+    }
+
+    .filter_section {
+        visibility: visible;
     }
 
     .projects_list_section {
