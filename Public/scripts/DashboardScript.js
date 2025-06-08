@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         projectCount.textContent = data.count;
     })
 
+    // Obtener reportes pendientes
+    // *Pendiente de desarrollo
+    document.getElementById('reportCount').textContent = '0';
+
     // Mostrar tabla
     let botonUsuarios = document.getElementById('dashboardUsers');
     let botonProyectos = document.getElementById('dashboardProjects');

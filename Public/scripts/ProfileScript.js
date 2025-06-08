@@ -27,23 +27,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('projects_list').innerHTML = ''; // Limpiar la lista antes de agregar nuevos elementos
 
                 if (totalRepos === 0) {
+                    document.getElementById('projects_list').style.display = 'none';
+
                     const emptyProjects = document.createElement('div');
                     emptyProjects.className = 'empty_projects';
 
                     const emptyMsg = document.createElement('span');
-                    emptyMsg.textContent = 'Vaya... Parece que no has subido nada.';
-
-                    const uploadLink = document.createElement('a');
-                    uploadLink.href = `${BASE_PATH}users/@${PROFILE_USERNAME}/github-repos/view`;
-
-                    const uploadBtn = document.createElement('button');
-                    uploadBtn.className = 'create_project_button';
-                    uploadBtn.textContent = 'Mis repositorios';
-
-                    uploadLink.appendChild(uploadBtn);
+                    emptyMsg.style.fontSize = '1.3rem';
+                    emptyMsg.textContent = '¡Ups! Aquí no hay nada...';
 
                     emptyProjects.appendChild(emptyMsg);
-                    emptyProjects.appendChild(uploadLink);
+
+                    if (USER_USERNAME == PROFILE_USERNAME) {
+
+                        const uploadLink = document.createElement('a');
+                        uploadLink.href = `${BASE_PATH}users/@${PROFILE_USERNAME}/github-repos/view`;
+                        
+                        const uploadBtn = document.createElement('button');
+                        uploadBtn.className = 'create_project_button';
+                        uploadBtn.textContent = 'Mis repositorios';
+                        
+                        uploadLink.appendChild(uploadBtn);
+                        emptyProjects.appendChild(uploadLink);
+                    }
+
 
                     document.getElementsByClassName('profile_projects')[0].appendChild(emptyProjects);
 
@@ -323,76 +330,79 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-        editUsernameButton.addEventListener("click", function() {
-            const modalOverlay = document.createElement('div');
-            modalOverlay.classList.add('modal-overlay');
+        
+        if (editUsernameButton) {
+            editUsernameButton.addEventListener("click", function() {
+                const modalOverlay = document.createElement('div');
+                modalOverlay.classList.add('modal-overlay');
 
-            const modal = document.createElement('div');
-            modal.classList.add('change-photo-modal');
+                const modal = document.createElement('div');
+                modal.classList.add('change-photo-modal');
 
-            // Crear los elementos del modal usando createElement
-            const modalTitle = document.createElement('h2');
-            modalTitle.textContent = 'Cambia tu nombre de usuario';
+                // Crear los elementos del modal usando createElement
+                const modalTitle = document.createElement('h2');
+                modalTitle.textContent = 'Cambia tu nombre de usuario';
 
-            const usernameInput = document.createElement('input');
-            usernameInput.type = 'text';
-            usernameInput.placeholder = 'Nuevo nombre de usuario';
-            usernameInput.id = 'newUsernameInput';
-            usernameInput.value = PROFILE_USERNAME;
-            
-            const saveButton = document.createElement('button');
-            saveButton.classList.add('btn-guardar');
-            saveButton.textContent = 'Guardar';
-            
-            saveButton.addEventListener('click', () => {
-                const newUsername = usernameInput.value;
-                if (newUsername && newUsername.trim() !== "") {
-                    fetch(`${BASE_PATH}users/@${PROFILE_USERNAME}/edit-username`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: `newUsername=${encodeURIComponent(newUsername)}`
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("No se pudo actualizar el nombre de usuario");
+                const usernameInput = document.createElement('input');
+                usernameInput.type = 'text';
+                usernameInput.placeholder = 'Nuevo nombre de usuario';
+                usernameInput.id = 'newUsernameInput';
+                usernameInput.value = PROFILE_USERNAME;
+                
+                const saveButton = document.createElement('button');
+                saveButton.classList.add('btn-guardar');
+                saveButton.textContent = 'Guardar';
+                
+                saveButton.addEventListener('click', () => {
+                    const newUsername = usernameInput.value;
+                    if (newUsername && newUsername.trim() !== "") {
+                        fetch(`${BASE_PATH}users/@${PROFILE_USERNAME}/edit-username`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded"
+                            },
+                            body: `newUsername=${encodeURIComponent(newUsername)}`
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("No se pudo actualizar el nombre de usuario");
+                            }
+                            return response.json();
+                        })
+                        .then(() => {
+                            window.location.href = `${BASE_PATH}@${newUsername}`;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    } else {
+                        // Mostrar mensaje de error debajo del input
+                        let errorMsg = modal.querySelector('.username-error');
+                        if (!errorMsg) {
+                            errorMsg = document.createElement('div');
+                            errorMsg.className = 'username-error';
+                            errorMsg.style.color = 'red';
+                            errorMsg.style.marginTop = '8px';
+                            modal.appendChild(errorMsg);
                         }
-                        return response.json();
-                    })
-                    .then(() => {
-                        window.location.href = `${BASE_PATH}@${newUsername}`;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-                } else {
-                    // Mostrar mensaje de error debajo del input
-                    let errorMsg = modal.querySelector('.username-error');
-                    if (!errorMsg) {
-                        errorMsg = document.createElement('div');
-                        errorMsg.className = 'username-error';
-                        errorMsg.style.color = 'red';
-                        errorMsg.style.marginTop = '8px';
-                        modal.appendChild(errorMsg);
+                        errorMsg.textContent = "El nombre de usuario no puede estar vacío.";
                     }
-                    errorMsg.textContent = "El nombre de usuario no puede estar vacío.";
-                }
-            });
+                });
 
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) {
-                    document.body.removeChild(modalOverlay);
-                }
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) {
+                        document.body.removeChild(modalOverlay);
+                    }
+                });
+                
+                modal.appendChild(modalTitle);
+                modal.appendChild(usernameInput);
+                modal.appendChild(saveButton);
+                
+                modalOverlay.appendChild(modal);
+                document.body.appendChild(modalOverlay);
             });
-            
-            modal.appendChild(modalTitle);
-            modal.appendChild(usernameInput);
-            modal.appendChild(saveButton);
-            
-            modalOverlay.appendChild(modal);
-            document.body.appendChild(modalOverlay);
-        })
+        }
 
     const profileAvatar = document.getElementById('profileAvatar');
     const changePhotoOverlay = document.getElementById('changePhotoOverlay');

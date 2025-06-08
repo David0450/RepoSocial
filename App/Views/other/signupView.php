@@ -5,7 +5,7 @@ include __DIR__ . '/../layouts/head.php';
 <?php ob_start(); ?>
 <section class="signup_section content_section">
     <a class="logo-container" href="<?=$PATH?>home">
-	    <object data="<?=$PATH?>Public/assets/images/logo/logo.svg">
+	    <object data="<?=$PATH?>Public/assets/images/logo/Logo.svg">
 			<img src="<?=$PATH?>Public/assets/images/logo/logo.png" alt="logo">
 	    </object>
 		<h1 class="logo-title">RepoSocial</h1>

@@ -2,7 +2,7 @@
 <header>
 	<div>
 		<a class="logo-container" id="headerLogoContainer" href="<?= $PATH?>hub">
-			<object data="<?=$PATH?>Public/assets/images/logo/logo.svg">
+			<object data="<?=$PATH?>Public/assets/images/logo/Logo.svg">
 				<img src="<?=$PATH?>Public/assets/images/logo/logo.png" alt="logo">
 			</object>
 			<div>
@@ -44,9 +44,7 @@
 					<div class="header-profile">
 						<div>
 							<div class="inside-box">									
-								<object data="<?=$PATH?><?= $_SESSION['user']['avatar_url'] ?>">
-									<img src="<?=$PATH?>Public/assets/icons/User_light.png" alt="user_icon">
-								</object>
+								<img src="<?= $_SESSION['user']['avatar_url'] ?>">
 							</div>
 						</div>
 						<div class="profile-name">
@@ -59,17 +57,11 @@
 							<?php if ($isAdmin): ?>
 							<li><a href="<?= $PATH?>admin"><i class="fa-solid fa-toolbox"></i> Admin</a></li>
 							<?php endif; ?>
-							<li><a href="<?= $PATH?>@<?= $_SESSION['user']['username'] ?>/profile"><i class="fa-solid fa-user"></i> Perfil</a></li>
+							<li><a href="<?= $PATH?>@<?= $_SESSION['user']['username'] ?>"><i class="fa-solid fa-user"></i> Perfil</a></li>
 							<li><a href="<?=$PATH?>user/logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a></li>
 						</ul>
 					</div>
 					<?php else: ?>
-					<!--<a href="<?= $PATH?>login">
-						<button class="login-button_header">
-							<i class="fa-solid fa-right-to-bracket"></i>
-							<span>Inicia sesión</span>
-						</button>
-					</a>-->
 					<a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email">					
 						<button class="social-btn" id="githubLoginButton">
                     		<i class="fa-brands fa-github"></i>
@@ -106,7 +98,6 @@
 	        <?php endif; ?>
 	        <a href="<?= $PATH ?>user/logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
 	    <?php else: ?>
-	        <a href="<?= $PATH ?>login"><i class="fa-solid fa-right-to-bracket"></i> Inicia sesión</a>
 	        <a href="https://github.com/login/oauth/authorize?client_id=Ov23lijzgiVY3WIWZerl&scope=repo user:email">
 	            <i class="fa-brands fa-github"></i> Únete con GitHub
 	        </a>

@@ -103,7 +103,7 @@ header {
     width: 96%;
     background-color: #262D34;
     margin: 0 auto;
-    padding: 1% 1.1%;
+    padding: 0% 1%;
     border-radius: 0 0 12px 12px;
     position: fixed;
     top: 0;
@@ -120,6 +120,7 @@ header {
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        height: 100%;
 
         & > div {
             display: flex;
@@ -373,7 +374,7 @@ header {
                         align-items: center;
                         justify-content: center;
 
-                        & object {
+                        & img {
                             width: 100%;
                             aspect-ratio: 1/1;
                         }
@@ -528,7 +529,7 @@ header {
       justify-content: flex-end;
       align-items: center;
       position: absolute;
-      top: calc(50% - 14px);
+      top: 0;
       right: 20px;
       width: fit-content;
       visibility: visible;
@@ -745,6 +746,10 @@ header {
                     flex-direction: row;
                     row-gap: 0;
                     column-gap: 10px;
+                    flex-wrap: wrap;
+                    & .category_item {
+                        width: fit-content;
+                    }
                 }
 
                 & > .category_item {
@@ -821,6 +826,19 @@ header {
         }
     }
 
+#mobile_tags_list {
+    display: none;
+}
+
+@media (max-width: 1050px) {
+  #mobile_tags_list {
+    display: flex; /* o block, según tu diseño */
+  }
+
+  #tags_list {
+    display: none;
+  }
+}
 
 div.tags_list {
     display: flex;
@@ -1440,6 +1458,7 @@ section.signup_section {
 
 .filter_section {
     visibility: hidden;
+    display: none;
 
     & .filter-dropdown {
         display: block;
@@ -1449,6 +1468,7 @@ section.signup_section {
         padding: 12px;
         z-index: 1000;
         min-width: 200px;
+        width: 85vw;
         box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
         border-radius: 8px;
         right: calc(100% - 0.7rem);
@@ -1528,7 +1548,7 @@ section.signup_section {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-auto-rows: 1fr;
-    row-gap: 5px;
+    gap: 10px;
     width: 100%;
     border-radius: 12px;
     color: var(--ghost-white);
@@ -1884,6 +1904,7 @@ div:has(> .profile_avatar) {
 
     & img {
         width: 200px;
+        aspect-ratio: 1/1;
         border-radius: 10px;
     }
 }
@@ -2443,7 +2464,7 @@ main:has( .landing_section) {
     content: "";
     position: absolute;
     inset: 0;
-    background: url('http://localhost/programacion/PFC/Public/assets/images/codingPhoto.jpg') center/cover no-repeat;
+    background: url('http://dper.cifpceuta.com/Public/assets/images/codingPhoto.jpg') center/cover no-repeat;
     opacity: 0.25; /* Menos opaca que antes */
     z-index: 0;
     pointer-events: none;

@@ -4,10 +4,13 @@ date_default_timezone_set('Europe/Madrid');
 
 require __DIR__ . '/../vendor/autoload.php';
 
+
 use App\Core\Router;
 use App\Core\Security;
 use App\Core\Config;
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 use App\Controllers\ChatController;
 use App\Controllers\MainController;
@@ -20,14 +23,10 @@ use App\Controllers\SearchController;
 
 $router = new App\Core\Router();
 
-$router->add('/', function() {
-    Security::isLoggedIn();
-    header('Location: '. Config::PATH .'home');
-    exit();
-});
+$router->add('/', 'MainController@renderLanding', 'GET');
 $router->add('/home', 'MainController@renderLanding', 'GET');
-$router->add('/login', 'MainController@renderLogin');
-$router->add('/signup', 'MainController@renderSignup');
+//$router->add('/login', 'MainController@renderLogin');
+//$router->add('/signup', 'MainController@renderSignup');
 
 $router->add('/categories', 'CategoryController@getAll', 'GET');
 $router->add('/categories',  'CategoryController@create', 'POST');

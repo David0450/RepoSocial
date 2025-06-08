@@ -115,8 +115,16 @@ class User extends EmptyModel {
     }
 
     public function logout() {
-        session_unset();
-        session_destroy();
+        // Asegura que la sesión esté iniciada antes de manipularla
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        // Elimina solo los datos del usuario de la sesión
+        if (isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
+        }
+        // Opcional: destruye la sesión completamente
+        // session_destroy();
         return true;
     }
 
@@ -129,17 +137,29 @@ class User extends EmptyModel {
 
     public function githubExists($github_id) {
         $query = $this->db->prepare(
-            "SELECT u.*, r.title AS role 
+            "SELECT u.id 
+             FROM users u
+             WHERE u.github_id = :github_id"
+        );
+        $query->bindParam(':github_id', $github_id);
+        $query->execute();
+        return $query->fetchColumn() !== false;
+    }
+
+    public function getByGithubId($github_id) {
+        $query = $this->db->prepare(
+            "SELECT u.*, r.title AS role
              FROM users u
              JOIN user_roles ur ON u.id = ur.user_id
              JOIN roles r ON ur.role_id = r.id
              WHERE u.github_id = :github_id"
         );
-        $query->bindParam(':github_id', $github_id);
+        $query->bindParam(':github_id', $github_id, PDO::PARAM_INT);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
     }
-    public function githubLogin($github_id, $username, $email, $name, $last_name, $avatar_url) {
+
+    public function githubLogin($github_id, $username, $email, $name, $last_name, $avatar_url, $access_token) {
         try {
             $query = $this->db->prepare("INSERT INTO users (github_id, username, email, name, last_name, avatar_url) VALUES (:github_id, :username, :email, :name, :last_name, :avatar_url)");
             $query->bindParam(':github_id', $github_id);
@@ -158,8 +178,19 @@ class User extends EmptyModel {
                     'last_name' => $last_name,
                     'avatar_url' => $avatar_url,
                     'role' => 'usuario',
-                    'github_id' => $github_id
+                    'github_id' => $github_id,
+                    'access_token' => $access_token,
                 ];
+
+                // Obtener el ID del usuario recién insertado
+                $user_id = $this->db->lastInsertId();
+                // Insertar en tabla user_roles
+                $stmt = $this->db->prepare("
+                    INSERT INTO user_roles (user_id, role_id)
+                    VALUES (:user_id, 1)
+                ");
+                $stmt->execute([':user_id' => $user_id]);
+
                 return true;
             } else {
                 return false;

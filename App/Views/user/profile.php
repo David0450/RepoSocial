@@ -10,7 +10,7 @@ include __DIR__ . '/../layouts/footer.php'; ?>
                 <?php if ($isLoggedIn && $_SESSION['user']['username'] == $_GET['parametro']): ?>
                 <div id="changePhotoOverlay">Cambiar foto de perfil</div>
                 <?php endif; ?>
-                <img src="<?= $PATH ?><?= $user['avatar_url'] ?>" alt="Avatar del perfil">
+                <img src="<?= $user['avatar_url'] ?>" alt="Avatar del perfil">
             </div>
         </div>
         <h1 class="profile_username">
@@ -54,6 +54,7 @@ include __DIR__ . '/../layouts/footer.php'; ?>
     const USERNAME = '<?= $_GET['parametro'] ?>';
     const PROFILE_USERNAME = '<?= $_GET['parametro'] ?>';
     const USER_ID = '<?php if($isLoggedIn) {echo intval($_SESSION['user']['id']);} else {echo '';} ?>';
+    const USER_USERNAME = '<?php if($isLoggedIn) {echo $_SESSION['user']['username'];} else {echo '';} ?>';
     const BASE_PATH = '<?=$PATH?>';
     const TOKEN = '<?=$token?>';
 </script>

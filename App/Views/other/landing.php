@@ -7,7 +7,7 @@ include __DIR__ . '/../layouts/head.php';
 <section class="landing_section">
     <article class="hero" data-lenis-scroll>
         <div class="logo-container" id="headerLogoContainer">
-            <object data="<?= $PATH ?>Public/assets/images/logo/logo.svg">
+            <object data="<?= $PATH ?>Public/assets/images/logo/Logo.svg">
                 <img src="<?= $PATH ?>Public/assets/images/logo/logo.png" alt="logo">
             </object>
             <div>
@@ -18,10 +18,10 @@ include __DIR__ . '/../layouts/head.php';
             <h2>La red social para apasionados por la tecnología</h2>
             <p>Conecta, colabora y comparte ideas con personas como tú.</p>
             <div class="hero-buttons">
-                <?php if (!$isLoggedIn): ?>
+                <!--<?php if (!$isLoggedIn): ?>
                     <a href="<?= $PATH ?>signup" class="cta">Crear cuenta</a>
                     <a href="<?= $PATH ?>login" class="cta ghost">Iniciar sesión</a>
-                <?php endif; ?>
+                <?php endif; ?>-->
                 <a href="<?= $PATH ?>hub" class="cta ghost">Ver proyectos</a>
             </div>
         </div>

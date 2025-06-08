@@ -79,13 +79,15 @@ filterDropdown.appendChild(sidebarTags);
 // Mostrar/ocultar dropdown al hacer click en el icono
 filterIcon.addEventListener('click', function (e) {
 	e.stopPropagation();
-	filterDropdown.style.visibility = filterDropdown.style.visibility === 'hidden' ? 'visible' : 'hidden';
+	filterDropdown.style.display = filterDropdown.style.display === 'none' ? 'block' : 'none';
+	filterDropdown.style.visibility = filterDropdown.style.display === 'none' ? 'hidden' : 'visible';
 });
 
 // Ocultar dropdown al hacer click fuera de filterDropdown
 document.addEventListener('click', function (e) {
 	if (!filterDropdown.contains(e.target) && !filterIcon.contains(e.target)) {
 		filterDropdown.style.visibility = 'hidden';
+		filterDropdown.style.display = 'none';
 	}
 });
 
@@ -203,7 +205,7 @@ function loadPosts() {
 				const insideBox = document.createElement('div');
 				insideBox.className = 'inside-box';
 				const avatarImg = document.createElement('img');
-				avatarImg.src = `${BASE_PATH}${post.avatar_url}`;
+				avatarImg.src = `${post.avatar_url}`;
 				insideBox.appendChild(avatarImg);
 				userLink.appendChild(insideBox);
 				userImgDiv.appendChild(userLink);
@@ -440,34 +442,28 @@ window.addEventListener('scroll', () => {
 	const tagsList = document.getElementById(listId);
 	if (!tagsList) return;
 	tagsList.addEventListener('click', function(event) {
-		const target = event.target.closest('.tag_item');
+		const target = event.target.closest('.category_item');
 		if (!target) return;
 
 		feed.innerHTML = '';
 
 		if (target.classList.contains('active')) {
 			target.classList.remove('active');
+			category = null;
 		} else {
+			const oldActiveCategory = tagsList.querySelector('.active');
+			if (oldActiveCategory) {
+				oldActiveCategory.classList.remove('active');
+			}
 			target.classList.add('active');
+			category = target.getAttribute('value');
 		}
-
-		const tagValue = target.getAttribute('value');
-		if (target.classList.contains('active')) {
-			if (!tags.includes(tagValue)) {
-				tags.push(tagValue);
-			}
-		} else {
-			const index = tags.indexOf(tagValue);
-			if (index !== -1) {
-				tags.splice(index, 1);
-			}
-		}
-
 		offset = 0;
 		noMorePosts = false;
 		loadPosts();
 	});
 });
+
 const tagsList = document.getElementById('tags_list');
 tagsList.addEventListener('click', function(event) {
 	const target = event.target.closest('.tag_item');

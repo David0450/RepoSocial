@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /programacion/PFC/Public/
+RewriteBase /Public/
 
 # Evita procesar archivos y carpetas que existan
 RewriteCond %{REQUEST_FILENAME} !-f

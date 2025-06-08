@@ -208,16 +208,17 @@ class UserController extends MainController {
             $existingUser = $this->userModel->githubExists($github_id);
 
             if (!$existingUser) {
-                $this->userModel->githubLogin($github_id, $username, $email, $name, $last_name, $avatar_url);
+                $this->userModel->githubLogin($github_id, $username, $email, $name, $last_name, $avatar_url, $access_token);
             } else {
+                $user = $this->userModel->getByGithubId($github_id);
                 $_SESSION['user'] = [
-                    'id' => $existingUser['id'],
-                    'username' => $existingUser['username'],
-                    'email' => $existingUser['email'],
-                    'github_id' => $existingUser['github_id'],
+                    'id' => $user['id'],
+                    'username' => $user['username'],
+                    'email' => $user['email'],
+                    'github_id' => $user['github_id'],
+                    'avatar_url' => $user['avatar_url'],
+                    'role' => $user['role'],
                     'access_token' => $access_token,
-                    'avatar_url' => $existingUser['avatar_url'],
-                    'role' => $existingUser['role']
                 ];
             }
 

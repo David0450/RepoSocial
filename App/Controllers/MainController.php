@@ -70,6 +70,8 @@ class MainController {
         $isAdmin = Security::isAdmin();
         if (isset($_SESSION['user']['access_token'])) {
             $token = $_SESSION['user']['access_token'];
+        } else {
+            $token = null;
         }
         // Logic for profile
         require __DIR__ . '/../Views/user/profile.php';

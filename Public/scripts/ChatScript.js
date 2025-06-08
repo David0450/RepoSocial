@@ -1,4 +1,4 @@
-const conn = new WebSocket('ws://localhost:8080');
+const conn = new WebSocket('ws://dper.cifpceuta.com:8080');
 let chatIdActivo = null;
 let offset = 0;
 const limit = 10;

@@ -70,7 +70,7 @@ searchInput.addEventListener("keyup", function() {
                     userSpan.textContent = "@" + user.username;
 
                     const userImage = document.createElement("img");
-                    userImage.src = PATH + user.avatar_url;
+                    userImage.src = user.avatar_url;
 
                     userLi.appendChild(userImage);
                     userLi.appendChild(userSpan);

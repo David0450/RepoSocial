@@ -16,7 +16,7 @@ include __DIR__ . '/../layouts/head.php';
             <div>
                 <div>
                     <div class="inside-box text-bg-dark">									
-                        <object data="<?=$PATH?>Public/assets/images/logo/logo.svg">
+                        <object data="<?=$PATH?>Public/assets/images/logo/Logo.svg">
                             <img src="<?=$PATH?>Public/assets/images/logo/logo.png" alt="logo">
                         </object>
                     </div>
