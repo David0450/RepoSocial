@@ -15,4 +15,5 @@ class AdminController extends UserController {
 
         $this->renderAdminDashboard();
     }
+
 }

@@ -72,29 +72,6 @@ class UserController extends MainController {
         exit;
     }
 
-    public function login() {
-
-        if ($this->userModel->login()) {
-            $_POST['uri'] = '';
-            $_GET['uri'] = '';
-
-            header('Location: ' . Config::PATH . 'hub');
-        } else {
-            header('Location: ' . Config::PATH . 'login');
-        }
-    }
-
-    public function signup() {
-        if ($this->userModel->signup()) {
-            $_POST['uri'] = '';
-            $_GET['uri'] = '';
-
-            header('Location: ' . Config::PATH . 'hub');
-        } else {
-            header('Location: ' . Config::PATH . 'signup');
-        }
-    }
-
     public function logout() {
         
         $this->userModel->logout();

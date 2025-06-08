@@ -25,8 +25,7 @@ $router = new App\Core\Router();
 
 $router->add('/', 'MainController@renderLanding', 'GET');
 $router->add('/home', 'MainController@renderLanding', 'GET');
-//$router->add('/login', 'MainController@renderLogin');
-//$router->add('/signup', 'MainController@renderSignup');
+
 
 $router->add('/categories', 'CategoryController@getAll', 'GET');
 $router->add('/categories',  'CategoryController@create', 'POST');
@@ -38,9 +37,7 @@ $router->add('/tags', 'TagController@create', 'POST');
 $router->add('/tags/update', 'TagController@update', 'POST');
 $router->add('/tags/delete', 'TagController@delete', 'POST');
 
-$router->add('/user/login', 'UserController@login', 'POST');
 $router->add('/user/logout', 'UserController@logout', 'GET');
-$router->add('/user/signup', 'UserController@signup', 'POST');
 
 $router->add('/{username}/account', 'UserController@account', 'GET');
 $router->add('/{username}', 'UserController@profile', 'GET');
