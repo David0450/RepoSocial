@@ -29,6 +29,41 @@ class User extends EmptyModel {
         return $query->fetchColumn();
     }
 
+    /*public function login() {
+        try {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $query = $this->db->prepare(
+                "SELECT u.id, u.username, u.email, u.password, u.name, u.last_name, u.avatar_url, r.title 
+                FROM users as u 
+                JOIN user_roles as ur 
+                ON u.id = ur.user_id 
+                JOIN roles as r 
+                ON ur.role_id = r.id 
+                WHERE username = :username"
+                );
+            $query->bindParam(':username', $username);
+            $query->execute();
+            $user = $query->fetch(PDO::FETCH_ASSOC);
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user']['id'] = $user['id'];
+                $_SESSION['user']['username'] = $user['username'];
+                $_SESSION['user']['email'] = $user['email'];
+                $_SESSION['user']['name'] = $user['name'];
+                $_SESSION['user']['last_name'] = $user['last_name'];
+                $_SESSION['user']['avatar_url'] = $user['avatar_url'];
+                $_SESSION['user']['role'] = $user['title'];
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }*/
+
     public function logout() {
         // Asegura que la sesión esté iniciada antes de manipularla
         if (session_status() === PHP_SESSION_NONE) {

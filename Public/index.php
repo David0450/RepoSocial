@@ -25,6 +25,8 @@ $router = new App\Core\Router();
 
 $router->add('/', 'MainController@renderLanding', 'GET');
 $router->add('/home', 'MainController@renderLanding', 'GET');
+/*$router->add('/login', 'MainController@renderLogin');
+$router->add('/user/login', 'UserController@login', 'POST');*/
 
 
 $router->add('/categories', 'CategoryController@getAll', 'GET');

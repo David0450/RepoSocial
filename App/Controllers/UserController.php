@@ -15,6 +15,17 @@ class UserController extends MainController {
         $this->userModel = new User();
     }
 
+
+    /*public function login() {
+        if ($this->userModel->login()) {
+            $_POST['uri'] = '';
+            $_GET['uri'] = '';
+            header('Location: ' . Config::PATH . 'hub');
+        } else {
+            header('Location: ' . Config::PATH . 'login');
+        }
+    }*/
+
     public function delete() {
         if (!Security::isLoggedIn()) {
             header('Location: ' . Config::PATH . 'login');
