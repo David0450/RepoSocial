@@ -15,24 +15,6 @@ class MainController {
         exit();
     }
 
-    public function renderLogin() {
-        $isLoggedIn = Security::isLoggedIn();
-        $PATH = Config::PATH;
-        $isAdmin = Security::isAdmin();
-        // Logic for login
-        require __DIR__ . '/../Views/other/loginView.php';
-        exit();
-    }
-
-    public function renderSignup() {
-        $isLoggedIn = Security::isLoggedIn();
-        $PATH = Config::PATH;
-        $isAdmin = Security::isAdmin();
-        // Logic for signup
-        require __DIR__ . '/../Views/other/signupView.php';
-        exit();
-    }   
-
     public function renderHome() {
         $isLoggedIn = Security::isLoggedIn();
         $PATH = Config::PATH;
